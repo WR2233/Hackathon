@@ -3,11 +3,11 @@ package controller
 import (
 	"log"
 	"net/http"
-	
+
 )
 
 func Handler() {
-	http.Handlefunc("/register", registerHandler)
+	http.HandleFunc("/register", registerHandler)
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/posts", getPostHandler)
 	http.HandleFunc("/posts", createPostHandler)
