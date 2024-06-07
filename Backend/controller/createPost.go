@@ -1,11 +1,5 @@
-package 
+package controller
 
-import (
-	"fmt"
-	"net/http"
-	"os"
-)
-
-func createPostHandler () {
+func createPostHandler() {
 	//投稿作成ロジック
 }

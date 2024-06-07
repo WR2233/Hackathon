@@ -1,11 +1,5 @@
 package controller
 
-import (
-	"fmt"
-	"net/http"
-	"os"
-)
-
-func loginHandlerr () {
+func loginHandler() {
 	//ユーザーログインロジック
 }

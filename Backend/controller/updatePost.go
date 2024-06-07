@@ -1,11 +1,5 @@
 package controller
 
-import (
-	"fmt"
-	"net/http"
-	"os"
-)
-
-func updatePostHandlerHandler () {
+func updatePostHandlerHandler() {
 	//投稿編集ロジック
 }
