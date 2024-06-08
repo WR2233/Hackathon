@@ -2,7 +2,7 @@ package controller
 
 import (
 	"encoding/json"
-	"github.com/WR2233/Hackathon/Backend/db"
+	"github.com/WR2233/Hackathon/Backend/dao"
 	"log"
 	"net/http"
 )

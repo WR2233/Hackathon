@@ -1,24 +1,21 @@
 
 version: "3"
 services:
-  db:
+  hackathon_db:
+    container_name: hackathon_db
     image: mysql:latest
-    container_name: mysql
     platform: linux/x86_64
-
-    volumes:
-     - type: volume
-        source: hackathon_mysql
-        target: /var/lib/mysql
-      - type: bind
-        source: ./init
-        target: /docker-entrypoint-initdb.d
-
+    tty: true
     ports:
       - "3306:3306"
+    volumes:
+      - hackathon_mysql:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: hackathon
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       LC_ALL: C.UTF-8
+volumes:
+  hackathon_mysql:

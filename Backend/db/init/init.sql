@@ -1,4 +1,6 @@
-CREATE TABLE user (
+DROP TABLE IF EXISTS users, message, replies;
+
+CREATE TABLE users (
   id CHAR(36) PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   deleted BOOLEAN NOT NULL DEFAULT FALSE,
@@ -18,7 +20,7 @@ CREATE TABLE message (
   deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE reply (
+CREATE TABLE replies (
   id CHAR(36) PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   body TEXT NOT NULL,
@@ -28,3 +30,5 @@ CREATE TABLE reply (
   edited BOOLEAN NOT NULL DEFAULT FALSE,
   deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+INSERT INTO users (id, name, deleted, bio, img, createdAt) VALUES ('1', 'John Doe', false, 'Bio', 'image.jpg', NOW());
