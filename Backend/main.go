@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
-	"github.com/WR2233/Hackathon/Backend"
+	"github.com/WR2233/Hackathon/Backend/controller"
 )
 
 func main() {
-	Handler()
-	log.Fatal(http.ListenAndServe(":8000", r))
+	controller.Handler()
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
