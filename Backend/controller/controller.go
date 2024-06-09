@@ -5,11 +5,11 @@ import (
 )
 
 func Handler() {
-	http.HandleFunc("/register", registerHandler)
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/getposts", getPostHandler)
-	http.HandleFunc("/createpost", createPostHandler)
-	http.HandleFunc("/updatepost/{id}", updatePostHandler)
-	http.HandleFunc("/deletepost/{id}", deletePostHandler)
+	http.HandleFunc("/register", enableCors(registerHandler))
+	http.HandleFunc("/login", enableCors(loginHandler))
+	http.HandleFunc("/getposts", enableCors(getPostHandler))
+	http.HandleFunc("/createpost", enableCors(createPostHandler))
+	http.HandleFunc("/updatepost/{id}", enableCors(updatePostHandler))
+	http.HandleFunc("/deletepost/{id}", enableCors(deletePostHandler))
 
 }
