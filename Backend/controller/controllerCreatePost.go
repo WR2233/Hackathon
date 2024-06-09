@@ -8,11 +8,16 @@ import (
 func createPostHandler(w http.ResponseWriter, r *http.Request) {
 	//投稿作成ロジック
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	// POST メソッドのみを許可
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 	// フォームから投稿データを取得
 	r.ParseForm()
 	content := r.Form.Get("content")
 
-	err := dao.PostDB(content)
+	err := dao.createPost(content)
 	if err != nil {
 		// エラーが発生した場合、エラーレスポンスを返す
 		w.Header().Set("Content-Type", "application/json")

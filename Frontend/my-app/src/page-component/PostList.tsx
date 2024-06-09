@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {Link} from "react-router-dom"
 
 interface Post {
-  id: number;
-  content: string;
-  postedAt: string;
-  userID: number;
-  edited: boolean;
+  UserID: number;
+  Content: string;
+  PostedAt: string;
+  PostID: number;
+  Edited: boolean;
+  Deleted: boolean;
 }
 
 export const PostList: React.FC = () => {
@@ -36,14 +37,14 @@ export const PostList: React.FC = () => {
       {error && <p className="text-red-500">{error}</p>}
       <ul>
         {posts.map(post => (
-          <li key={post.id} className="mb-4">
-            <h2 className="text-xl font-bold">Post ID: {post.id}</h2>
-            <p>{post.content}</p>
-            <p>Posted At: {new Date(post.postedAt).toLocaleString()}</p>
-            <p>User ID: {post.userID}</p>
-            <p>{post.edited ? "Edited" : "Not Edited"}</p>
+          <li key={post.PostID} className="mb-4">
+            <h2 className="text-xl font-bold">Post ID: {post.PostID}</h2>
+            <p>{post.Content}</p>
+            <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
+            <p>User ID: {post.UserID}</p>
+            <p>{post.Edited ? "Edited" : "Not Edited"}</p>
             {/* 詳細ボタン */}
-            <Link to={`/getpost/${post.id}`} className="text-blue-500">Details</Link>
+            <Link to={`/post/${post.PostID}`} className="text-blue-500">Details</Link>
           </li>
         ))}
       </ul>

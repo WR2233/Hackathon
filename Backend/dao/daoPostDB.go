@@ -2,7 +2,7 @@ package dao
 
 import "log"
 
-func PostDB(content string) error {
+func createPost(content string) error {
 
 	// データベースに接続
 	db := GetDB()

@@ -5,8 +5,6 @@ import (
 )
 
 func Handler() {
-	http.HandleFunc("/register", enableCors(registerHandler))
-	http.HandleFunc("/login", enableCors(loginHandler))
 	http.HandleFunc("/getposts", enableCors(getPostHandler))
 	http.HandleFunc("/createpost", enableCors(createPostHandler))
 	http.HandleFunc("/updatepost/{id}", enableCors(updatePostHandler))

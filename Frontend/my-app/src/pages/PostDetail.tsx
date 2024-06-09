@@ -1,14 +1,14 @@
 // src/pages/PostDetail.tsx
 import React, {useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, Link } from "react-router-dom";
 
 interface Post {
-    id: number;
-    content: string;
-    postedAt: string;
-    userID: number;
-    edited: boolean;
+    PostID: number;
+    Content: string;
+    PostedAt: string;
+    UserID: number;
+    Edited: boolean;
+    Deleted: boolean;
   }
 
 const PostDetail: React.FC = () => {
@@ -38,17 +38,18 @@ const PostDetail: React.FC = () => {
  
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
-      <p>Displaying details for post ID: {postId}</p>
-
-
-    <li key={post.id} className="mb-4">
-    <h2 className="text-xl font-bold">Post ID: {post.id}</h2>
-    <p>{post.content}</p>
-    <p>Posted At: {new Date(post.postedAt).toLocaleString()}</p>
-    <p>User ID: {post.userID}</p>
-    <p>{post.edited ? "Edited" : "Not Edited"}</p>
-    </li>
+        <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
+        <p>Displaying details for post ID: {postId}</p>
+        <li key={post.PostID} className="mb-4">
+            <h2 className="text-xl font-bold">Post ID: {post.PostID}</h2>
+            <p>{post.Content}</p>
+            <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
+            <p>User ID: {post.UserID}</p>
+            <p>{post.Edited ? "Edited" : "Not Edited"}</p>
+            <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
+                back to TimeLine
+            </Link>
+        </li>
     </div>
   );
 };
