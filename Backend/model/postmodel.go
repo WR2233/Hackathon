@@ -4,7 +4,7 @@ type Post struct {
 	PostID   int    `json:"PostID"`
 	Content  string `json:"Content"`
 	PostedAt string `json:"PostedAt"`
-	UserID   int    `json:"UserID"`
+	UserID   string `json:"UserID"`
 	Edited   bool   `json:"Edited"`
 	Deleted  bool   `json:"Deleted"`
 }

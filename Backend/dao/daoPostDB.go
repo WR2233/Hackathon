@@ -1,22 +1,19 @@
 package dao
 
-import "log"
+import (
+	"github.com/WR2233/Hackathon/Backend/model"
+	"log"
+)
 
-type Post_pre struct {
-	Content  string `json:"Content"`
-	PostedAt string `json:"PostedAt"`
-	UserID   int    `json:"UserID"`
-}
-
-func PostDB(postData Post_pre) error {
+func PostDB(postData model.PostPre) error {
 	// データベースに接続
 	db := GetDB()
 
 	// SQLクエリを準備
-	query := "INSERT INTO posts (content, postedAt, user_id) VALUES (?, ?, ?)"
+	query := "INSERT INTO posts (content, user_id) VALUES (?, ?)"
 
 	// SQLクエリを実行
-	_, err := db.Exec(query, postData.Content, postData.PostedAt, postData.UserID)
+	_, err := db.Exec(query, postData.Content, postData.UserID)
 	if err != nil {
 		log.Println("Failed to insert post into database:", err)
 		return err
