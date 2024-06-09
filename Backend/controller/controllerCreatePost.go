@@ -1,9 +1,16 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/WR2233/Hackathon/Backend/dao"
 	"net/http"
 )
+
+type Post_pre struct {
+	Content  string `json:"Content"`
+	PostedAt string `json:"PostedAt"`
+	UserID   int    `json:"UserID"`
+}
 
 func createPostHandler(w http.ResponseWriter, r *http.Request) {
 	//投稿作成ロジック
@@ -14,10 +21,14 @@ func createPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// フォームから投稿データを取得
-	r.ParseForm()
-	content := r.Form.Get("content")
+	// リクエストボディから投稿データを取得
+	var postData Post_pre
+	if err := json.NewDecoder(r.Body).Decode(&postData); err != nil {
+		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+		return
+	}
 
-	err := dao.createPost(content)
+	err := dao.PostDB(&postData)
 	if err != nil {
 		// エラーが発生した場合、エラーレスポンスを返す
 		w.Header().Set("Content-Type", "application/json")

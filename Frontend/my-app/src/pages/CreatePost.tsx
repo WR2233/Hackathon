@@ -1,17 +1,36 @@
-// src/pages/CreatePost.tsx
-import React, { useState } from "react";
-import {Link} from "react-router-dom";
-import {createPost} from "../services/createPost.ts"
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { createPost } from "../services/createPost.ts"
+import { useAuthState } from "react-firebase-hooks/auth";
+import { fireAuth } from "../services/firebase.ts";
 
 const CreatePost: React.FC = () => {
+  const [user] = useAuthState(fireAuth);
+  const navigate = useNavigate();
   const [content, setContent] = useState("");
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // ポスト作成ロジックを追加
-    createPost(content)
-    console.log("Post created:", {content });
-  };
 
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return;
+  }
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+  const uid = user.uid;
+
+    try {
+      await createPost(content, uid);
+      console.log("Post created:", { content, uid});
+      setContent("");
+    } catch (error) {
+      console.error("Failed to create post:", error);
+    }
+  };
 
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
@@ -30,9 +49,9 @@ const CreatePost: React.FC = () => {
           Create Post
         </button>
       </form>
-        <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-            cancel 
-        </Link>
+      <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
+        cancel
+      </Link>
     </div>
   );
 };
