@@ -4,26 +4,23 @@ import (
 	"github.com/WR2233/Hackathon/Backend/model"
 )
 
-const Post = model.Post
+// 投稿の詳細情報を取得するハンドラー
 
-func GetPosts() ([]Post, error) {
-	var posts []Post
+func GetPost(post_id int) (*model.Post, error) {
 	db := GetDB()
-	rows, err := db.Query("SELECT post_id, content, user_id, edited FROM posts")
+	defer db.Close()
+
+	row, err := db.Query("SELECT post_id, content, user_id, edited, posetdAt, deleted  FROM posts WHERE post_id =?", post_id)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-	for rows.Next() {
-		var post Post
-		err := rows.Scan(&post.ID, &post.Content, &post.UserID, &post.Edited)
-		if err != nil {
-			return nil, err
-		}
-		posts = append(posts, post)
-	}
-	if err = rows.Err(); err != nil {
+
+	// 結果セットから投稿をスキャンして取得する
+	var post model.Post
+	err = row.Scan(&post.Post_id, &post.Content, &post.PostedAt, &post.User_id, &post.Edited, &post.deleted)
+	if err != nil {
 		return nil, err
 	}
-	return posts, nil
+
+	return &post, nil
 }

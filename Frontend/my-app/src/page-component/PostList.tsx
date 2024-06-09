@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {Link} from "react-router-dom"
 
 interface Post {
   id: number;
@@ -41,6 +42,8 @@ export const PostList: React.FC = () => {
             <p>Posted At: {new Date(post.postedAt).toLocaleString()}</p>
             <p>User ID: {post.userID}</p>
             <p>{post.edited ? "Edited" : "Not Edited"}</p>
+            {/* 詳細ボタン */}
+            <Link to={`/getpost/${post.id}`} className="text-blue-500">Details</Link>
           </li>
         ))}
       </ul>

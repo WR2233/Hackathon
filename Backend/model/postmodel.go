@@ -3,12 +3,12 @@ package model
 import "time"
 
 type Post struct {
-	post_id int
-	content string
-	//postedAt time.Time
-	user_id int
-	edited  int
-	//deleted  int
+	Post_id  int       `json:"id"`
+	Content  string    `json:"content"`
+	PostedAt time.Time `json:"postedAt"`
+	User_id  int       `json:"userID"`
+	Edited   bool      `json:"edited"`
+	deleted  bool      `json:"deleted"`
 }
 
 type reply struct {
