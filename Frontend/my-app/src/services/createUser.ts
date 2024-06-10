@@ -9,7 +9,7 @@ export const createUser = async (username: string, userId: string) => {
         UserID: userId,
       };
     console.log(userData)
-    const response = await fetch('http://localhost:8000/createuser ', {
+    const response = await fetch('http://localhost:8080/createuser ', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
