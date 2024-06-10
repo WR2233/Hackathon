@@ -17,7 +17,7 @@ export const PostList: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:8000/getposts');
+        const response = await fetch('http://localhost:8080/getposts');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

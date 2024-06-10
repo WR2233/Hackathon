@@ -8,7 +8,7 @@ export const createPost = async (content: string, userId: string) => {
         Content: content,
         UserID: userId,
       };
-    const response = await fetch('http://localhost:8000/createpost', {
+    const response = await fetch('http://localhost:8080/createpost', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
