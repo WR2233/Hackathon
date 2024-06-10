@@ -18,7 +18,7 @@ const PostDetail: React.FC = () => {
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/getpost?pid=${postId}`);
+        const response = await fetch(`https://hackathon--a-7rbmfy5nyq-uc.a.run.app/getpost?pid=${postId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch post");
         }
