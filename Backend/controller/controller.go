@@ -10,5 +10,5 @@ func Handler() {
 	http.HandleFunc("/updatepost/{id}", enableCors(updatePostHandler))
 	http.HandleFunc("/deletepost/{id}", enableCors(deletePostHandler))
 	http.HandleFunc("/getpost/{id}", enableCors(getAPostHandler))
-
+	http.HandleFunc("/createuser", enableCors(createUserHandler))
 }

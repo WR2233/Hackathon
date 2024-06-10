@@ -21,7 +21,7 @@ const CreatePost: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-  const uid = user.uid;
+    const uid = user.uid;
 
     try {
       await createPost(content, uid);

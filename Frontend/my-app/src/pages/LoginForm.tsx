@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, on
 import { fireAuth } from "../services/firebase.ts";
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
+import {createUser} from "../services/createUser.ts"
 
 const LoginForm: React.FC = () => {
   //emailアドレスの形を満たすチェックする関数
@@ -38,16 +39,22 @@ const LoginForm: React.FC = () => {
       setError("Password should be at least 6 characters long.");
       return;
     } 
-    createUserWithEmailAndPassword(fireAuth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        updateProfile(user, { displayName: username })
-        console.log("User signed up:", user);
-      })
-      .catch((error) => {
-        console.error("Error signing up:", error);
-      });
-  };
+    const legisterUser = async (email: string, password: string) => {
+      const userCredential = await createUserWithEmailAndPassword(fireAuth, email, password)
+      const user = userCredential.user
+
+    try {
+      await createUser(user.uid, username);
+      setUsername("");
+      setEmail("")
+      setPassword("")
+    } catch (error) {
+      console.error("Failed to create post:", error);
+    } 
+    };
+
+
+  }   
 
 //signin関数
   const handleSignIn = (event: React.FormEvent) => {
