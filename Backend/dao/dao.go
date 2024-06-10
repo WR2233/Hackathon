@@ -26,8 +26,6 @@ func InitDB() error {
 		log.Fatalf("mysql.NewConnector: %v", err)
 	}
 
-	defer db.Close()
-
 	//データベースへの接続を確認
 	err = db.Ping()
 	if err != nil {
