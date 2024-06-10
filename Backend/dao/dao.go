@@ -19,7 +19,7 @@ func InitDB() error {
 	instanceConnectionName := os.Getenv("INSTANCE_CONNECTION_NAME")
 
 	// Cloud SQLインスタンスへの接続を設定
-	dsn := fmt.Sprintf("%s:%s@unix(/cloudsql/%s)/%s", dbUser, dbPassword, instanceConnectionName, dbName)
+	dsn := fmt.Sprintf("%s:%s@%s/%s", dbUser, dbPassword, instanceConnectionName, dbName)
 
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
