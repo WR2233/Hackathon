@@ -9,7 +9,7 @@ export const createUser = async (username: string, userId: string) => {
         UserID: userId,
       };
     console.log(userData)
-    const response = await fetch('https://hackathon-7rbmfy5nyq-uc.a.run.app/createuser ', {
+    const response = await fetch('https://hackathon--a-7rbmfy5nyq-uc.a.run.app/createuser ', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

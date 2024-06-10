@@ -8,7 +8,7 @@ export const createPost = async (content: string, userId: string) => {
         Content: content,
         UserID: userId,
       };
-    const response = await fetch('https://hackathon-7rbmfy5nyq-uc.a.run.app/createpost', {
+    const response = await fetch('https://hackathon--a-7rbmfy5nyq-uc.a.run.app/createpost', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
