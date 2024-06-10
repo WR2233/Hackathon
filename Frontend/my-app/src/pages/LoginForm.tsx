@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, User } from "firebase/auth";
 import { fireAuth } from "../services/firebase.ts";
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {createUser} from "../services/createUser.ts"
 
 const LoginForm: React.FC = () => {
@@ -11,14 +11,15 @@ const LoginForm: React.FC = () => {
     return re.test(email);
   }
 
-  /**
+   /**
    * emailでログインする
    */
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [user, setUser] =useState<User |null> (null);
-  const [error, setError] = useState<string | null>(null);
+   const [email, setEmail] = useState("");
+   const [password, setPassword] = useState("");
+   const [username, setUsername] = useState("");
+   const [user, setUser] = useState<User | null>(null);
+   const [error, setError] = useState<string | null>(null);
+   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(fireAuth, (currentUser) => {
@@ -28,7 +29,7 @@ const LoginForm: React.FC = () => {
   })
 
   //signup関数
-  const handleSignUp = (event: React.FormEvent) => {
+  const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!isValidAsEmail(email)) {
@@ -39,22 +40,21 @@ const LoginForm: React.FC = () => {
       setError("Password should be at least 6 characters long.");
       return;
     } 
-    const legisterUser = async (email: string, password: string) => {
-      const userCredential = await createUserWithEmailAndPassword(fireAuth, email, password)
-      const user = userCredential.user
-
+    console.log(username)
     try {
-      await createUser(user.uid, username);
-      setUsername("");
-      setEmail("")
-      setPassword("")
+      // Firebase Authentication にユーザーを作成
+      const userCredential = await createUserWithEmailAndPassword(fireAuth, email, password);
+      const user = userCredential.user;
+
+      await createUser(username, user.uid)
+
+      console.log("User signed in:", user)
+      navigate("/"); // ユーザー登録後にリダイレクト
     } catch (error) {
-      console.error("Failed to create post:", error);
-    } 
-    };
-
-
-  }   
+      console.error("Failed to register user:", error);
+    }
+  }
+  
 
 //signin関数
   const handleSignIn = (event: React.FormEvent) => {
@@ -71,6 +71,7 @@ const LoginForm: React.FC = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("User signed in:", user);
+        navigate("/"); 
       })
       .catch((error) => {
         console.error("Error signing in:", error);

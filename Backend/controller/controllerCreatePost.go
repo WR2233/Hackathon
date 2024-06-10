@@ -26,7 +26,7 @@ func createPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := dao.PostDB(postData)
+	postID, err := dao.createPost(postData)
 	if err != nil {
 		// エラーが発生した場合、エラーレスポンスを返す
 		w.Header().Set("Content-Type", "application/json")
@@ -35,9 +35,14 @@ func createPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 投稿が正常に作成された場合、新しく作成された投稿のIDを含む成功レスポンスを返す
+	response := map[string]interface{}{
+		"message": "Post created successfully",
+		"postID":  postID,
+	}
+
 	// 投稿が正常に作成された場合、成功レスポンスを返す
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "Post created successfully"}`))
-
+	json.NewEncoder(w).Encode(response)
 }

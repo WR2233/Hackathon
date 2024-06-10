@@ -24,12 +24,13 @@ const CreatePost: React.FC = () => {
     const uid = user.uid;
 
     try {
-      await createPost(content, uid);
+      var postID = await createPost(content, uid);
       console.log("Post created:", { content, uid});
       setContent("");
     } catch (error) {
       console.error("Failed to create post:", error);
     }
+    navigate("/post/" + postID)
   };
 
   return (

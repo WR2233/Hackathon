@@ -9,6 +9,6 @@ type User struct {
 }
 
 type UserPre struct {
-	UserName string `json:"Content"`
+	UserName string `json:"UserName"`
 	UserID   string `json:"UserID"`
 }

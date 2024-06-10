@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func PostDB(postData model.PostPre) error {
+func createPost(postData model.PostPre) (int64, error) {
 	// データベースに接続
 	db := GetDB()
 
@@ -13,12 +13,13 @@ func PostDB(postData model.PostPre) error {
 	query := "INSERT INTO posts (content, user_id) VALUES (?, ?)"
 
 	// SQLクエリを実行
-	_, err := db.Exec(query, postData.Content, postData.UserID)
+	result, err := db.Exec(query, postData.Content, postData.UserID)
 	if err != nil {
 		log.Println("Failed to insert post into database:", err)
-		return err
+		return 0, err
 	}
+	postID, err := result.LastInsertId()
 
 	// エラーがない場合、nilを返す
-	return nil
+	return postID, nil
 }

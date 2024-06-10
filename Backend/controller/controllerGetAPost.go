@@ -16,7 +16,7 @@ func getAPostHandler(w http.ResponseWriter, r *http.Request) {
 	// リクエストから投稿IDを取得
 	vars := mux.Vars(r)
 	postID, err := strconv.Atoi(vars["id"])
-	post, err := dao.GetPost(postID) //dbから持ってくる
+	post, err := dao.GetAPost(postID) //dbから持ってくる
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)

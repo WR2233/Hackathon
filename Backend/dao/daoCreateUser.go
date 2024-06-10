@@ -5,10 +5,9 @@ import (
 	"log"
 )
 
-func createUser(userData model.UserPre) error {
+func CreateUser(userData model.UserPre) error {
 	// データベースに接続
 	db := GetDB()
-
 	// SQLクエリを準備
 	query := "INSERT INTO users (user_id, username) VALUES (?, ?)"
 

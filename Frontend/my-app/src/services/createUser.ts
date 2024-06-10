@@ -3,11 +3,12 @@ interface User_pre {
     UserID: string 
 }
 
-export const createUser = async (content: string, userId: string) => {
+export const createUser = async (username: string, userId: string) => {
     const userData: User_pre = {
-        UserName: content,
+        UserName: username,
         UserID: userId,
       };
+    console.log(userData)
     const response = await fetch('http://localhost:8000/createuser ', {
       method: 'POST',
       headers: {

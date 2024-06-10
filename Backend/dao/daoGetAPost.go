@@ -6,10 +6,10 @@ import (
 
 // 投稿の詳細情報を取得するハンドラー
 
-func GetPost(post_id int) (*model.Post, error) {
+func GetAPost(post_id int) (*model.Post, error) {
 	db := GetDB()
 
-	row := db.QueryRow("SELECT post_id, content,  postedAt,user_id, edited, deleted  FROM posts WHERE post_id =?", 1)
+	row := db.QueryRow("SELECT post_id, content,  postedAt,user_id, edited, deleted  FROM posts WHERE post_id =?", post_id)
 
 	// 結果セットから投稿をスキャンして取得する
 	var post model.Post

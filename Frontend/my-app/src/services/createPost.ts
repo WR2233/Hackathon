@@ -20,7 +20,13 @@ export const createPost = async (content: string, userId: string) => {
       throw new Error('Failed to create post');
     }
   
-    return response.json();
+    // サーバーからのレスポンスを JSON 形式で取得
+    const responseData = await response.json();
+
+    // レスポンスデータから投稿IDを取得
+    const postId = responseData.postID;
+    
+    return postId
   };
   
   
