@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"os"
 )
 
 var db *sql.DB
@@ -12,11 +13,20 @@ var db *sql.DB
 func InitDB() error {
 	var err error
 
-	//MySQLに接続
-	db, err = sql.Open("mysql", "user:password@tcp(127.0.0.1:3306)/hackathon")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	instanceConnectionName := os.Getenv("INSTANCE_CONNECTION_NAME")
+
+	// Cloud SQLインスタンスへの接続を設定
+	dsn := fmt.Sprintf("%s:%s@unix(/cloudsql/%s)/%s", dbUser, dbPassword, instanceConnectionName, dbName)
+
+	db, err = sql.Open("mysql", dsn)
 	if err != nil {
-		return err
+		log.Fatalf("mysql.NewConnector: %v", err)
 	}
+
+	defer db.Close()
 
 	//データベースへの接続を確認
 	err = db.Ping()
