@@ -26,7 +26,7 @@ func createPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	postID, err := dao.createPost(postData)
+	postID, err := dao.CreatePost(postData)
 	if err != nil {
 		// エラーが発生した場合、エラーレスポンスを返す
 		w.Header().Set("Content-Type", "application/json")

@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func createPost(postData model.PostPre) (int64, error) {
+func CreatePost(postData model.PostPre) (int64, error) {
 	// データベースに接続
 	db := GetDB()
 
@@ -18,8 +18,13 @@ func createPost(postData model.PostPre) (int64, error) {
 		log.Println("Failed to insert post into database:", err)
 		return 0, err
 	}
-	postID, err := result.LastInsertId()
 
-	// エラーがない場合、nilを返す
+	// 新しく挿入されたレコードのIDを取得
+	postID, err := result.LastInsertId()
+	if err != nil {
+		log.Println("Failed to get the last insert ID:", err)
+		return 0, err
+	}
+
 	return postID, nil
 }
