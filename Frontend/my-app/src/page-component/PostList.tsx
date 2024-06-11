@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from "react-router-dom"
 
-interface Post {
-  UserID: number;
-  Content: string;
-  PostedAt: string;
-  PostID: number;
-  Edited: boolean;
-  Deleted: boolean;
+
+interface Post{
+	PostID :   number
+	Content :    string
+	PostedAt :   string 
+	UserID    :  string 
+	Edited     : boolean
+	DeletedPost :boolean
+	UserName    :string 
+	DeletedUser :boolean 
 }
 
 export const PostList: React.FC = () => {
@@ -38,10 +41,9 @@ export const PostList: React.FC = () => {
       <ul>
         {posts.map(post => (
           <li key={post.PostID} className="mb-4">
-            <h2 className="text-xl font-bold">Post ID: {post.PostID}</h2>
             <p>{post.Content}</p>
             <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
-            <p>User ID: {post.UserID}</p>
+            <p>User Name: {post.UserName}</p>
             <p>{post.Edited ? "Edited" : "Not Edited"}</p>
             {/* 詳細ボタン */}
             <Link to={`/post/${post.PostID}`} className="text-blue-500">Details</Link>

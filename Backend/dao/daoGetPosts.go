@@ -7,14 +7,15 @@ import (
 func GetPosts() ([]model.Post, error) {
 	var posts []model.Post
 	db := GetDB()
-	rows, err := db.Query("SELECT post_id, content, user_id, edited, deleted, postedAt FROM posts")
+	query := "SELECT p.post_id, p.content, u.username, u.deleted AS deleted_users, p.postedAt, p.edited AS editedAt, p.deleted AS deleted_posts, u.user_id FROM posts p JOIN users u ON p.user_id = u.user_id;"
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var post model.Post
-		err := rows.Scan(&post.PostID, &post.Content, &post.UserID, &post.Edited, &post.Deleted, &post.PostedAt)
+		err := rows.Scan(&post.PostID, &post.Content, &post.UserName, &post.DeletedUser, &post.PostedAt, &post.Edited, &post.DeletedPost, &post.UserID)
 		if err != nil {
 			return nil, err
 		}
