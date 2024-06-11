@@ -9,7 +9,8 @@ export const createUser = async (username: string, userId: string) => {
         UserID: userId,
       };
     console.log(userData)
-    const response = await fetch('https://hackathon--a-7rbmfy5nyq-uc.a.run.app/createuser ', {
+    var url = process.env.REACT_APP_API_URL as string
+    const response = await fetch(url + '/createuser ', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
