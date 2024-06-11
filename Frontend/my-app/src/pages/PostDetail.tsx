@@ -14,11 +14,12 @@ interface Post {
 const PostDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<Post | null>(null);
-
+  
+  var url = process.env.REACT_APP_API_URL as string
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
-        const response = await fetch(`https://hackathon--a-7rbmfy5nyq-uc.a.run.app/getpost?pid=${postId}`);
+        const response = await fetch(url + `/getpost?pid=${postId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch post");
         }

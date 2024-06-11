@@ -8,7 +8,8 @@ export const createPost = async (content: string, userId: string) => {
         Content: content,
         UserID: userId,
       };
-    const response = await fetch('https://hackathon--a-7rbmfy5nyq-uc.a.run.app/createpost', {
+    var url = process.env.REACT_APP_API_URL as string
+    const response = await fetch(url + '/createpost', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
