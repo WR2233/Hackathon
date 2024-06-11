@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
-import {FollowUser} from "../services/followUser"
+import {FollowUser} from "../services/followUser.ts"
 
 interface UserProfile {
   UserID: string;
@@ -96,7 +96,7 @@ const UserProfile: React.FC = () => {
         onClick={UnFollowHandle}
         className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
-        Follow
+        UnFollow
       </button>
     </div>
   );
