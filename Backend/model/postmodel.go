@@ -20,3 +20,8 @@ type Reply struct {
 	Edited     int    `json:"Edited"`
 	Deleted    int    `json:"Deleted"`
 }
+
+type PostPre struct {
+	Content string `json:"Content"`
+	UserID  string `json:"UserID"`
+}

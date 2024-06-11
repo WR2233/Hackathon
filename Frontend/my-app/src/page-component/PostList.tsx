@@ -16,11 +16,11 @@ interface Post{
 export const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string | null>(null);
-  var url =process.env.REACT_APP_API_URL as string
+  var url =process.env.REACT_APP_API_URL + "/getposts";
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(url + "/getposts");
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -30,7 +30,6 @@ export const PostList: React.FC = () => {
         setError(error.message);
       }
     };
-    console.log(posts)
     fetchPosts();
   }, []);
 

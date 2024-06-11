@@ -2,20 +2,22 @@
 import React, {useEffect, useState} from "react";
 import { useParams, Link } from "react-router-dom";
 
-interface Post {
-    PostID: number;
-    Content: string;
-    PostedAt: string;
-    UserID: number;
-    Edited: boolean;
-    Deleted: boolean;
-  }
+interface Post{
+	PostID :   number
+	Content :    string
+	PostedAt :   string 
+	UserID    :  string 
+	Edited     : boolean
+	DeletedPost :boolean
+	UserName    :string 
+	DeletedUser :boolean 
+}
 
 const PostDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<Post | null>(null);
   
-  var url = process.env.REACT_APP_API_URL as string
+  var url = process.env.REACT_APP_API_URL ;
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
@@ -40,15 +42,16 @@ const PostDetail: React.FC = () => {
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
         <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
-        <p>Displaying details for post ID: {postId}</p>
         <li key={post.PostID} className="mb-4">
-            <h2 className="text-xl font-bold">Post ID: {post.PostID}</h2>
             <p>{post.Content}</p>
             <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
-            <p>User ID: {post.UserID}</p>
+            <p>User Name: {post.UserName}</p>
             <p>{post.Edited ? "Edited" : "Not Edited"}</p>
             <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
                 back to TimeLine
+            </Link>
+            <Link to={`/profiles?uid=${post.UserID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              View User Profile
             </Link>
         </li>
     </div>
