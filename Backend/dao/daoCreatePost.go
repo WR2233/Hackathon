@@ -25,6 +25,6 @@ func CreatePost(postData model.PostPre) (int64, error) {
 		log.Println("Failed to get the last insert ID:", err)
 		return 0, err
 	}
-
+	log.Println(postID)
 	return postID, nil
 }

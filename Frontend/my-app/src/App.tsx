@@ -5,6 +5,7 @@ import Home from "./pages/Home.tsx";
 import PostDetail from "./pages/PostDetail.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
 import Profile from "./pages/Profile.tsx";
+import UserProfile from "./pages/UserProfile.tsx";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/post/:postId" element={<PostDetail />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profiles" element={<UserProfile/>} /> 
       </Routes>
     </Router>
   );

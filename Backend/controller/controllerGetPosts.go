@@ -8,7 +8,7 @@ import (
 	"github.com/WR2233/Hackathon/Backend/dao"
 )
 
-func getPostHandler(w http.ResponseWriter, r *http.Request) {
+func getPostsHandler(w http.ResponseWriter, r *http.Request) {
 	//投稿取得ロジック
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	posts, err := dao.GetPosts() //dbから持ってくる
