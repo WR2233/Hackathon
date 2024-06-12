@@ -13,4 +13,6 @@ func Handler() {
 	http.HandleFunc("/createuser", enableCors(createUserHandler))
 	http.HandleFunc("/getuser", enableCors(getUserHandler))
 	http.HandleFunc("/follow", enableCors(followHandler))
+	http.HandleFunc("/getfollowers", enableCors(getFollowerHandler))
+	http.HandleFunc("/getfollowing", enableCors(getFollowingHandler))
 }

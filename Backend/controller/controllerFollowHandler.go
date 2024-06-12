@@ -20,10 +20,10 @@ func followHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// フォローまたはアンフォローの処理
-	if req.Num == 0 {
+	if req.NumFollows == 0 {
 		err = dao.FollowUser(req.FollowedByID, req.FollowedToID)
-		//} else if req.Num == 1 {
-		//err = unfollowUser(req.FollowedByID, req.FollowedToID)
+	} else if req.NumFollows == 1 {
+		err = dao.UnFollowUser(req.FollowedByID, req.FollowedToID)
 	} else {
 		http.Error(w, "Invalid request parameter", http.StatusBadRequest)
 		return
@@ -36,4 +36,5 @@ func followHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintln(w, "Success")
+
 }
