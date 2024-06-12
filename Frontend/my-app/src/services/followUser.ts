@@ -1,14 +1,14 @@
 
 var url = process.env.REACT_APP_API_URL as string
 //num=0 follow, num=1 unfollow
-export const FollowUser = async (uid: string, num: number) => {
+export const FollowUser = async (followedToid: string, followedByid: string, num: number) => {
     try {
       const response = await fetch(`${url}/follow`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({uid, num})
+        body: JSON.stringify({followedToid, followedByid, num})
       });
 
       if (!response.ok) {

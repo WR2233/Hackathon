@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
 import {FollowUser} from "../services/followUser.ts"
+import { useAuthState } from "react-firebase-hooks/auth";
+import { fireAuth } from "../services/firebase.ts";
 
 interface UserProfile {
   UserID: string;
@@ -19,6 +21,7 @@ const UserProfile: React.FC = () => {
   const location = useLocation();
   const url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+  const [user, loading, error] = useAuthState(fireAuth);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -42,35 +45,45 @@ const UserProfile: React.FC = () => {
       }
     };
 
-    fetchUserProfile();
-  }, [location.search, url]);
-
-  const FollowHandle = () => {
-    const queryParams = getQueryParams(location.search);
-    const userID = queryParams.get("uid"); // ここでクエリパラメータを取得
-
-    if (!userID) {
-      throw new Error("User ID is missing");
+    if (!user && !loading) {
+      navigate("/login");
+    } else {
+      fetchUserProfile();
     }
-
-    FollowUser(userID, 0)
-  }
-
-  const UnFollowHandle = () => {
-    const queryParams = getQueryParams(location.search);
-    const userID = queryParams.get("uid"); // ここでクエリパラメータを取得
-
-    if (!userID) {
-      throw new Error("User ID is missing");
-    }
-
-    FollowUser(userID, 1)
-  }
+  }, [location.search, url, user, loading, navigate]);
 
   if (!userProfile) {
     return <div>Loading...</div>;
   }
 
+  const FollowHandle = () => {
+    const queryParams = getQueryParams(location.search);
+    const FollowedToID = queryParams.get("uid"); // ここでクエリパラメータを取得
+    if (!user) {
+        console.error("Error fetch user from auth:", error)
+        return 
+    }
+    const FollowedByID = user.uid
+    if (!FollowedToID) {
+      throw new Error("User ID is missing");
+    }
+
+    FollowUser(FollowedToID, FollowedByID, 0)
+  }
+  const UnFollowHandle = () => {
+    const queryParams = getQueryParams(location.search);
+    const FollowedToID = queryParams.get("uid"); // ここでクエリパラメータを取得
+    if (!user) {
+        console.error("Error fetch user from auth:", error)
+        return 
+    }
+    const FollowedByID = user.uid
+    if (!FollowedToID) {
+      throw new Error("User ID is missing");
+    }
+
+    FollowUser(FollowedToID, FollowedByID, 1)
+  } 
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
       <h1 className="text-2xl font-bold mb-4">User Profile</h1>

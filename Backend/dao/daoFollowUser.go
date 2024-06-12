@@ -14,7 +14,7 @@ func FollowUser(byid string, toid string) error {
 	// SQLクエリを実行
 	_, err := db.Exec(query, byid, toid)
 	if err != nil {
-		log.Println("Failed to insert post into database:", err)
+		log.Println("Failed to follow into database:", err)
 		return err
 	}
 
