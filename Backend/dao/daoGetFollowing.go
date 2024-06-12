@@ -10,7 +10,7 @@ func GetFollowing(userID string) ([]model.User, error) {
 	if err != nil {
 		return users, err
 	}
-	query := "SELECT f.following_id as followed_to_id, u.username, u.deleted, u.createdAt  FROM users u WHERE f.follower_id= ? JOIN followers_following f ON u.user_id = f.following_id;"
+	query := "SELECT f.following_id as followed_to_id, u.username, u.deleted, u.createdAt  FROM users u JOIN followers_following f ON u.user_id = f.following_id WHERE f.follower_id= ? ;"
 	rows, err := db.Query(query, userID)
 	if err != nil {
 		return nil, err

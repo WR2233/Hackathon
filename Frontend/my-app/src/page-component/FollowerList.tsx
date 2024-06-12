@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate , Link} from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 
-interface FollowList {
-  userID: string;
-  userName: string;
+interface UserProfile {
+  UserID: string;
+  UserName: string;
+  DeletedUser: boolean;
+  // 他のユーザープロフィール情報をここに追加
 }
 
 const getQueryParams = (query: string) => {
@@ -13,7 +15,7 @@ const getQueryParams = (query: string) => {
 };
 
 const FollowersList: React.FC = () => {
-  const [followerList, setFollowerList] = useState<FollowList[]>([]);
+  const [followerList, setFollowerList] = useState<UserProfile[]>([]);
   const location = useLocation();
   const url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const FollowersList: React.FC = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch followers list");
         }
-        const data: FollowList[] = await response.json();
+        const data: UserProfile[] = await response.json();
         setFollowerList(data);
       } catch (error) {
         console.error("Error fetching followers list:", error);
@@ -61,9 +63,17 @@ const FollowersList: React.FC = () => {
         Go Back
       </button>
       <ul>
-        {followerList.map((follower) => (
-          <li key={follower.userID}>{follower.userName}</li>
-        ))}
+        {followerList && followerList.length > 0 ? (
+          followerList.map((follower) => (
+            <li key={follower.UserID}>
+              <Link to={`/userprofile?uid=${follower.UserID}`}>
+                {follower.UserName}
+              </Link>
+            </li>
+          ))
+        ) : (
+          <p>No followers found.</p>
+        )}
       </ul>
     </div>
   );

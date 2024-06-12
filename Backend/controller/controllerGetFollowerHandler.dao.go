@@ -17,7 +17,7 @@ func getFollowerHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 	}
-
+	log.Println(users)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(users)
 }
