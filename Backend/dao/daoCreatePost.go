@@ -7,7 +7,10 @@ import (
 
 func CreatePost(postData model.PostPre) (int64, error) {
 	// データベースに接続
-	db := GetDB()
+	db, err := GetDB()
+	if err != nil {
+		return -1, err
+	}
 
 	// SQLクエリを準備
 	query := "INSERT INTO posts (content, user_id) VALUES (?, ?)"

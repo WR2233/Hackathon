@@ -43,6 +43,11 @@ func CloseDB() {
 	}
 }
 
-func GetDB() *sql.DB {
-	return db
+func GetDB() (*sql.DB, error) {
+	if db == nil {
+		if err := InitDB(); err != nil {
+			return nil, err
+		}
+	}
+	return db, nil
 }

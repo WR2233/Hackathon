@@ -6,7 +6,10 @@ import (
 
 func GetUserPosts() ([]model.Post, error) {
 	var posts []model.Post
-	db := GetDB()
+	db, err := GetDB()
+	if err != nil {
+		return posts, err
+	}
 	query := "SELECT p.post_id, p.content, u.username, u.deleted AS deleted_users, p.postedAt, p.edited AS editedAt, p.deleted AS deleted_posts, u.user_id FROM posts p JOIN users u ON p.user_id = u.user_id;"
 	rows, err := db.Query(query)
 	if err != nil {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate, Link} from "react-router-dom";
 import {FollowUser} from "../services/followUser.ts"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
@@ -22,12 +22,13 @@ const UserProfile: React.FC = () => {
   const url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [user, loading, error] = useAuthState(fireAuth);
+  const queryParams = getQueryParams(location.search);
+  const userID = queryParams.get("uid"); // ここでクエリパラメータを取得
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const queryParams = getQueryParams(location.search);
-        const userID = queryParams.get("uid"); // ここでクエリパラメータを取得
+        
 
         if (!userID) {
           throw new Error("User ID is missing");
@@ -84,6 +85,7 @@ const UserProfile: React.FC = () => {
 
     FollowUser(FollowedToID, FollowedByID, 1)
   } 
+  
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
       <h1 className="text-2xl font-bold mb-4">User Profile</h1>
@@ -107,12 +109,18 @@ const UserProfile: React.FC = () => {
 
       <button
         onClick={UnFollowHandle}
-        className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        className="block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
       >
         UnFollow
       </button>
-    </div>
-  );
+
+      <Link to={`/followlist?uid=${userID}`} className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2">
+        Following-Follower List
+      </Link>
+
+
+    
+    </div>)
 };
 
 export default UserProfile;
