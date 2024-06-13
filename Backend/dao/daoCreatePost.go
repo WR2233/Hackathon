@@ -25,9 +25,8 @@ func CreatePost(postData model.PostPre) (int64, error) {
 	// 新しく挿入されたレコードのIDを取得
 	postID, err := result.LastInsertId()
 	if err != nil {
-		log.Println("Failed to get the last insert ID:", err)
+		log.Println("Failed to get the last insert postID:", err)
 		return 0, err
 	}
-	log.Println(postID)
 	return postID, nil
 }

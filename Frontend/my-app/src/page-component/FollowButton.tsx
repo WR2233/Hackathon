@@ -1,22 +1,32 @@
-import React, { useState } from "react";
-import { toggleFollow } from "../services/toggleFollow.ts";
+// src/components/FollowToggle.tsx
+import React, { useState, useEffect } from "react";
+import toggleFollow from "../services/toggleFollow.ts";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { fireAuth } from "../services/firebase.ts";
 
-interface FollowToggleProps {
-    userID: string;
+interface FollowButtonProps {
+    followedToID: string;
 }
 
-const FollowToggle: React.FC<FollowToggleProps> = ({ userID }) => {
+const FollowButton: React.FC <FollowButtonProps> = ({ followedToID }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
+    const [user, loading] = useAuthState(fireAuth);
+
+    useEffect(() => {
+        // 初期フォロー状態を取得する処理を追加することもできます。
+        // APIからフォロー状態を取得してsetIsFollowingを更新する
+    }, [followedToID, user]);
+
     const handleFollowToggle = async () => {
         if (!user) return;
-    
+
         try {
-          const newLikedStatus = await toggleFollow(FollowedToId!, user.uid);
-          setIsFollowing(new);
+            const newFollowStatus = await toggleFollow(followedToID, user.uid);
+            setIsFollowing(newFollowStatus);
         } catch (error) {
-          console.error("Error toggle follow:", error);
+            console.error("Error toggling follow:", error);
         }
-      };
+    };
 
     return (
         <button
@@ -26,6 +36,6 @@ const FollowToggle: React.FC<FollowToggleProps> = ({ userID }) => {
             {isFollowing ? "Unfollow" : "Follow"}
         </button>
     );
-}
+};
 
-export default FollowToggle;
+export default FollowButton;

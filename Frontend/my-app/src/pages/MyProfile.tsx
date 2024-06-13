@@ -20,11 +20,10 @@ const Profile: React.FC = () => {
 
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
-      <h1 className="text-2xl font-bold mb-4">User Profile</h1>
+      <h1 className="text-2xl font-bold mb-4">My Profile</h1>
       {user ? (
         <div>
           <p>Email: {user.email}</p>
-          <p>Username: {user.displayName}</p>
         </div>
       ) : (
         <p>Please sign in to see your profile.</p>

@@ -27,8 +27,14 @@ func ToggleFollowHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	followed := dao.ToggleFollow(req.FollowedToID, req.FollowedByID)
+	followed, err := dao.ToggleFollow(req.FollowedToID, req.FollowedByID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 	resp := ToggleFollowResponse{Followed: followed}
 
-	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }

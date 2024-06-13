@@ -5,6 +5,7 @@ import fetchLikeNum from "../services/fetchLikeNum.ts";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import { toggleLike } from "../services/toggleLike.ts"
+import createReply from "../services/CreateReply.ts"
 
 interface Post{
 	PostID :   number
@@ -23,6 +24,8 @@ const PostDetail: React.FC = () => {
   const [likeCount, setLikeCount] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(false);
   const [user] = useAuthState(fireAuth);
+  const [replyFormVisible, setReplyFormVisible] = useState<boolean>(false);
+  const [replyContent, setReplyContent] = useState<string>("");
   
   var url = process.env.REACT_APP_API_URL ;
   useEffect(() => {
@@ -68,6 +71,25 @@ const PostDetail: React.FC = () => {
     }
   };
 
+  const handleReplyFormToggle = () => {
+    setReplyFormVisible(!replyFormVisible);
+  };
+
+  const handleReplySubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+        // フォームからの入力を使用してリプライを作成する
+        const response = await createReply (postId, user.uid, replyContent, true);
+        console.log("Reply created:", response);
+        // リプライが成功裏に作成されたら、フォームを非表示にする
+        setReplyContent("");
+        setReplyFormVisible(false);
+    } catch (error) {
+        console.error("Error creating reply:", error);
+    }
+};
+
+
   if (!post) {
     return <div>Loading...</div>;
   }
@@ -87,6 +109,22 @@ const PostDetail: React.FC = () => {
         >
           {liked ? 'Unlike' : 'Like'}
         </button>
+        <button
+                    onClick={handleReplyFormToggle}
+                    className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2"
+                >
+                    {replyFormVisible ? "Cancel Reply Form" : "Create Reply"}
+                </button>
+                {replyFormVisible && (
+                    <form onSubmit={handleReplySubmit}>
+                    <textarea
+                        placeholder="Enter your reply..."
+                        value={replyContent}
+                        onChange={(event) => setReplyContent(event.target.value)}
+                    />
+                    <button type="submit">Submit</button>
+                </form>
+                )}
             <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
                 back to TimeLine
             </Link>

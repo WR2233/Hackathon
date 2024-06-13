@@ -19,9 +19,17 @@ type Reply struct {
 	PostedToID int    `json:"PostedToID"`
 	Edited     int    `json:"Edited"`
 	Deleted    int    `json:"Deleted"`
+	IsToPost   bool   `json:"IsToPost"`
 }
 
 type PostPre struct {
 	Content string `json:"Content"`
 	UserID  string `json:"UserID"`
+}
+
+type ReplyPre struct {
+	PostReplyID int    `json:"PostReplyID"`
+	Content     string `json:"Content"`
+	UserID      string `json:"UserID"`
+	IsToPost    bool   `json:"IsToPost"`
 }

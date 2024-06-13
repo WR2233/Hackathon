@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link} from "react-router-dom";
-import {FollowUser} from "../services/followUser.ts"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
+import FollowButton from "../page-component/FollowButton.tsx";
 
 interface UserProfile {
   UserID: string;
@@ -28,10 +28,13 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        
-
         if (!userID) {
           throw new Error("User ID is missing");
+        }
+
+        if (user && userID === user.uid) {
+          navigate("/profile");
+          return;
         }
 
         const response = await fetch(`${url}/getuser?uid=${userID}`);
@@ -57,34 +60,6 @@ const UserProfile: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  const FollowHandle = () => {
-    const queryParams = getQueryParams(location.search);
-    const FollowedToID = queryParams.get("uid"); // ここでクエリパラメータを取得
-    if (!user) {
-        console.error("Error fetch user from auth:", error)
-        return 
-    }
-    const FollowedByID = user.uid
-    if (!FollowedToID) {
-      throw new Error("User ID is missing");
-    }
-
-    FollowUser(FollowedToID, FollowedByID, 0)
-  }
-  const UnFollowHandle = () => {
-    const queryParams = getQueryParams(location.search);
-    const FollowedToID = queryParams.get("uid"); // ここでクエリパラメータを取得
-    if (!user) {
-        console.error("Error fetch user from auth:", error)
-        return 
-    }
-    const FollowedByID = user.uid
-    if (!FollowedToID) {
-      throw new Error("User ID is missing");
-    }
-
-    FollowUser(FollowedToID, FollowedByID, 1)
-  } 
   
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
@@ -100,26 +75,12 @@ const UserProfile: React.FC = () => {
         Go Back
       </button>
 
-      <button
-        onClick={FollowHandle}
-        className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Follow
-      </button>
-
-      <button
-        onClick={UnFollowHandle}
-        className="block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-      >
-        UnFollow
-      </button>
-
+      {user && (
+        <FollowButton followedToID={userID!} />
+      )}
       <Link to={`/followlist?uid=${userID}`} className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2">
         Following-Follower List
       </Link>
-
-
-    
     </div>)
 };
 

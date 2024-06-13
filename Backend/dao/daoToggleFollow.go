@@ -30,7 +30,7 @@ func ToggleFollow(FollowedToID string, FollowedByID string) (bool, error) {
 
 	} else {
 		// Add like
-		query = "followers_following (follower_id, following_id)VALUES (?, ?)"
+		query = "INSERT INTO followers_following (follower_id, following_id)VALUES (?, ?)"
 		_, err := db.Exec(query, FollowedByID, FollowedToID)
 		if err != nil {
 			log.Println("Error inserting follow:", err)

@@ -4,7 +4,7 @@ import LoginForm from "./pages/LoginForm.tsx";
 import Home from "./pages/Home.tsx";
 import PostDetail from "./pages/PostDetail.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
-import Profile from "./pages/Profile.tsx";
+import Profile from "./pages/MyProfile.tsx";
 import UserProfile from "./pages/UserProfile.tsx";
 import ShowFollows from "./pages/ShowFollows.tsx";
 import ToHome from "./page-component/ToHome.tsx"

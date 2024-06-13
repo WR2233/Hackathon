@@ -1,5 +1,6 @@
-const toggleFollow = async (followedToID: string, followedByID: string): Promise<boolean> => {
-    const url = `${process.env.REACT_APP_API_URL}/followedby`
+
+const getFollowStatus = async (followedToID: string, followedByID: string): Promise<boolean> => {
+    const url = `${process.env.REACT_APP_API_URL}/followstatus`
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -9,11 +10,11 @@ const toggleFollow = async (followedToID: string, followedByID: string): Promise
     });
 
     if (!response.ok) {
-        throw new Error("Failed to toggle follow");
+        throw new Error("Failed to fetch follow status");
     }
 
     const result = await response.json();
-    return result.followed;
+    return result.isFollowing;
 };
 
-export default toggleFollow;
+export default getFollowStatus;
