@@ -12,14 +12,16 @@ type Post struct {
 }
 
 type Reply struct {
-	ReplyID    int    `json:"ReplayID"`
-	Content    string `json:"Content"`
-	PostedAt   string `json:"PostedAt"`
-	PostedByID int    `json:"PostedByID"`
-	PostedToID int    `json:"PostedToID"`
-	Edited     int    `json:"Edited"`
-	Deleted    int    `json:"Deleted"`
-	IsToPost   bool   `json:"IsToPost"`
+	ReplyID      int    `json:"ReplayID"`
+	Content      string `json:"Content"`
+	PostedAt     string `json:"PostedAt"`
+	PostedByID   int    `json:"PostedByID"`
+	PostedToID   int    `json:"PostedToID"`
+	Edited       int    `json:"Edited"`
+	DeletedReply int    `json:"DeletedReply"`
+	UserName     string `json:"UserName"`
+	DeletedUser  bool   `json:"DeletedUser"`
+	IsToPost     bool   `json:"IsToPost"`
 }
 
 type PostPre struct {

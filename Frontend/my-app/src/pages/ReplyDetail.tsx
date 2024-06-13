@@ -1,4 +1,3 @@
-// src/pages/PostDetail.tsx
 import React, {useEffect, useState} from "react";
 import { useParams, Link, useNavigate} from "react-router-dom";
 import fetchLikeNum from "../services/fetchLikeNum.ts";
@@ -9,20 +8,22 @@ import createReply from "../services/createReply.ts"
 
 
 
-interface Post{
-	PostID :   number
+interface Reply{
+	ReplyID :   number
 	Content :    string
 	PostedAt :   string 
 	UserID    :  string 
 	Edited     : boolean
-	DeletedPost :boolean
+	DeletedReply :boolean
 	UserName    :string 
 	DeletedUser :boolean 
+    PostReplayID: number
+    IsToPost: boolean
 }
 
-const PostDetail: React.FC = () => {
-  const { postId } = useParams<{ postId: string }>();
-  const [post, setPost] = useState<Post | null>(null);
+const ReplyDetail: React.FC = () => {
+  const { replyId } = useParams<{ replyId: string }>();
+  const [reply, setReply] = useState<Reply | null>(null);
   const [likeCount, setLikeCount] = useState<number | null>(null);
   const [liked, setLiked] = useState<boolean>(false);
   const [user] = useAuthState(fireAuth);
@@ -31,26 +32,24 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate();
   
   var url = process.env.REACT_APP_API_URL ;
-  // postIdがundefinedの場合、早期に関数を終了する
-
- 
+  
   useEffect(() => {
-    const fetchPostDetail = async () => {
+    const fetchReplyDetail = async () => {
       try {
-        const response = await fetch(url + `/getpost?pid=${postId}`);
+        const response = await fetch(url + `/getreply?rid=${replyId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch post");
+          throw new Error("Failed to fetch reply");
         }
-        const data: Post = await response.json();
-        setPost(data);
+        const data: Reply = await response.json();
+        setReply(data);
       } catch (error) {
         console.error("Error fetching post:", error);
       }
     };
 
     const fetchLikeCount = async () => {
-      if (postId) {
-        const likeData = await fetchLikeNum(postId);
+      if (replyId) {
+        const likeData = await fetchLikeNum(replyId);
         if (likeData) {
           setLikeCount(likeData);
         }
@@ -60,19 +59,19 @@ const PostDetail: React.FC = () => {
       }
     };
 
-    fetchPostDetail();
+    fetchReplyDetail();
     fetchLikeCount();
-  }, [postId]);
-  if (!postId) {
-    return <div>Post ID is not provided</div>;
+  }, [replyId]);
+  if (!replyId) {
+    return <div>reply ID is not provided</div>;
   }
   const handleLikeToggle = async () => {
     if (!user) return;
 
     try {
-      const newLikedStatus = await toggleLike(postId!, user.uid);
+      const newLikedStatus = await toggleLike(replyId!, user.uid);
       setLiked(newLikedStatus);
-      const likeCount = await fetchLikeNum(postId!);
+      const likeCount = await fetchLikeNum(replyId!);
       setLikeCount(likeCount);
     } catch (error) {
       console.error("Error toggling like:", error);
@@ -86,13 +85,13 @@ const PostDetail: React.FC = () => {
   const handleReplySubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try{
-    const pidNum = parseInt(postId);
+    const pidNum = parseInt(replyId);
     if (isNaN(pidNum)) {
-      console.error("Post ID is not a number");
+      console.error("reply ID is not a number");
       return;
     }
     // フォームからの入力を使用してリプライを作成する
-    const replyID = await createReply (pidNum, user.uid, replyContent, true);
+    const replyID = await createReply (pidNum, user.uid, replyContent, false);
 
     // リプライが成功裏に作成されたら、フォームを非表示にする
     setReplyContent("");
@@ -103,20 +102,18 @@ const PostDetail: React.FC = () => {
         console.error("Error creating reply:", error);
   }}
   
-
-
-  if (!post) {
+  if (!reply) {
     return <div>Loading...</div>;
   }
  
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
-        <li key={post.PostID} className="mb-4">
-            <p>{post.Content}</p>
-            <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
-            <p>User Name: {post.UserName}</p>
-            <p>{post.Edited ? "Edited" : "Not Edited"}</p>
+        <h1 className="text-2xl font-bold mb-4">Reply Detail</h1>
+        <li key={reply.ReplyID} className="mb-4">
+            <p>{reply.Content}</p>
+            <p>Replyed At: {new Date(reply.PostedAt).toLocaleString()}</p>
+            <p>User Name: {reply.UserName}</p>
+            <p>{reply.Edited ? "Edited" : "Not Edited"}</p>
             <p>Likes: {likeCount !== null ? likeCount : "Loading..."}</p>
             <button
           onClick={handleLikeToggle}
@@ -143,7 +140,7 @@ const PostDetail: React.FC = () => {
             <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
                 back to TimeLine
             </Link>
-            <Link to={`/profiles?uid=${post.UserID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <Link to={`/profiles?uid=${reply.UserID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               View User Profile
             </Link>
         </li>
@@ -151,4 +148,4 @@ const PostDetail: React.FC = () => {
   );
 }
 
-export default PostDetail
+export default ReplyDetail

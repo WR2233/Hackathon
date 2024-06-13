@@ -1,4 +1,4 @@
-const createReply = async (post_reply_ID, userID, content, ToPost)=> {
+const createReply = async (post_reply_ID :number, userID :string, content: string, ToPost: boolean)=> {
     var url = process.env.REACT_APP_API_URL + "/createreply" ;
     try {
         const response = await fetch(url, {
@@ -20,6 +20,7 @@ const createReply = async (post_reply_ID, userID, content, ToPost)=> {
 
         // レスポンスが成功した場合、JSONを解析してreplyIDを取得する
         const responseData = await response.json();
+    
         const replyId = responseData.replyID;
 
         // replyIDを返す

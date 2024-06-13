@@ -22,7 +22,7 @@ func createReplyHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&replyData); err != nil {
 		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
-		log.Println(replyData)
+		log.Println("Failed To decode ", replyData)
 		return
 	}
 
