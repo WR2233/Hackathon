@@ -45,7 +45,8 @@ func CloseDB() {
 
 func GetDB() (*sql.DB, error) {
 	if db == nil {
-		if err := InitDB(); err != nil {
+		err := InitDB()
+		if err != nil {
 			return nil, err
 		}
 	}

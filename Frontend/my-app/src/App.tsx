@@ -7,20 +7,26 @@ import CreatePost from "./pages/CreatePost.tsx";
 import Profile from "./pages/Profile.tsx";
 import UserProfile from "./pages/UserProfile.tsx";
 import ShowFollows from "./pages/ShowFollows.tsx";
+import ToHome from "./page-component/ToHome.tsx"
+import ToProfile from "./page-component/ToProfile.tsx";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/post/:postId" element={<PostDetail />} />
-        <Route path="/create-post" element={<CreatePost />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profiles" element={<UserProfile/>} /> 
-        <Route path="/followlist" element={<ShowFollows/>} />
-      </Routes>
-    </Router>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/post/:postId" element={<PostDetail />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profiles" element={<UserProfile/>} /> 
+          <Route path="/followlist" element={<ShowFollows/>} />
+        </Routes>
+        < ToHome />
+        < ToProfile />
+      </Router>
+    </div>
   );
 };
 

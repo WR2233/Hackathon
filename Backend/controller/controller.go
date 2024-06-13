@@ -15,4 +15,8 @@ func Handler() {
 	http.HandleFunc("/follow", enableCors(followHandler))
 	http.HandleFunc("/getfollowers", enableCors(getFollowerHandler))
 	http.HandleFunc("/getfollowing", enableCors(getFollowingHandler))
+	http.HandleFunc("/getlikenum", enableCors(getLikeNumHandler))
+	http.HandleFunc("/likedby", enableCors(ToggleLikeHandler))
+	http.HandleFunc("/followedby", enableCors(ToggleFollowHandler))
+
 }
