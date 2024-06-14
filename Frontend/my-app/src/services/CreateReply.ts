@@ -1,6 +1,4 @@
-import CreatePost from "../pages/CreatePost";
-
-const  createReply = async (post_reply_ID :number, userID :string, content: string, ToPost: boolean)=> {
+const  CreateReply = async (post_reply_ID :number, userID :string, content: string, ToPost: boolean)=> {
     var url = process.env.REACT_APP_API_URL + "/createreply" ;
     try {
         const response = await fetch(url, {
@@ -32,4 +30,4 @@ const  createReply = async (post_reply_ID :number, userID :string, content: stri
     }
 
 };
-export default createReply
+export default CreateReply;

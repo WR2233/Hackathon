@@ -15,4 +15,4 @@ const getRepliesByParentID = async (parentId: number, isToPost: boolean): Promis
   }
 };
 
-export default getRepliesByparentID;
+export default getRepliesByParentID;

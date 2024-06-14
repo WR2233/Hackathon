@@ -4,7 +4,7 @@ import fetchLikeNum from "../services/fetchLikeNum.ts";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import { toggleLike } from "../services/toggleLike.ts"
-import createReply from "../services/createReply.ts"
+import CreateReply from "../services/CreateReply.ts"
 import { Reply } from "../model/models.ts"
 
 const ReplyDetail: React.FC = () => {
@@ -85,7 +85,7 @@ const ReplyDetail: React.FC = () => {
       return;
     }
     // フォームからの入力を使用してリプライを作成する
-    const replyID = await createReply (pidNum, user.uid, replyContent, false);
+    const replyID = await CreateReply (pidNum, user.uid, replyContent, false);
 
     // リプライが成功裏に作成されたら、フォームを非表示にする
     setReplyContent("");

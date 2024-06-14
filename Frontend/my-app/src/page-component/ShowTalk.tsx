@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Post, Reply } from "../model/models";
-import getPostByID from "../services/getPostByID";
-import getReplyByID from "../services/getReplyByID";
-import getRepliesByparentID from "../services/getRepliesByparentID.ts";
+import getPostByID from "../services/getPostByID.ts";
+import getReplyByID from "../services/getReplyByID.ts";
+import getRepliesByParentID from "../services/getRepliesByParentID.ts";
 
 const ShowTalk: React.FC = () => {
   const { replyId } = useParams<{ replyId: string }>();
@@ -25,7 +25,7 @@ const ShowTalk: React.FC = () => {
         setParent(parentReply);
       }
 
-      const childReplies = await getRepliesByparentID(replyDetails.ReplyID, false);
+      const childReplies = await getRepliesByParentID(replyDetails.ReplyID, false);
       setReplies(childReplies);
     };
 
