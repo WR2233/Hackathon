@@ -6,19 +6,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import { toggleLike } from "../services/toggleLike.ts"
 import createReply from "../services/createReply.ts"
-
-
-
-interface Post{
-	PostID :   number
-	Content :    string
-	PostedAt :   string 
-	UserID    :  string 
-	Edited     : boolean
-	DeletedPost :boolean
-	UserName    :string 
-	DeletedUser :boolean 
-}
+import getRepliesByPost from "../services/getRepliesByPostID.ts";
+import {Post, Reply} from "../model/models.ts"
 
 const PostDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -29,11 +18,9 @@ const PostDetail: React.FC = () => {
   const [replyFormVisible, setReplyFormVisible] = useState<boolean>(false);
   const [replyContent, setReplyContent] = useState<string>("");
   const navigate = useNavigate();
-  
+  const [replies, setReplies] = useState<Reply[]>([]);
   var url = process.env.REACT_APP_API_URL ;
-  // postIdがundefinedの場合、早期に関数を終了する
 
- 
   useEffect(() => {
     const fetchPostDetail = async () => {
       try {
@@ -60,12 +47,30 @@ const PostDetail: React.FC = () => {
       }
     };
 
+    const fetchReplies = async () => {
+      try {
+          const data = await getRepliesByPost(postId!);
+          setReplies(data)
+      } catch (error) {
+          console.error("Error fetching replies:", error);
+      }
+  };
+
     fetchPostDetail();
     fetchLikeCount();
+    fetchReplies();
   }, [postId]);
+  
+  if (!user) {
+    return(
+      <div>
+        <h1>you have to log in At first</h1>
+      </div>)
+  }
   if (!postId) {
     return <div>Post ID is not provided</div>;
   }
+
   const handleLikeToggle = async () => {
     if (!user) return;
 
@@ -111,42 +116,70 @@ const PostDetail: React.FC = () => {
  
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
+      <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
+      <ul> 
         <li key={post.PostID} className="mb-4">
-            <p>{post.Content}</p>
-            <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
-            <p>User Name: {post.UserName}</p>
-            <p>{post.Edited ? "Edited" : "Not Edited"}</p>
-            <p>Likes: {likeCount !== null ? likeCount : "Loading..."}</p>
-            <button
-          onClick={handleLikeToggle}
-          className={`block bg-${liked ? 'red' : 'green'}-500 hover:bg-${liked ? 'red' : 'green'}-700 text-white font-bold py-2 px-4 rounded`}
-        >
-          {liked ? 'Unlike' : 'Like'}
-        </button>
-        <button
-                    onClick={handleReplyFormToggle}
-                    className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2"
-                >
-                    {replyFormVisible ? "Cancel Reply Form" : "Create Reply"}
-                </button>
-                {replyFormVisible && (
-                    <form onSubmit={handleReplySubmit}>
-                    <textarea
-                        placeholder="Enter your reply..."
-                        value={replyContent}
-                        onChange={(event) => setReplyContent(event.target.value)}
-                    />
-                    <button type="submit">Submit</button>
-                </form>
-                )}
-            <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-                back to TimeLine
-            </Link>
-            <Link to={`/profiles?uid=${post.UserID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              View User Profile
-            </Link>
+          <p>{post.Content}</p>
+          <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
+          <p>User Name: {post.UserName}</p>
+          <p>{post.Edited ? "Edited" : "Not Edited"}</p>
+          <p>Likes: {likeCount !== null ? likeCount : "Loading..."}</p>
+          <button
+            onClick={handleLikeToggle}
+            className={`block bg-${
+              liked ? "red" : "green"
+            }-500 hover:bg-${liked ? "red" : "green"}-700 text-white font-bold py-2 px-4 rounded`}
+          >
+            {liked ? "Unlike" : "Like"}
+          </button>
+          <button
+            onClick={handleReplyFormToggle}
+            className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2"
+          >
+            {replyFormVisible ? "Cancel Reply Form" : "Create Reply"}
+          </button>
+          {replyFormVisible && (
+            <form onSubmit={handleReplySubmit}>
+              <textarea
+                placeholder="Enter your reply..."
+                value={replyContent}
+                onChange={(event) => setReplyContent(event.target.value)}
+              />
+              <button type="submit">Submit</button>
+            </form>
+          )}
         </li>
+      </ul>
+      <Link
+        to="/"
+        className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
+      >
+        Back to Timeline
+      </Link>
+      <Link
+        to={`/profiles?uid=${post.UserID}`}
+        className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      >
+        View User Profile
+      </Link>
+      <h2 className="text-xl font-bold mt-4">Replies</h2>
+      <ul > 
+      {replies.length > 0 ? (
+              replies.map((reply) => (
+                <li key={reply.ReplyID} className="mb-4">
+                  <p>{reply.Content}</p>
+                  <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
+                  <p>User Name: {reply.UserName}</p>
+                  <p>{reply.Edited ? "Edited" : "Not Edited"}</p>
+                  <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">
+                    To Reply detail
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <p>No replies yet</p>
+            )}
+      </ul>
     </div>
   );
 }

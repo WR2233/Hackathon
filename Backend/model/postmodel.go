@@ -12,10 +12,10 @@ type Post struct {
 }
 
 type Reply struct {
-	ReplyID      int    `json:"ReplayID"`
+	ReplyID      int    `json:"ReplyID"`
 	Content      string `json:"Content"`
 	PostedAt     string `json:"PostedAt"`
-	PostedByID   int    `json:"PostedByID"`
+	PostedByID   string `json:"PostedByID"`
 	PostedToID   int    `json:"PostedToID"`
 	Edited       int    `json:"Edited"`
 	DeletedReply int    `json:"DeletedReply"`

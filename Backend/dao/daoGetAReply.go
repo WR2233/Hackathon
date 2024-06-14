@@ -18,7 +18,7 @@ func GetAReply(reply_id int) (*model.Reply, error) {
 
 	// 結果セットから投稿をスキャンして取得する
 	var reply model.Reply
-	err = row.Scan(&reply.ReplyID, &reply.Content, reply.PostedAt, &reply.PostedByID, &reply.PostedToID, &reply.Edited, &reply.DeletedReply, &reply.UserName, &reply.DeletedUser, &reply.IsToPost)
+	err = row.Scan(&reply.ReplyID, &reply.Content, &reply.PostedAt, &reply.PostedByID, &reply.PostedToID, &reply.Edited, &reply.DeletedReply, &reply.UserName, &reply.DeletedUser, &reply.IsToPost)
 	if err != nil {
 		return nil, err
 	}

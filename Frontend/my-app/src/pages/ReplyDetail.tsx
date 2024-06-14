@@ -5,21 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import { toggleLike } from "../services/toggleLike.ts"
 import createReply from "../services/createReply.ts"
-
-
-
-interface Reply{
-	ReplyID :   number
-	Content :    string
-	PostedAt :   string 
-	UserID    :  string 
-	Edited     : boolean
-	DeletedReply :boolean
-	UserName    :string 
-	DeletedUser :boolean 
-    PostReplayID: number
-    IsToPost: boolean
-}
+import { Reply } from "../model/models.ts"
 
 const ReplyDetail: React.FC = () => {
   const { replyId } = useParams<{ replyId: string }>();
@@ -62,6 +48,14 @@ const ReplyDetail: React.FC = () => {
     fetchReplyDetail();
     fetchLikeCount();
   }, [replyId]);
+
+  if (!user) {
+    return(
+      <div>
+        <h1>you have to log in At first</h1>
+      </div>)
+  }
+
   if (!replyId) {
     return <div>reply ID is not provided</div>;
   }

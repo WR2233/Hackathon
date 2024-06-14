@@ -19,5 +19,6 @@ func Handler() {
 	http.HandleFunc("/followedby", enableCors(ToggleFollowHandler))
 	http.HandleFunc("/createreply", enableCors(createReplyHandler))
 	http.HandleFunc("/getreply", enableCors(getAReplyHandler))
-
+	http.HandleFunc("/getreplies", enableCors(getRepliesByPostHandler))
+	http.HandleFunc("/getrepliesByparent", enableCors(getRepliesByParentID))
 }
