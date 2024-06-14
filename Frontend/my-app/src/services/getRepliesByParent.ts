@@ -1,6 +1,6 @@
 import { Reply } from "../model/models";
 
-const getRepliesByParentID = async (parentId: number, isToPost: boolean): Promise<Reply[]> => {
+const getRepliesByParent = async (parentId: number, isToPost: boolean): Promise<Reply[]> => {
   const url = process.env.REACT_APP_API_URL ;
   try {
     const response = await fetch(`${url}/replies?parentId=${parentId}&isToPost=${isToPost}`);
@@ -15,4 +15,4 @@ const getRepliesByParentID = async (parentId: number, isToPost: boolean): Promis
   }
 };
 
-export default getRepliesByParentID;
+export default getRepliesByParent;

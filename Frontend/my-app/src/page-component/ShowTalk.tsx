@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Post, Reply } from "../model/models";
 import getPostByID from "../services/getPostByID.ts";
 import getReplyByID from "../services/getReplyByID.ts";
-import getRepliesByParentID from "../services/getRepliesByParentID.ts";
+import getRepliesByParentID from "../services/getRepliesByParent.ts";
 
 const ShowTalk: React.FC = () => {
   const { replyId } = useParams<{ replyId: string }>();
