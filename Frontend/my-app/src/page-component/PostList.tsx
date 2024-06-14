@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from "react-router-dom"
-
-
-interface Post{
-	PostID :   number
-	Content :    string
-	PostedAt :   string 
-	UserID    :  string 
-	Edited     : boolean
-	DeletedPost :boolean
-	UserName    :string 
-	DeletedUser :boolean 
-}
+import {Post} from "../model/models.ts"
 
 export const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);

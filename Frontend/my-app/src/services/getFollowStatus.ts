@@ -1,4 +1,4 @@
-
+//未使用 ロード時に色に反映させる用
 const getFollowStatus = async (followedToID: string, followedByID: string): Promise<boolean> => {
     const url = `${process.env.REACT_APP_API_URL}/followstatus`
     const response = await fetch(url, {

@@ -9,6 +9,8 @@ import UserProfile from "./pages/UserProfile.tsx";
 import ShowFollows from "./pages/ShowFollows.tsx";
 import ToHome from "./page-component/ToHome.tsx"
 import ToProfile from "./page-component/ToProfile.tsx";
+import ReplyDetail from "./pages/ReplyDetail.tsx";
+import ShowTalk from "./page-component/ShowTalk.tsx";
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profiles" element={<UserProfile/>} /> 
           <Route path="/followlist" element={<ShowFollows/>} />
+          <Route path="/reply/:replyId" element={<ReplyDetail />} />
+          <Route path="/showtalk/:postId" element={< ShowTalk/>} />
         </Routes>
         < ToHome />
         < ToProfile />

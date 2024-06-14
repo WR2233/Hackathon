@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate , Link} from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
+import { UserProfile } from "../model/models.ts";
 
-interface UserProfile {
-  UserID: string;
-  UserName: string;
-  DeletedUser: boolean;
-  // 他のユーザープロフィール情報をここに追加
-}
 
 const getQueryParams = (query: string) => {
   return new URLSearchParams(query);
