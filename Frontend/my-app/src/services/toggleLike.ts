@@ -1,11 +1,11 @@
-export const toggleLike = async (postID: string, userID: string): Promise<boolean> => {
+export const toggleLike = async (postreplyID: string, userID: string, IsPost: boolean): Promise<boolean> => {
     const url = `${process.env.REACT_APP_API_URL}/likedby`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ postID, userID }),
+      body: JSON.stringify({ postreplyID, userID, IsPost }),
     });
     if (!response.ok) {
       throw new Error("Failed to toggle like");

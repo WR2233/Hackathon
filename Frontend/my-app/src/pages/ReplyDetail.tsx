@@ -35,7 +35,7 @@ const ReplyDetail: React.FC = () => {
 
     const fetchLikeCount = async () => {
       if (replyId) {
-        const likeData = await fetchLikeNum(replyId);
+        const likeData = await fetchLikeNum(replyId, false);
         if (likeData) {
           setLikeCount(likeData);
         }
@@ -63,9 +63,9 @@ const ReplyDetail: React.FC = () => {
     if (!user) return;
 
     try {
-      const newLikedStatus = await toggleLike(replyId!, user.uid);
+      const newLikedStatus = await toggleLike(replyId!, user.uid, false);
       setLiked(newLikedStatus);
-      const likeCount = await fetchLikeNum(replyId!);
+      const likeCount = await fetchLikeNum(replyId!, false);
       setLikeCount(likeCount);
     } catch (error) {
       console.error("Error toggling like:", error);
