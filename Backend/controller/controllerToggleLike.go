@@ -7,8 +7,9 @@ import (
 )
 
 type ToggleLikeRequest struct {
-	PostID string `json:"postID"`
-	UserID string `json:"userID"`
+	PostReplyID string `json:"postreplyID"`
+	UserID      string `json:"userID"`
+	IsPost      bool   `json:"isPost"`
 }
 
 type ToggleLikeResponse struct {
@@ -22,7 +23,7 @@ func ToggleLikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	liked, err := dao.ToggleLike(req.PostID, req.UserID)
+	liked, err := dao.ToggleLike(req.PostReplyID, req.UserID, req.IsPost)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

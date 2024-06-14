@@ -4,7 +4,7 @@ import (
 	"github.com/WR2233/Hackathon/Backend/model"
 )
 
-func getRepliesByParentID(parentID int, isToPost bool) ([]model.Reply, error) {
+func GetRepliesByParentID(parentID int, isToPost bool) ([]model.Reply, error) {
 	var replies []model.Reply
 	query := "SELECT * FROM replies WHERE PostReplayID = ? AND IsToPost = ?"
 	rows, err := db.Query(query, parentID, isToPost)
