@@ -20,5 +20,6 @@ func Handler() {
 	http.HandleFunc("/createreply", enableCors(createReplyHandler))
 	http.HandleFunc("/getreply", enableCors(getAReplyHandler))
 	http.HandleFunc("/getreplies", enableCors(getRepliesByPostHandler))
-	http.HandleFunc("/getrepliesByparent", enableCors(getRepliesByParentID))
+	http.HandleFunc("/getrepliesByparent", enableCors(getRepliesByParentID)) //未使用
+	http.HandleFunc("/getTalk", enableCors(getTalkHandler))
 }
