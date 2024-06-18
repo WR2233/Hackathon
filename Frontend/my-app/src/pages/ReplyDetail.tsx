@@ -6,6 +6,7 @@ import { fireAuth } from "../services/firebase.ts";
 import { toggleLike } from "../services/toggleLike.ts"
 import CreateReply from "../services/CreateReply.ts"
 import { Reply } from "../model/models.ts"
+import getReplyByID from "../services/getReplyByID.ts";
 
 const ReplyDetail: React.FC = () => {
   const { replyId } = useParams<{ replyId: string }>();
@@ -20,19 +21,17 @@ const ReplyDetail: React.FC = () => {
   var url = process.env.REACT_APP_API_URL ;
   
   useEffect(() => {
-    const fetchReplyDetail = async () => {
-      try {
-        const response = await fetch(url + `/getreply?rid=${replyId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch reply");
+    const fetchReplydetail = async () => {
+      if (replyId) {
+        const replyData = await getReplyByID(parseInt(replyId));
+        if (replyData) {
+          setReply(replyData);
         }
-        const data: Reply = await response.json();
-        setReply(data);
-      } catch (error) {
-        console.error("Error fetching post:", error);
+        if (!replyData) {
+          setReply(null);
+        }
       }
     };
-
     const fetchLikeCount = async () => {
       if (replyId) {
         const likeData = await fetchLikeNum(replyId, false);
@@ -44,8 +43,9 @@ const ReplyDetail: React.FC = () => {
         }
       }
     };
-
-    fetchReplyDetail();
+    if (replyId) {
+      fetchReplydetail();
+    }
     fetchLikeCount();
   }, [replyId]);
 
@@ -136,6 +136,9 @@ const ReplyDetail: React.FC = () => {
             </Link>
             <Link to={`/profiles?uid=${reply.UserID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               View User Profile
+            </Link>
+            <Link to={`/showtalk/${reply.ReplyID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+             Watch Talk
             </Link>
         </li>
     </div>
