@@ -9,7 +9,7 @@ import (
 )
 
 func getTalkHandler(w http.ResponseWriter, r *http.Request) {
-	keys, ok := r.URL.Query()["replyID"]
+	keys, ok := r.URL.Query()["rid"]
 	if !ok || len(keys[0]) < 1 {
 		log.Println("Url Param 'replyID' is missing")
 		http.Error(w, "Url Param 'replyID' is missing", http.StatusBadRequest)
@@ -23,12 +23,19 @@ func getTalkHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	conversation, err := dao.getTalk(replyID)
+	log.Println("Fetching conversation for replyID:", replyID)
+	conversation, err := dao.GetTalk(replyID, true)
 	if err != nil {
+		log.Println("Error fetching conversation:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(conversation)
+	if err := json.NewEncoder(w).Encode(conversation); err != nil {
+		log.Println("Error encoding JSON response:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		log.Println("Response successfully sent")
+	}
 }
