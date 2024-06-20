@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate , Link} from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
-import {UserProfile} from "../model/models.ts"
+import {Profile} from "../model/models.ts"
 
 const getQueryParams = (query: string) => {
   return new URLSearchParams(query);
 };
 
 const FollowingList: React.FC = () => {
-  const [followingList, setFollowingList] = useState<UserProfile[]>([]);
+  const [followingList, setFollowingList] = useState<Profile[]>([]);
   const location = useLocation();
   const url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ const FollowingList: React.FC = () => {
     const fetchFollowingList = async () => {
       try {
         const queryParams = getQueryParams(location.search);
-        const userID = queryParams.get("uid"); // ここでクエリパラメータを取得
-
+        const userID = queryParams.get("uid");
+        
         if (!userID) {
           throw new Error("User ID is missing");
         }
@@ -29,7 +29,7 @@ const FollowingList: React.FC = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch following list");
         }
-        const data: UserProfile[] = await response.json();
+        const data: Profile[] = await response.json();
         setFollowingList(data);
       } catch (error) {
         console.error("Error fetching following list:", error);
@@ -60,7 +60,10 @@ const FollowingList: React.FC = () => {
         {followingList && followingList.length > 0 ? (
           followingList.map((following) => (
             <li key={following.UserID}>
-              <Link to={`/userprofile?uid=${following.UserID}`}>
+              <div>
+                <img src={following.Img} alt="User profile" />
+              </div>
+              <Link to={`/profiles?uid=${following.UserID}`}>
                 {following.UserName}
               </Link>
             </li>

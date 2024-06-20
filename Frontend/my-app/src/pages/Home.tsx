@@ -1,11 +1,19 @@
 // src/pages/Home.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {fireAuth} from "../services/firebase.ts";
-import {PostList} from "../page-component/PostList.tsx"
-const Home: React.FC = () => {
+import { useAuthState } from "react-firebase-hooks/auth";
+import { fireAuth } from "../services/firebase.ts";
+import { PostList } from "../page-component/PostList.tsx";
 
+const Home: React.FC = () => {
+  const [user] = useAuthState(fireAuth);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   const handleSignOut = () => {
     fireAuth.signOut()
@@ -17,14 +25,13 @@ const Home: React.FC = () => {
       });
   };
 
+ 
+
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
       <h1 className="text-2xl font-bold mb-4">Welcome to the Home Page</h1>
       <Link to="/create-post" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
         Create Post
-      </Link>
-      <Link to="/profile" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-        User Profile
       </Link>
       <button
         onClick={handleSignOut}
@@ -33,7 +40,7 @@ const Home: React.FC = () => {
         Sign Out
       </button>
 
-      < PostList />
+      <PostList />
     </div>
   );
 };

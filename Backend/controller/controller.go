@@ -22,4 +22,7 @@ func Handler() {
 	http.HandleFunc("/getreplies", enableCors(getRepliesByPostHandler))
 	http.HandleFunc("/getrepliesByparent", enableCors(getRepliesByParentID)) //未使用
 	http.HandleFunc("/gettalk", enableCors(getTalkHandler))
+	http.HandleFunc("/deleteuser", enableCors(deleteUserHandler))
+	http.HandleFunc("/updateuser", enableCors(updateUserHandler))
+	http.HandleFunc("/postimage", enableCors(postImageHandler))
 }

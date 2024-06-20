@@ -29,6 +29,9 @@ export const PostList: React.FC = () => {
       <ul>
         {posts.map(post => (
           <li key={post.PostID} className="mb-4">
+            <div>
+              <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+            </div>
             <p>{post.Content}</p>
             <p>Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
             <p>User Name: {post.UserName}</p>

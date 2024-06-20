@@ -143,7 +143,7 @@ const LoginForm: React.FC = () => {
           </form>
         </div>
       )}
-      <Link to="/" className="block mt-4 text-blue-500 hover:text-blue-700">Back to Home</Link>
+      {user && <Link to="/" className="block mt-4 text-blue-500 hover:text-blue-700">Back to Home</Link>}
     </div>
   );
 };

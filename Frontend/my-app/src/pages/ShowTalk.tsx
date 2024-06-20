@@ -78,6 +78,9 @@ const ShowTalk: React.FC = () => {
                     {posts.map((post, index) => (
                     <div key={index} className="p-4 border rounded-lg shadow-md">
                         <h3 className="text-lg font-semibold">{post.UserName}</h3>
+                        <div>
+                            <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+                        </div>
                         <p>{post.Content}</p>
                         <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
                         <p>{post.Edited ? "Edited" : ""}</p>
@@ -100,6 +103,9 @@ const ShowTalk: React.FC = () => {
                 <div className="mb-8">
                     <h2 className="text-xl font-bold mb-4">Main Reply</h2>
                     <div className="p-4 border rounded-lg shadow-md">
+                        <div>
+                            <img src={mainReply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+                        </div>
                         <h3 className="text-lg font-semibold">{mainReply.UserName}</h3>
                         <p>{mainReply.Content}</p>
                         <p>Replied At: {new Date(mainReply.PostedAt).toLocaleString()}</p>
@@ -116,6 +122,9 @@ const ShowTalk: React.FC = () => {
                     {replies.map((reply) => (
                         <div key={reply.ReplyID} className="p-4 border rounded-lg shadow-md">
                             <span className="text-sm text-gray-600">{reply.UserName}</span>
+                            <div>
+                                <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+                            </div>
                             <p>{reply.Content}</p>
                             <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
                             <p>{reply.Edited ? "Edited" : ""}</p>

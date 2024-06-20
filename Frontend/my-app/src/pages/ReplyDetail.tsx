@@ -104,6 +104,9 @@ const ReplyDetail: React.FC = () => {
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
         <h1 className="text-2xl font-bold mb-4">Reply Detail</h1>
         <li key={reply.ReplyID} className="mb-4">
+            <div>
+              <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+            </div>
             <p>{reply.Content}</p>
             <p>Replyed At: {new Date(reply.PostedAt).toLocaleString()}</p>
             <p>User Name: {reply.UserName}</p>
@@ -134,7 +137,7 @@ const ReplyDetail: React.FC = () => {
             <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
                 back to TimeLine
             </Link>
-            <Link to={`/profiles?uid=${reply.UserID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <Link to={`/profiles?uid=${reply.PostedByID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               View User Profile
             </Link>
             <Link to={`/showtalk/${reply.ReplyID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
