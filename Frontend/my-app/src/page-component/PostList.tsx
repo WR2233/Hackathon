@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Post } from "../model/models.ts";
+import fetchLikeNum from "../services/fetchLikeNum.ts";
 
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -15,13 +16,22 @@ const PostList: React.FC = () => {
           throw new Error('Network response was not ok');
         }
         const data: Post[] = await response.json();
-        setPosts(data);
+        const updatedPosts = await Promise.all(data.map(async (post) => {
+          const likeNum = await fetchLikeNum(post.PostID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
+          return { ...post, LikeNum: likeNum };
+        }));
+        setPosts(updatedPosts);
       } catch (error) {
         setError(error.message);
       }
     };
     fetchPosts();
   }, [url]);
+
+  const getLikeNum = async (postID: string) => {
+    const likeNum = await fetchLikeNum(postID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
+    return likeNum;
+  };
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-md">
@@ -39,6 +49,7 @@ const PostList: React.FC = () => {
             </div>
             <p className="mb-2">{post.Content}</p>
             <p className="text-xs text-gray-500">{post.Edited ? "Edited" : "Not Edited"}</p>
+            <p>Likes: {post.LikeNum}</p> {/* LikeNumを表示 */}
             <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
           </li>
         ))}

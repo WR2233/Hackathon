@@ -46,7 +46,6 @@ const MyProfile: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">My Profile</h1>
       {user ? (
         <div>
-          <p>Email: {user.email}</p>
         </div>
       ) : (
         <p>Please sign in to see your profile.</p>
@@ -54,14 +53,13 @@ const MyProfile: React.FC = () => {
 
       {profile && ( // プロフィールがnullでないことを確認
         <>
-          <p>User ID: {profile.UserID}</p>
-          <p>User Name: {profile.UserName}</p>
-          <p>Deleted User: {profile.DeletedUser ? "Yes" : "No"}</p>
-          {profile.Img && (
+         {profile.Img && (
         <div>
           <img src={profile.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
         </div>
       )}
+          <p>User Name: {profile.UserName}</p>
+          <p>Deleted User: {profile.DeletedUser ? "Yes" : "No"}</p>
         </>
       )}
       
