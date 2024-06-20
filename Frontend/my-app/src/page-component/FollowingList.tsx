@@ -53,7 +53,7 @@ const FollowingList = () => {
         <div className="col-md-8 offset-md-2">
           <button
             onClick={() => navigate(-1)}
-            className="btn btn-primary mb-3"
+            className="btn btn-primary mb-10"
           >
             Go Back
           </button>
@@ -62,13 +62,13 @@ const FollowingList = () => {
               followingList.map((following) => (
                 <li
                   key={following.UserID}
-                  className="list-group-item d-flex justify-content-between align-items-center"
+                  className="mb-6 border-b pb-4"
                 >
                   <div className="d-flex align-items-center">
                     <img
                       src={following.Img}
                       alt="User profile"
-                      className="rounded-circle me-3"
+                      className="w-20 h-20 rounded-full object-cover mx-auto"
                       width="40"
                       height="40"
                     />

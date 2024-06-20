@@ -54,12 +54,13 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-md shadow-md">
+      <div className="mb-4">
+        {userProfile.Img && <img src={userProfile.Img} alt="User profile" className="w-20 h-20 rounded-md" />}
+      </div>
       <h1 className="text-2xl font-bold mb-4">User Profile</h1>
       <p className="mb-2">User Name: {userProfile.UserName}</p>
       <p className="mb-2">Deleted User: {userProfile.DeletedUser ? "Yes" : "No"}</p>
-      <div className="mb-4">
-        {userProfile.Img && <img src={userProfile.Img} alt="User profile" className="w-full rounded-md" />}
-      </div>
+      
       {user && (
         <FollowButton followedToID={userID!} />
       )}

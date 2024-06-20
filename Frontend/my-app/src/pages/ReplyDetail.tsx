@@ -22,33 +22,40 @@ const ReplyDetail: React.FC = () => {
 
   useEffect(() => {
     const fetchReplyDetail = async () => {
-      try {
-        const replyData = await getReplyByID(parseInt(replyId));
-        setReply(replyData);
-      } catch (error) {
-        console.error("Error fetching reply:", error);
-      }
+      if (replyId) {
+        try {
+          const replyData = await getReplyByID(parseInt(replyId));
+          if (replyData == undefined){
+            console.error("Error replyData is undifined");
+            return 
+          }
+          setReply(replyData);
+        } catch (error) {
+          console.error("Error fetching reply:", error);
+        }}
     };
 
     const fetchLikeCount = async () => {
-      try {
-        const likeData = await fetchLikeNum(replyId, false);
-        setLikeCount(likeData ?? 0);
-      } catch (error) {
-        console.error("Error fetching like count:", error);
+      if (replyId) {
+        try {
+          const likeData = await fetchLikeNum(replyId, false);
+          setLikeCount(likeData ?? 0);
+        } catch (error) {
+          console.error("Error fetching like count:", error);
+        }
       }
     };
 
     const fetchLikeStatus = async () => {
-      var likestatus = await getLikeStatus(replyId, user.uid, false)
-      setLiked(likestatus)
+      if (replyId && user) {
+        var likestatus = await getLikeStatus(replyId, user.uid, false)
+        setLiked(likestatus)
+      }
     }
 
-    if (replyId) {
-      fetchReplyDetail();
-      fetchLikeCount();
-      fetchLikeStatus();
-    }
+    fetchReplyDetail();
+    fetchLikeCount();
+    fetchLikeStatus();
   }, [replyId]);
 
   if (!user) {

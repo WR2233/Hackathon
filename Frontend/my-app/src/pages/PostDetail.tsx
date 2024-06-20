@@ -57,8 +57,11 @@ const PostDetail: React.FC = () => {
     };
 
     const fetchLikeStatus = async () => {
-      var likestatus = await getLikeStatus(postId, user.uid, true)
+      if (postId && user) {
+        var likestatus = await getLikeStatus(postId, user.uid, true)
       setLiked(likestatus)
+      }
+
     }
 
     fetchPostDetail();
@@ -163,13 +166,16 @@ const PostDetail: React.FC = () => {
       {replies.length > 0 ? (
         <ul className="mt-4">
           {replies.map((reply) => (
-            <li key={reply.ReplyID} className="mb-4">
+            <li key={reply.ReplyID} className="mb-6 border-b pb-4">
+              <img src={post.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />
               <p>{reply.Content}</p>
               <p className="text-sm text-gray-500">Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
               <p className="text-sm text-gray-500">User Name: {reply.UserName}</p>
               <p className="text-sm text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>
               <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">View Reply Detail</Link>
+              <p>
               <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">See Talk</Link>
+              </p>
             </li>
           ))}
         </ul>

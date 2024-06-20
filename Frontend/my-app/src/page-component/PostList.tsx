@@ -18,8 +18,9 @@ const PostList: React.FC = () => {
         }
         const data: Post[] = await response.json();
         const updatedPosts = await Promise.all(data.map(async (post) => {
-          const likeNum = await fetchLikeNum(post.PostID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
-          return { ...post, LikeNum: likeNum };
+        
+        const likeNum = await fetchLikeNum(post.PostID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
+        return { ...post, LikeNum: likeNum };
         }));
         setPosts(updatedPosts);
       } catch (error) {
