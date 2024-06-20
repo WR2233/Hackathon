@@ -4,7 +4,7 @@ import (
 	"log"
 )
 
-func getLikeStatus(postreplyID string, userID string, IsPost bool) (bool, error) {
+func GetLikeStatus(postreplyID string, userID string, IsPost bool) (bool, error) {
 	db, err := GetDB()
 	if err != nil {
 		log.Println("Error getting DB:", err)

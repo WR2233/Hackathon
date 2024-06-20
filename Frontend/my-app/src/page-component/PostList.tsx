@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Post } from "../model/models.ts";
 import fetchLikeNum from "../services/fetchLikeNum.ts";
+import { getLikeStatus } from '../services/getLikeStatus.ts';
 
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);

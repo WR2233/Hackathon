@@ -3,11 +3,12 @@ package controller
 import (
 	"encoding/json"
 	"github.com/WR2233/Hackathon/Backend/dao"
+	"github.com/WR2233/Hackathon/Backend/model"
 	"net/http"
 )
 
 func ToggleLikeHandler(w http.ResponseWriter, r *http.Request) {
-	var req ToggleLikeRequest
+	var req model.ToggleLikeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -19,7 +20,7 @@ func ToggleLikeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := ToggleLikeResponse{Liked: liked}
+	resp := model.ToggleLikeResponse{Liked: liked}
 
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

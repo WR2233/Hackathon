@@ -7,6 +7,7 @@ import { toggleLike } from "../services/toggleLike.ts"
 import CreateReply from "../services/CreateReply.ts"
 import { Reply } from "../model/models.ts"
 import getReplyByID from "../services/getReplyByID.ts";
+import { getLikeStatus } from "../services/getLikeStatus.ts";
 
 const ReplyDetail: React.FC = () => {
   const { replyId } = useParams<{ replyId: string }>();
@@ -38,9 +39,15 @@ const ReplyDetail: React.FC = () => {
       }
     };
 
+    const fetchLikeStatus = async () => {
+      var likestatus = await getLikeStatus(replyId, user.uid, false)
+      setLiked(likestatus)
+    }
+
     if (replyId) {
       fetchReplyDetail();
       fetchLikeCount();
+      fetchLikeStatus();
     }
   }, [replyId]);
 
