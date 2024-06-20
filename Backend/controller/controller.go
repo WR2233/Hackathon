@@ -25,4 +25,5 @@ func Handler() {
 	http.HandleFunc("/deleteuser", enableCors(deleteUserHandler))
 	http.HandleFunc("/updateuser", enableCors(updateUserHandler))
 	http.HandleFunc("/postimage", enableCors(postImageHandler))
+	http.HandleFunc("/likestatus", enableCors(getLikeStatusHandler))
 }
