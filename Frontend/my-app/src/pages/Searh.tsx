@@ -5,7 +5,7 @@ import { Post } from "../model/models.ts";
 import { useNavigate } from "react-router-dom";
 import DateTime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
-
+import Linkify from "linkify-react";
 const Search: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchContent, setSearchContent] = useState<string>("");
@@ -18,6 +18,9 @@ const Search: React.FC = () => {
   const [seeTime, setSeeTime] = useState<boolean>(false)
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URL;
+  const linkifyOptions = {
+    className: "text-blue-400",
+};
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -135,7 +138,9 @@ const Search: React.FC = () => {
                 <li key={post.PostID} className="border-b py-4">
                   <p className="text-lg font-semibold">{post.UserName}</p>
                   <p className="text-gray-600">{post.PostedAt}</p>
-                  <p className="mt-2">{post.Content}</p>
+                  <Linkify as="p" options={linkifyOptions}>
+                    {post.Content}
+                  </Linkify>
                 </li>
               ))
             ) : (

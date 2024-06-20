@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {Post, Reply}  from "../model/models.ts"
+import Linkify from "linkify-react";
 
 type ConversationItem = Post | Reply;
 
@@ -12,6 +13,9 @@ const ShowTalk: React.FC = () => {
     const [error, setError] = useState<Error | null>(null);
     const [mainReply, setMainReply] = useState<Reply | null>(null);
     const url = process.env.REACT_APP_API_URL
+    const linkifyOptions = {
+        className: "text-blue-400",
+    };
 
     useEffect(() => {
         if (!replyId) {
@@ -78,13 +82,15 @@ const ShowTalk: React.FC = () => {
                             <div>
                                 <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
                             </div>
-                            <p>{post.Content}</p>
+                            <Linkify as="p" options={linkifyOptions}>
+                                {post.Content}
+                            </Linkify>
                             <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
                             <p>{post.Edited ? "Edited" : ""}</p>
-                            {post.postID !== null && (
+                            {post.PostID !== undefined && (
                                 <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>
                             )}
-                            {post.ReplyID !== null && (
+                            {post.ReplyID !== undefined && (
                                 <Link to={`/reply/${post.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                             )}
                         </div>
@@ -99,7 +105,9 @@ const ShowTalk: React.FC = () => {
                             <img src={mainReply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
                         </div>
                         <h3 className="text-lg font-semibold">{mainReply.UserName}</h3>
-                        <p>{mainReply.Content}</p>
+                        <Linkify as="p" options={linkifyOptions}>
+                            {mainReply.Content}
+                        </Linkify>
                         <p>Replied At: {new Date(mainReply.PostedAt).toLocaleString()}</p>
                         <p>{mainReply.Edited ? "Edited" : ""}</p>
                         <Link to={`/reply/${mainReply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
@@ -115,7 +123,9 @@ const ShowTalk: React.FC = () => {
                             <div>
                                 <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
                             </div>
-                            <p>{reply.Content}</p>
+                            <Linkify as="p" options={linkifyOptions}>
+                                {reply.Content}
+                            </Linkify>
                             <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
                             <p>{reply.Edited ? "Edited" : ""}</p>
                             <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">To Reply detail</Link>

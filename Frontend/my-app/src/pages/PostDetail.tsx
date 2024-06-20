@@ -8,6 +8,7 @@ import CreateReply from "../services/CreateReply.ts"
 import getRepliesByPost from "../services/getRepliesByPostID.ts";
 import { Post, Reply } from "../model/models.ts"
 import { getLikeStatus } from "../services/getLikeStatus.ts";
+import Linkify from "linkify-react";
 
 const PostDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -20,6 +21,9 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate();
   const [replies, setReplies] = useState<Reply[]>([]);
   const url = process.env.REACT_APP_API_URL;
+  const linkifyOptions = {
+    className: "text-blue-400",
+};
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -120,12 +124,18 @@ const PostDetail: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+    (post.DeletedUser ? (<div>
+      <p>deleted</p>
+    </div>) : (
+      <div>
+        <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Post Detail</h1>
       <div className="mb-4">
         <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
       </div>
-      <p className="text-lg mb-2">{post.Content}</p>
+      <Linkify as="p" options={linkifyOptions}>
+            {post.Content}
+      </Linkify>
       <p className="text-sm text-gray-500">Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
       <p className="text-sm text-gray-500">User Name: {post.UserName}</p>
       <p className="text-sm text-gray-500">{post.Edited ? "Edited" : "Not Edited"}</p>
@@ -166,9 +176,15 @@ const PostDetail: React.FC = () => {
       {replies.length > 0 ? (
         <ul className="mt-4">
           {replies.map((reply) => (
+            (reply.DeletedUser ? (
+              <div>
+                 <p>deleted</p>
+              </div>): (
             <li key={reply.ReplyID} className="mb-6 border-b pb-4">
               <img src={post.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />
-              <p>{reply.Content}</p>
+              <Linkify as="p" options={linkifyOptions}>
+                {reply.Content}
+              </Linkify>
               <p className="text-sm text-gray-500">Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
               <p className="text-sm text-gray-500">User Name: {reply.UserName}</p>
               <p className="text-sm text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>
@@ -177,13 +193,14 @@ const PostDetail: React.FC = () => {
               <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">See Talk</Link>
               </p>
             </li>
-          ))}
+          ))))}
         </ul>
       ) : (
         <p>No replies yet</p>
       )}
-    </div>
-  );
-}
+    </div>;
+  </div>
+    )))
+  }
 
 export default PostDetail;

@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import FollowButton from "../page-component/FollowButton.tsx";
 import { Profile } from "../model/models.ts";
+import PostListForUser from "../page-component/PostListForUser.tsx";
 
 const getQueryParams = (query: string) => {
   return new URLSearchParams(query);
@@ -51,7 +52,13 @@ const UserProfile: React.FC = () => {
   if (!userProfile) {
     return <div>Loading...</div>;
   }
-
+  if (userProfile.DeletedUser){
+    return (
+      <div>
+        <p>deleted User</p>
+      </div>
+    )
+  }
   return (
     <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-md shadow-md">
       <div className="mb-4">
@@ -59,7 +66,6 @@ const UserProfile: React.FC = () => {
       </div>
       <h1 className="text-2xl font-bold mb-4">User Profile</h1>
       <p className="mb-2">User Name: {userProfile.UserName}</p>
-      <p className="mb-2">Deleted User: {userProfile.DeletedUser ? "Yes" : "No"}</p>
       
       {user && (
         <FollowButton followedToID={userID!} />
@@ -73,6 +79,7 @@ const UserProfile: React.FC = () => {
       >
         Go Back
       </button>
+      <PostListForUser uid={userID}/>
     </div>
   );
 };

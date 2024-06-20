@@ -2,41 +2,39 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Post } from "../model/models.ts";
 import fetchLikeNum from "../services/fetchLikeNum.ts";
-import Linkify from "linkify-react";
+import getPostsByUserID from '../services/getPostsByUserID.ts';
+import Linkify from 'linkify-react';
 
-const PostList: React.FC = () => {
+interface PostListForUserProps {
+  uid: string;
+}
+
+const PostListForUser: React.FC<PostListForUserProps> = ({ uid }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const url = process.env.REACT_APP_API_URL + "/getposts";
   const linkifyOptions = {
     className: "text-blue-400",
-  };
+};
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPostsByUser = async () => {
       try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data: Post[] = await response.json();
-        const updatedPosts = await Promise.all(data.map(async (post) => {
-          const likeNum = await fetchLikeNum(post.PostID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
-          return { ...post, LikeNum: likeNum };
-        }));
+        const posts = await getPostsByUserID(uid);
+        const updatedPosts = await Promise.all(
+          posts.map(async (post) => {
+            const likeNum = await fetchLikeNum(post.PostID, true); 
+            return { ...post, LikeNum: likeNum };
+          })
+        );
         setPosts(updatedPosts);
       } catch (error) {
         setError(error.message);
       }
     };
-    fetchPosts();
-  }, [url]);
 
-  const getLikeNum = async (postID: number) => {
-    const likeNum = await fetchLikeNum(postID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
-    return likeNum;
-  };
-
+    fetchPostsByUser();
+  }, [uid]);
+  console.log(posts)
   return (
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Posts</h1>
@@ -54,18 +52,19 @@ const PostList: React.FC = () => {
                   <p className="text-xs text-gray-500">Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
                 </div>
               </div>
-              <Linkify as="p" options={linkifyOptions}>
+            <Linkify as="p" options={linkifyOptions}>
                 {post.Content}
-              </Linkify>
+            </Linkify>
               <p className="text-xs text-gray-500">{post.Edited ? "Edited" : "Not Edited"}</p>
               <p>Likes: {post.LikeNum}</p> {/* LikeNumを表示 */}
               <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
             </li>
           )
         ))}
+        
       </ul>
     </div>
   );
 };
 
-export default PostList;
+export default PostListForUser;

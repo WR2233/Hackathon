@@ -7,6 +7,7 @@ import { toggleLike } from "../services/toggleLike.ts"
 import CreateReply from "../services/CreateReply.ts"
 import { Reply } from "../model/models.ts"
 import getReplyByID from "../services/getReplyByID.ts";
+import Linkify from "linkify-react";
 import { getLikeStatus } from "../services/getLikeStatus.ts";
 
 const ReplyDetail: React.FC = () => {
@@ -19,6 +20,9 @@ const ReplyDetail: React.FC = () => {
   const [replyContent, setReplyContent] = useState<string>("");
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URL;
+  const linkifyOptions = {
+    className: "text-blue-400",
+};
 
   useEffect(() => {
     const fetchReplyDetail = async () => {
@@ -108,7 +112,9 @@ const ReplyDetail: React.FC = () => {
       <div className="mb-4">
         <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
       </div>
-      <p className="text-lg mb-2">{reply.Content}</p>
+      <Linkify as="p" options={linkifyOptions}>
+        {reply.Content}
+      </Linkify>
       <p className="text-sm text-gray-500">Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
       <p className="text-sm text-gray-500">User Name: {reply.UserName}</p>
       <p className="text-sm text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>

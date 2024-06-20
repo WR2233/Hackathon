@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/WR2233/Hackathon/Backend/dao"
 	"github.com/WR2233/Hackathon/Backend/model"
-	"log"
 	"net/http"
 )
 
@@ -14,7 +13,6 @@ func getLikeStatusHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 	}
 	liked, err := dao.GetLikeStatus(req.PostReplyID, req.UserID, req.IsPost)
-	log.Print(req)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}

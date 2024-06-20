@@ -61,6 +61,8 @@ const FollowersList = () => {
             {followerList && followerList.length > 0 ? (
               followerList.map((follower) => (
                 <li key={follower.UserID} className="mb-6 border-b pb-4">
+                  {follower.DeletedUser ? <p>deleted User</p> :  
+                  <>
                   <div className="d-flex align-items-center">
                     <img
                       src={follower.Img}
@@ -79,7 +81,8 @@ const FollowersList = () => {
                   >
                     View Profile
                   </Link>
-                </li>
+                  </>}
+              </li>
               ))
             ) : (
               <p>No followers found.</p>
