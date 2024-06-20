@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Post, Reply } from "../model/models"
-
+import {Post, Reply}  from "../model/models.ts"
 
 type ConversationItem = Post | Reply;
 
@@ -28,24 +27,22 @@ const ShowTalk: React.FC = () => {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
 
-                const data: ConversationItem[] = await response.json(); // JSONとして解析
-                console.log(data)
-                // 親とmainリプライと子に分ける
+                const data: ConversationItem[] = await response.json();
                 const postsData: (Post | Reply)[] = [];
                 const repliesData: Reply[] = [];
                 let mainReplyData: Reply | null = null;
                 
-                var IsScanedMain =0
+                let isMainReplyScanned = false;
                 data.forEach(item => {
-                    if ((item as Reply).ReplyID === parseInt(replyId)) {
+                    if ( item.ReplyID !== null && item.ReplyID === parseInt(replyId)) {
                         mainReplyData = item as Reply; 
-                        IsScanedMain = 1 
-                    } else if (IsScanedMain == 0 && (item as Post).PostID !== undefined) {
+                        isMainReplyScanned = true;
+                    } else if (!isMainReplyScanned && item.PostID !== null) {
                         postsData.push(item as Post);
-                    } else if (IsScanedMain ==0){
-                        postsData.push(item as Reply);
+                    } else if (!isMainReplyScanned && item.PostID === null){
+                        postsData.push(item as Reply)
                     } else {
-                        repliesData.push(item as Reply)
+                        repliesData.push(item as Reply);
                     }
                 });
 
@@ -76,26 +73,21 @@ const ShowTalk: React.FC = () => {
                 <h2 className="text-xl font-bold mb-4">Parent Posts</h2>
                 <div className="space-y-4">
                     {posts.map((post, index) => (
-                    <div key={index} className="p-4 border rounded-lg shadow-md">
-                        <h3 className="text-lg font-semibold">{post.UserName}</h3>
-                        <div>
-                            <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+                        <div key={index} className="p-4 border rounded-lg shadow-md">
+                            <h3 className="text-lg font-semibold">{post.UserName}</h3>
+                            <div>
+                                <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
+                            </div>
+                            <p>{post.Content}</p>
+                            <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
+                            <p>{post.Edited ? "Edited" : ""}</p>
+                            {post.postID !== null && (
+                                <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>
+                            )}
+                            {post.ReplyID !== null && (
+                                <Link to={`/reply/${post.ReplyID}`} className="text-blue-500">To Reply detail</Link>
+                            )}
                         </div>
-                        <p>{post.Content}</p>
-                        <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
-                        <p>{post.Edited ? "Edited" : ""}</p>
-                        {post.PostID!==undefined && (
-                             <Link to={`/post/${post.PostID}`} className="text-blue-500">
-                             To Post detail
-                            </Link>
-                        )}
-                        {post.ReplyID !== undefined && (
-                         <Link to={`/reply/${post.ReplyID}`} className="text-blue-500">
-                         To Reply detail
-                        </Link>
-                    )}
-                       
-                    </div>
                     ))}
                 </div>
             </div>
@@ -110,9 +102,7 @@ const ShowTalk: React.FC = () => {
                         <p>{mainReply.Content}</p>
                         <p>Replied At: {new Date(mainReply.PostedAt).toLocaleString()}</p>
                         <p>{mainReply.Edited ? "Edited" : ""}</p>
-                        <Link to={`/reply/${mainReply.ReplyID}`} className="text-blue-500">
-                            To Reply detail
-                        </Link>
+                        <Link to={`/reply/${mainReply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                     </div>
                 </div>
             )}
@@ -128,9 +118,7 @@ const ShowTalk: React.FC = () => {
                             <p>{reply.Content}</p>
                             <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
                             <p>{reply.Edited ? "Edited" : ""}</p>
-                            <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">
-                            To Reply detail
-                            </Link>
+                            <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                         </div>
                     ))}
                 </div>

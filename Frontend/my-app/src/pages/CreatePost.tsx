@@ -15,26 +15,23 @@ const CreatePost: React.FC = () => {
     }
   }, [user, navigate]);
 
-  if (!user) {
-    return;
-  }
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const uid = user.uid;
+    const uid = user?.uid;
 
     try {
-      var postID = await createPost(content, uid);
+      const postID = await createPost(content, uid);
       console.log("Post created:", { content, uid});
       setContent("");
+      navigate("/post/" + postID)
     } catch (error) {
       console.error("Failed to create post:", error);
     }
-    navigate("/post/" + postID)
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
+    <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Create Post</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -43,16 +40,17 @@ const CreatePost: React.FC = () => {
             id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="border border-gray-300 rounded-md px-4 py-2 w-full"
+            className="border border-gray-300 rounded-md px-4 py-2 w-full resize-none"
+            rows={5}
+            maxLength={200}
+            required
           />
         </div>
         <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
           Create Post
         </button>
+        <Link to="/" className="block mt-4 text-blue-500 hover:text-blue-700">Cancel</Link>
       </form>
-      <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-        cancel
-      </Link>
     </div>
   );
 };

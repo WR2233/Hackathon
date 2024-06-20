@@ -10,13 +10,12 @@ const Header: React.FC = () => {
   const url = process.env.REACT_APP_API_URL;
   const [profile, setProfile] = useState<Profile | null>(null);
 
-
   useEffect(() => {
     const fetchMyProfile = async () => {
-        if (!user) {
-            navigate("/login");
-            return;
-          }
+      if (!user) {
+        navigate("/login");
+        return;
+      }
       try {
         const response = await fetch(`${url}/getuser?uid=${user.uid}`);
         if (!response.ok) {
@@ -25,13 +24,10 @@ const Header: React.FC = () => {
         const data: Profile = await response.json();
         setProfile(data);
       } catch (error) {
-        console.error("Error fetching user profile :", error);
+        console.error("Error fetching user profile:", error);
       }
     };
 
-    if (loading) {
-      return;
-    }
     if (!user && !loading) {
       navigate("/login");
     } else {
@@ -44,13 +40,13 @@ const Header: React.FC = () => {
   return (
     <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
       <div className="flex items-center space-x-4">
-        {profile && 
-        
-        <img
-          src={profile.Img}
-          alt="User Icon"
-          className="w-10 h-10 rounded-full"
-        />}
+        {profile && (
+          <img
+            src={profile.Img}
+            alt="User Icon"
+            className="w-10 h-10 rounded-full"
+          />
+        )}
         <span className="font-semibold text-lg">{userName}</span>
       </div>
       <nav className="space-x-4">

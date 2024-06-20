@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import { useParams, Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import fetchLikeNum from "../services/fetchLikeNum.ts";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
@@ -17,56 +17,56 @@ const ReplyDetail: React.FC = () => {
   const [replyFormVisible, setReplyFormVisible] = useState<boolean>(false);
   const [replyContent, setReplyContent] = useState<string>("");
   const navigate = useNavigate();
-  
-  var url = process.env.REACT_APP_API_URL ;
-  
+  const url = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
-    const fetchReplydetail = async () => {
-      if (replyId) {
+    const fetchReplyDetail = async () => {
+      try {
         const replyData = await getReplyByID(parseInt(replyId));
-        if (replyData) {
-          setReply(replyData);
-        }
-        if (!replyData) {
-          setReply(null);
-        }
+        setReply(replyData);
+      } catch (error) {
+        console.error("Error fetching reply:", error);
       }
     };
+
     const fetchLikeCount = async () => {
-      if (replyId) {
+      try {
         const likeData = await fetchLikeNum(replyId, false);
-        if (likeData) {
-          setLikeCount(likeData);
-        }
-        if (!likeData) {
-          setLikeCount(0);
-        }
+        setLikeCount(likeData ?? 0);
+      } catch (error) {
+        console.error("Error fetching like count:", error);
       }
     };
+
     if (replyId) {
-      fetchReplydetail();
+      fetchReplyDetail();
+      fetchLikeCount();
     }
-    fetchLikeCount();
   }, [replyId]);
 
   if (!user) {
-    return(
-      <div>
-        <h1>you have to log in At first</h1>
-      </div>)
+    return (
+      <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-4">You have to log in first</h1>
+        <Link to="/login" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
+          Go to Login
+        </Link>
+      </div>
+    );
   }
 
-  if (!replyId) {
-    return <div>reply ID is not provided</div>;
+  if (!replyId || !reply) {
+    return <div>Loading...</div>;
   }
+
   const handleLikeToggle = async () => {
     if (!user) return;
 
     try {
       const newLikedStatus = await toggleLike(replyId!, user.uid, false);
       setLiked(newLikedStatus);
-      const likeCount = await fetchLikeNum(replyId!, false);
-      setLikeCount(likeCount);
+      const likeData = await fetchLikeNum(replyId!, false);
+      setLikeCount(likeData ?? 0);
     } catch (error) {
       console.error("Error toggling like:", error);
     }
@@ -78,74 +78,62 @@ const ReplyDetail: React.FC = () => {
 
   const handleReplySubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    try{
-    const pidNum = parseInt(replyId);
-    if (isNaN(pidNum)) {
-      console.error("reply ID is not a number");
-      return;
+    try {
+      const newReplyId = await CreateReply(parseInt(replyId!), user.uid, replyContent, false);
+      setReplyContent("");
+      setReplyFormVisible(false);
+      navigate(`/reply/${newReplyId}`);
+    } catch (error) {
+      console.error("Error creating reply:", error);
     }
-    // フォームからの入力を使用してリプライを作成する
-    const replyID = await CreateReply (pidNum, user.uid, replyContent, false);
+  };
 
-    // リプライが成功裏に作成されたら、フォームを非表示にする
-    setReplyContent("");
-    setReplyFormVisible(false);
-
-    navigate("/reply/" + replyID)
-    }catch (error) {
-        console.error("Error creating reply:", error);
-  }}
-  
-  if (!reply) {
-    return <div>Loading...</div>;
-  }
- 
   return (
-    <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Reply Detail</h1>
-        <li key={reply.ReplyID} className="mb-4">
-            <div>
-              <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto"/>
-            </div>
-            <p>{reply.Content}</p>
-            <p>Replyed At: {new Date(reply.PostedAt).toLocaleString()}</p>
-            <p>User Name: {reply.UserName}</p>
-            <p>{reply.Edited ? "Edited" : "Not Edited"}</p>
-            <p>Likes: {likeCount !== null ? likeCount : "Loading..."}</p>
-            <button
-          onClick={handleLikeToggle}
-          className={`block bg-${liked ? 'red' : 'green'}-500 hover:bg-${liked ? 'red' : 'green'}-700 text-white font-bold py-2 px-4 rounded`}
-        >
-          {liked ? 'Unlike' : 'Like'}
-        </button>
+    <div className="max-w-md mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
+      <h1 className="text-2xl font-bold mb-4">Reply Detail</h1>
+      <div className="mb-4">
+        <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+      </div>
+      <p className="text-lg mb-2">{reply.Content}</p>
+      <p className="text-sm text-gray-500">Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
+      <p className="text-sm text-gray-500">User Name: {reply.UserName}</p>
+      <p className="text-sm text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>
+      <div className="flex items-center mt-4">
         <button
-                    onClick={handleReplyFormToggle}
-                    className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2"
-                >
-                    {replyFormVisible ? "Cancel Reply Form" : "Create Reply"}
-                </button>
-                {replyFormVisible && (
-                    <form onSubmit={handleReplySubmit}>
-                    <textarea
-                        placeholder="Enter your reply..."
-                        value={replyContent}
-                        onChange={(event) => setReplyContent(event.target.value)}
-                    />
-                    <button type="submit">Submit</button>
-                </form>
-                )}
-            <Link to="/" className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">
-                back to TimeLine
-            </Link>
-            <Link to={`/profiles?uid=${reply.PostedByID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              View User Profile
-            </Link>
-            <Link to={`/showtalk/${reply.ReplyID}`} className="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-             Watch Talk
-            </Link>
-        </li>
+          onClick={handleLikeToggle}
+          className={`text-sm font-semibold px-4 py-2 rounded-md ${liked ? "text-red-500" : "text-green-500"} border border-transparent hover:bg-gray-100 focus:outline-none`}
+        >
+          {liked ? "Unlike" : "Like"}
+        </button>
+        <span className="text-sm text-gray-500 ml-2">{likeCount !== null ? likeCount : "Loading..."} Likes</span>
+      </div>
+      <button
+        onClick={handleReplyFormToggle}
+        className="text-sm font-semibold bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-4 rounded-md mt-4 focus:outline-none"
+      >
+        {replyFormVisible ? "Cancel Reply Form" : "Create Reply"}
+      </button>
+      {replyFormVisible && (
+        <form onSubmit={handleReplySubmit} className="mt-4">
+          <textarea
+            placeholder="Enter your reply..."
+            value={replyContent}
+            onChange={(event) => setReplyContent(event.target.value)}
+            className="border border-gray-300 rounded-md px-4 py-2 w-full resize-none"
+            rows={5}
+          />
+          <button type="submit" className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none">
+            Submit Reply
+          </button>
+        </form>
+      )}
+      <div className="mt-6">
+        <Link to="/" className="text-blue-500 hover:text-blue-700 mr-4">Back to Timeline</Link>
+        <Link to={`/profiles?uid=${reply.PostedByID}`} className="text-blue-500 hover:text-blue-700">View User Profile</Link>
+        <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700 ml-4">Watch Talk</Link>
+      </div>
     </div>
   );
 }
 
-export default ReplyDetail
+export default ReplyDetail;

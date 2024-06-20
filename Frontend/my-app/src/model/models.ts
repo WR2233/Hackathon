@@ -13,7 +13,7 @@ export interface Reply {
     Img: string
 }
 
-export interface Post{
+export interface Post {
 	PostID :   number
 	Content :    string
 	PostedAt :   string 
