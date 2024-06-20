@@ -162,6 +162,7 @@ const PostDetail: React.FC = () => {
               <p className="text-sm text-gray-500">User Name: {reply.UserName}</p>
               <p className="text-sm text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>
               <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">View Reply Detail</Link>
+              <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">See Talk</Link>
             </li>
           ))}
         </ul>

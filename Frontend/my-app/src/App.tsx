@@ -10,6 +10,7 @@ import ShowFollows from "./pages/ShowFollows.tsx";
 import ReplyDetail from "./pages/ReplyDetail.tsx";
 import ShowTalk from "./pages/ShowTalk.tsx";
 import Header from "./page-component/Header.tsx"
+import Search from "./pages/Searh.tsx";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/followlist" element={<ShowFollows/>} />
           <Route path="/reply/:replyId" element={<ReplyDetail />} />
           <Route path="/showtalk/:replyId" element={< ShowTalk/>} />
+          <Route path="/search" element={< Search/>} />
         </Routes>
       </Router>
     </div>

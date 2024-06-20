@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, Link} from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import FollowButton from "../page-component/FollowButton.tsx";
 import { Profile } from "../model/models.ts";
 
-// クエリパラメータ取得
 const getQueryParams = (query: string) => {
   return new URLSearchParams(query);
 };
@@ -17,7 +16,7 @@ const UserProfile: React.FC = () => {
   const navigate = useNavigate();
   const [user, loading, error] = useAuthState(fireAuth);
   const queryParams = getQueryParams(location.search);
-  const userID = queryParams.get("uid"); 
+  const userID = queryParams.get("uid");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -32,7 +31,6 @@ const UserProfile: React.FC = () => {
         }
 
         const response = await fetch(`${url}/getuser?uid=${userID}`);
-        console.log(`${url}/getuser?uid=${userID}`);
         if (!response.ok) {
           throw new Error("Failed to fetch user profile");
         }
@@ -54,31 +52,28 @@ const UserProfile: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  
   return (
-    <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
+    <div className="max-w-md mx-auto mt-8 bg-white p-6 rounded-md shadow-md">
       <h1 className="text-2xl font-bold mb-4">User Profile</h1>
-      <p>User Name: {userProfile.UserName}</p>
-      <p>Deleted User: {userProfile.DeletedUser ? "Yes" : "No"}</p>
-      <button
-        onClick={() => navigate(-1)}
-        className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
-      >
-        Go Back
-      </button>
-      {userProfile.Img && (
-        <div>
-          <img src={userProfile.Img} alt="User profile" />
-        </div>
-      )}
-
+      <p className="mb-2">User Name: {userProfile.UserName}</p>
+      <p className="mb-2">Deleted User: {userProfile.DeletedUser ? "Yes" : "No"}</p>
+      <div className="mb-4">
+        {userProfile.Img && <img src={userProfile.Img} alt="User profile" className="w-full rounded-md" />}
+      </div>
       {user && (
         <FollowButton followedToID={userID!} />
       )}
       <Link to={`/followlist?uid=${userID}`} className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2">
-        Following-Follower List
+        View Following and Followers
       </Link>
-    </div>)
+      <button
+        onClick={() => navigate(-1)}
+        className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+      >
+        Go Back
+      </button>
+    </div>
+  );
 };
 
 export default UserProfile;
