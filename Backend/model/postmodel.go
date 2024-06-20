@@ -9,6 +9,7 @@ type Post struct {
 	DeletedPost bool   `json:"Deleted"`
 	UserName    string `json:"UserName"`
 	DeletedUser bool   `json:"DeletedUser"`
+	Img         string `json:"Img"`
 }
 
 type Reply struct {
@@ -22,6 +23,7 @@ type Reply struct {
 	UserName     string `json:"UserName"`
 	DeletedUser  bool   `json:"DeletedUser"`
 	IsToPost     bool   `json:"IsToPost"`
+	Img          string `json:"Img"`
 }
 
 type PostPre struct {

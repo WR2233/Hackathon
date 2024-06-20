@@ -10,7 +10,7 @@ func GetFollower(userID string) ([]model.User, error) {
 	if err != nil {
 		return users, err
 	}
-	query := "SELECT f.follower_id as followed_by_id, u.username, u.deleted, u.createdAt  FROM users u JOIN followers_following f ON u.user_id = f.follower_id WHERE f.following_id= ?;"
+	query := "SELECT f.follower_id as followed_by_id, u.username, u.deleted, u.createdAt, u.img  FROM users u JOIN followers_following f ON u.user_id = f.follower_id WHERE f.following_id= ?;"
 	rows, err := db.Query(query, userID)
 	if err != nil {
 		return nil, err
@@ -18,7 +18,7 @@ func GetFollower(userID string) ([]model.User, error) {
 	defer rows.Close()
 	for rows.Next() {
 		var user model.User
-		err := rows.Scan(&user.UserID, &user.UserName, &user.Deleted, &user.CreatedAt)
+		err := rows.Scan(&user.UserID, &user.UserName, &user.Deleted, &user.CreatedAt, &user.Img)
 		if err != nil {
 			return nil, err
 		}

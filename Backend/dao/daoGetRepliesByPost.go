@@ -12,7 +12,7 @@ func GetRepliesByPostID(postID int) ([]model.Reply, error) {
 		return nil, err
 	}
 
-	query := "SELECT r.reply_id, r.content, r.postedAt , r.postedBy_id, r.postedTo_id, r.edited AS editedAt, r.deleted AS deleted_reply, u.username, u.deleted, r.IsToPost FROM replies r JOIN users u ON r.postedBy_id = u.user_id WHERE r.postedTo_id = ? AND r.IsToPost = true"
+	query := "SELECT r.reply_id, r.content, r.postedAt , r.postedBy_id, r.postedTo_id, r.edited AS editedAt, r.deleted AS deleted_reply, u.username, u.deleted, r.IsToPost, u.img FROM replies r JOIN users u ON r.postedBy_id = u.user_id WHERE r.postedTo_id = ? AND r.IsToPost = true"
 	rows, err := db.Query(query, postID)
 	if err != nil {
 		return nil, err
@@ -22,7 +22,7 @@ func GetRepliesByPostID(postID int) ([]model.Reply, error) {
 	var replies []model.Reply
 	for rows.Next() {
 		var reply model.Reply
-		if err := rows.Scan(&reply.ReplyID, &reply.Content, &reply.PostedAt, &reply.PostedByID, &reply.PostedToID, &reply.Edited, &reply.DeletedReply, &reply.UserName, &reply.DeletedUser, &reply.IsToPost); err != nil {
+		if err := rows.Scan(&reply.ReplyID, &reply.Content, &reply.PostedAt, &reply.PostedByID, &reply.PostedToID, &reply.Edited, &reply.DeletedReply, &reply.UserName, &reply.DeletedUser, &reply.IsToPost, &reply.Img); err != nil {
 			log.Println(err)
 			continue
 		}

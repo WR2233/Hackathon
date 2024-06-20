@@ -6,7 +6,10 @@ const getRepliesByPost = async (postID: string | number): Promise<Reply[]> => {
     if (!response.ok) {
         throw new Error("Failed to fetch replies");
     }
-    const data: Reply[] = await response.json();
+    var data: Reply[] = await response.json();
+    if (data === null ) {
+        data = []
+    }
     return data;
 };
 

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate , Link} from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
-import {UserProfile} from "../model/models.ts"
+import { Profile } from "../model/models.ts";
 
-const getQueryParams = (query: string) => {
+const getQueryParams = (query) => {
   return new URLSearchParams(query);
 };
 
-const FollowingList: React.FC = () => {
-  const [followingList, setFollowingList] = useState<UserProfile[]>([]);
+const FollowingList = () => {
+  const [followingList, setFollowingList] = useState([]);
   const location = useLocation();
   const url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const FollowingList: React.FC = () => {
     const fetchFollowingList = async () => {
       try {
         const queryParams = getQueryParams(location.search);
-        const userID = queryParams.get("uid"); // ここでクエリパラメータを取得
+        const userID = queryParams.get("uid");
 
         if (!userID) {
           throw new Error("User ID is missing");
@@ -29,7 +29,7 @@ const FollowingList: React.FC = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch following list");
         }
-        const data: UserProfile[] = await response.json();
+        const data = await response.json();
         setFollowingList(data);
       } catch (error) {
         console.error("Error fetching following list:", error);
@@ -48,27 +48,48 @@ const FollowingList: React.FC = () => {
   }
 
   return (
-    <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Following List</h1>
-      <button
-        onClick={() => navigate(-1)}
-        className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2"
-      >
-        Go Back
-      </button>
-      <ul>
-        {followingList && followingList.length > 0 ? (
-          followingList.map((following) => (
-            <li key={following.UserID}>
-              <Link to={`/userprofile?uid=${following.UserID}`}>
-                {following.UserName}
-              </Link>
-            </li>
-          ))
-        ) : (
-          <p>No followers found.</p>
-        )}
-      </ul>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-8 offset-md-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-primary mb-3"
+          >
+            Go Back
+          </button>
+          <ul className="list-group">
+            {followingList && followingList.length > 0 ? (
+              followingList.map((following) => (
+                <li
+                  key={following.UserID}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={following.Img}
+                      alt="User profile"
+                      className="rounded-circle me-3"
+                      width="40"
+                      height="40"
+                    />
+                    <div>
+                      <h5 className="mb-0 fs-5">{following.UserName}</h5>
+                    </div>
+                  </div>
+                  <Link
+                    to={`/profiles?uid=${following.UserID}`}
+                    className="btn btn-primary btn-sm"
+                  >
+                    View Profile
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <p>No followers found.</p>
+            )}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };

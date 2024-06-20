@@ -3,17 +3,17 @@ export interface Reply {
     ReplyID: number;
     Content: string;
     PostedAt: string;
-    UserID: string;
+    PostedByID: string;
     Edited: boolean;
     DeletedReply: boolean;
     UserName: string;
     DeletedUser: boolean;
     PostReplayID: number;
     IsToPost: boolean;
-    Children?: Reply[];
+    Img: string
 }
 
-export interface Post{
+export interface Post {
 	PostID :   number
 	Content :    string
 	PostedAt :   string 
@@ -22,11 +22,12 @@ export interface Post{
 	DeletedPost :boolean
 	UserName    :string 
 	DeletedUser :boolean 
+    Img: string
 }
 
-export interface UserProfile {
+export interface Profile {
     UserID: string;
     UserName: string;
     DeletedUser: boolean;
-    // 他のユーザープロフィール情報をここに追加
+    Img: string
   }

@@ -23,7 +23,6 @@ func getTalkHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("Fetching conversation for replyID:", replyID)
 	conversation, err := dao.GetTalk(replyID, true)
 	if err != nil {
 		log.Println("Error fetching conversation:", err)
@@ -35,7 +34,5 @@ func getTalkHandler(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(conversation); err != nil {
 		log.Println("Error encoding JSON response:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		log.Println("Response successfully sent")
 	}
 }
