@@ -9,6 +9,7 @@ import { Reply } from "../model/models.ts"
 import getReplyByID from "../services/getReplyByID.ts";
 import Linkify from "linkify-react";
 import { getLikeStatus } from "../services/getLikeStatus.ts";
+import ReactPlayer from "react-player";
 
 const ReplyDetail: React.FC = () => {
   const { replyId } = useParams<{ replyId: string }>();
@@ -108,6 +109,7 @@ const ReplyDetail: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
+      (reply.deletedUser ? <div>deleted User </div>: ((reply.deleted ? <div>deleted Reply</div> :(
       <h1 className="text-2xl font-bold mb-4">Reply Detail</h1>
       <div className="mb-4">
         <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
@@ -115,6 +117,8 @@ const ReplyDetail: React.FC = () => {
       <Linkify as="p" options={linkifyOptions}>
         {reply.Content}
       </Linkify>
+      {reply.Video ? <ReactPlayer url={reply.Video} controls={true} width="100%" height="100%" />:<></> }
+      {reply.ImgPost ? <img src={reply.ImgPost} alt="Img of Post" />: <></>}
       <p className="text-sm text-gray-500">Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
       <p className="text-sm text-gray-500">User Name: {reply.UserName}</p>
       <p className="text-sm text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>
@@ -148,10 +152,10 @@ const ReplyDetail: React.FC = () => {
         </form>
       )}
       <div className="mt-6">
-        <Link to="/" className="text-blue-500 hover:text-blue-700 mr-4">Back to Timeline</Link>
+        <Link to="/" className="text-blue-500 hover:text-blue-700 mr-4">Back to Timeline</Link>)))
         <Link to={`/profiles?uid=${reply.PostedByID}`} className="text-blue-500 hover:text-blue-700">View User Profile</Link>
         <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700 ml-4">Watch Talk</Link>
-      </div>
+      </div>)
     </div>
   );
 }

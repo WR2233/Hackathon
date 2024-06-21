@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import DateTime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 import Linkify from "linkify-react";
+import ReactPlayer from "react-player";
+
 const Search: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchContent, setSearchContent] = useState<string>("");
@@ -15,12 +17,12 @@ const Search: React.FC = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [user, loading] = useAuthState(fireAuth);
   const [isSearched, setIsSearched] = useState<boolean>(false);
-  const [seeTime, setSeeTime] = useState<boolean>(false)
+  const [seeTime, setSeeTime] = useState<boolean>(false);
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URL;
   const linkifyOptions = {
     className: "text-blue-400",
-};
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -54,23 +56,24 @@ const Search: React.FC = () => {
       const isContentMatch = !searchContent || post.Content.toLowerCase().includes(searchContent.toLowerCase());
       const isNameMatch = !searchName || post.UserName.toLowerCase().includes(searchName.toLowerCase());
       const isTimeMatch = (!startTime || startTime <= postTime) && (!endTime || postTime <= endTime);
-      return isContentMatch && isNameMatch && isTimeMatch;
+      const isNotDeleted = !post.DeletedUser && !post.Deleted; // フィルタ条件に追加
+      return isContentMatch && isNameMatch && isTimeMatch && isNotDeleted;
     });
-    
+
     setFilteredPosts(filtered);
     setIsSearched(true);
   };
 
   const handleSeeTime = () => {
-    setSeeTime(!seeTime)
-    return
-  }
-  
+    setSeeTime(!seeTime);
+    return;
+  };
+
   const handleClearTime = () => {
-    setEndTime(null)
-    setStartTime(null)
-    return
-  }
+    setEndTime(null);
+    setStartTime(null);
+    return;
+  };
 
   return (
     <div className="max-w-lg mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
@@ -96,37 +99,36 @@ const Search: React.FC = () => {
         />
       </div>
 
-        <button onClick={handleSeeTime}  className="px-4 py-2 bg-blue-500 text-white rounded-md">
-            {seeTime ?  "Close Calendar": "Serch by time" }
-        </button>
+      <button onClick={handleSeeTime} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+        {seeTime ? "Close Calendar" : "Search by time"}
+      </button>
       {seeTime && (
         <div>
-            <button onClick={handleClearTime} className="px-4 py-2 bg-blue-500 text-white rounded-md"> Clear time</button>
-            <div className="mb-4">
-                <label className="block text-gray-700">Search by Start Time:</label>
-                <DateTime
-                value={startTime}
-                onChange={(date: Date) => setStartTime(date)}
-                input={false}
-                className="date-picker"
-                />
-            </div>
-            <div className="mb-4">
-                <label className="block text-gray-700">Search by End Time:</label>
-                <DateTime
-                value={endTime}
-                onChange={(date: Date) => setEndTime(date)}
-                input={false}
-                className="date-picker"
-                />
-            </div>
+          <button onClick={handleClearTime} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+            Clear time
+          </button>
+          <div className="mb-4">
+            <label className="block text-gray-700">Search by Start Time:</label>
+            <DateTime
+              value={startTime}
+              onChange={(date: Date) => setStartTime(date)}
+              input={false}
+              className="date-picker"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Search by End Time:</label>
+            <DateTime
+              value={endTime}
+              onChange={(date: Date) => setEndTime(date)}
+              input={false}
+              className="date-picker"
+            />
+          </div>
         </div>
       )}
-      
-      <button
-        onClick={handleSearch}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md"
-      >
+
+      <button onClick={handleSearch} className="px-4 py-2 bg-blue-500 text-white rounded-md">
         Search
       </button>
 
@@ -134,13 +136,19 @@ const Search: React.FC = () => {
         <div>
           <ul>
             {filteredPosts && filteredPosts.length > 0 ? (
-              filteredPosts.map((post) => (
+              filteredPosts.map(post => (
                 <li key={post.PostID} className="border-b py-4">
                   <p className="text-lg font-semibold">{post.UserName}</p>
-                  <p className="text-gray-600">{post.PostedAt}</p>
+                  <p className="text-gray-600">{new Date(post.PostedAt).toLocaleString()}</p>
                   <Linkify as="p" options={linkifyOptions}>
                     {post.Content}
                   </Linkify>
+                  {post.Video && (
+                    <ReactPlayer url={post.Video} controls={true} width="100%" height="100%" />
+                  )}
+                  {post.ImgPost && (
+                    <img src={post.ImgPost} alt="Img of Post" />
+                  )}
                 </li>
               ))
             ) : (

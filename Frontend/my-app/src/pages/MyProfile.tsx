@@ -4,7 +4,7 @@ import { fireAuth } from "../services/firebase.ts";
 import { useNavigate, useLocation } from "react-router-dom";
 import Settings from "../page-component/settings.tsx";
 import { Profile } from "../model/models.ts";
-import PostListForUser from "../page-component/PostListForUser.tsx";
+import PostListOfUser from "../page-component/PostListOfUser.tsx";
 
 const MyProfile: React.FC = () => {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ const MyProfile: React.FC = () => {
       </button>
 
       <Settings />
-      <PostListForUser uid={profile?.UserID}/>
+      <PostListOfUser uid={profile?.UserID}/>
     </div>
   );
 };

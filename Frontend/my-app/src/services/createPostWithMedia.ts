@@ -1,15 +1,25 @@
 interface Post_pre {
     Content: string;
     UserID: string;
-    VideoURL: string
+    VideoURL?: string;
+    ImgURL?: string;
   }
 
-export const createPost = async (content: string, userId: string) => {
-    const postData: Post_pre = {
+const CreatePostWithMedia = async (content: string, userId: string, url: string, mediatype: string ) => {
+    let postData: Post_pre = {
         Content: content,
         UserID: userId,
-        VideoURL: ""
       };
+
+    
+    if (mediatype === "video") {
+    postData.VideoURL = url;
+    } else if (mediatype === "image") {
+    postData.ImgURL = url;
+    } else {
+    throw new Error("Unsupported media type");
+    }
+    
     var url = process.env.REACT_APP_API_URL as string
     const response = await fetch(url + '/createpost', {
       method: 'POST',
@@ -32,4 +42,4 @@ export const createPost = async (content: string, userId: string) => {
     return postId
   };
   
-  
+export default CreatePostWithMedia

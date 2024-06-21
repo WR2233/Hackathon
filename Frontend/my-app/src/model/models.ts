@@ -5,12 +5,14 @@ export interface Reply {
     PostedAt: string;
     PostedByID: string;
     Edited: boolean;
-    DeletedReply: boolean;
+    Deleted: boolean;
     UserName: string;
     DeletedUser: boolean;
     PostReplayID: number;
     IsToPost: boolean;
     Img: string
+    Video: string
+    ImgPost: string
 }
 
 export interface Post {
@@ -19,10 +21,12 @@ export interface Post {
 	PostedAt :   string 
 	UserID    :  string 
 	Edited     : boolean
-	DeletedPost :boolean
+	Deleted :boolean
 	UserName    :string 
 	DeletedUser :boolean 
     Img: string
+    Video : string
+    ImgPost : string
 }
 
 export interface Profile {

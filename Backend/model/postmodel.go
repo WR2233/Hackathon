@@ -10,6 +10,8 @@ type Post struct {
 	UserName    string `json:"UserName"`
 	DeletedUser bool   `json:"DeletedUser"`
 	Img         string `json:"Img"`
+	Video       string `json:"Video"`
+	ImgPost     string `json:"ImgPost"`
 }
 
 type Reply struct {
@@ -24,11 +26,15 @@ type Reply struct {
 	DeletedUser  bool   `json:"DeletedUser"`
 	IsToPost     bool   `json:"IsToPost"`
 	Img          string `json:"Img"`
+	Video        string `json:"Video"`
+	ImgPost      string `json:"ImgPost"`
 }
 
 type PostPre struct {
-	Content string `json:"Content"`
-	UserID  string `json:"UserID"`
+	Content  string `json:"Content"`
+	UserID   string `json:"UserID"`
+	VideoURL string `json:"VideoURL"`
+	ImgURL   string `json:"ImgURL"`
 }
 
 type ReplyPre struct {
@@ -36,4 +42,6 @@ type ReplyPre struct {
 	Content     string `json:"Content"`
 	UserID      string `json:"UserID"`
 	IsToPost    bool   `json:"IsToPost"`
+	VideoURL    string `json:"VideoURL"`
+	ImgURL      string `json:"ImgURL"`
 }

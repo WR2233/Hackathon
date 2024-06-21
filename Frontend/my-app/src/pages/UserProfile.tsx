@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import FollowButton from "../page-component/FollowButton.tsx";
 import { Profile } from "../model/models.ts";
-import PostListForUser from "../page-component/PostListForUser.tsx";
+import PostListOfUser from "../page-component/PostListOfUser.tsx";
 
 const getQueryParams = (query: string) => {
   return new URLSearchParams(query);
@@ -79,7 +79,7 @@ const UserProfile: React.FC = () => {
       >
         Go Back
       </button>
-      <PostListForUser uid={userID}/>
+      <PostListOfUser uid={userID}/>
     </div>
   );
 };
