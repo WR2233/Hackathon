@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"database/sql"
 	"github.com/WR2233/Hackathon/Backend/model"
 )
 
@@ -10,7 +11,7 @@ func GetUserPosts() ([]model.Post, error) {
 	if err != nil {
 		return posts, err
 	}
-	query := "SELECT p.post_id, p.content, u.username, u.deleted AS deleted_users, p.postedAt, p.edited AS editedAt, p.deleted AS deleted_posts, u.user_id, u.img FROM posts p JOIN users u ON p.user_id = u.user_id;"
+	query := "SELECT p.post_id, p.content, u.username, u.deleted AS deleted_users, p.postedAt, p.edited AS editedAt, p.deleted AS deleted_posts, u.user_id, u.img, p.img, p.video FROM posts p JOIN users u ON p.user_id = u.user_id;"
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -18,9 +19,21 @@ func GetUserPosts() ([]model.Post, error) {
 	defer rows.Close()
 	for rows.Next() {
 		var post model.Post
-		err := rows.Scan(&post.PostID, &post.Content, &post.UserName, &post.DeletedUser, &post.PostedAt, &post.Edited, &post.DeletedPost, &post.UserID, &post.Img)
+		var video sql.NullString
+		var img sql.NullString
+		err := rows.Scan(&post.PostID, &post.Content, &post.UserName, &post.DeletedUser, &post.PostedAt, &post.Edited, &post.DeletedPost, &post.UserID, &post.Img, &img, &video)
 		if err != nil {
 			return nil, err
+		}
+		if video.Valid {
+			post.Video = video.String
+		} else {
+			post.Video = ""
+		}
+		if img.Valid {
+			post.ImgPost = img.String
+		} else {
+			post.ImgPost = ""
 		}
 		posts = append(posts, post)
 	}

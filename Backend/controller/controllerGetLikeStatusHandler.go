@@ -7,23 +7,20 @@ import (
 	"net/http"
 )
 
-func ToggleLikeHandler(w http.ResponseWriter, r *http.Request) {
+func getLikeStatusHandler(w http.ResponseWriter, r *http.Request) {
 	var req model.ToggleLikeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		w.WriteHeader(http.StatusBadRequest)
 	}
-
-	liked, err := dao.ToggleLike(req.PostReplyID, req.UserID, req.IsPost)
+	liked, err := dao.GetLikeStatus(req.PostReplyID, req.UserID, req.IsPost)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		w.WriteHeader(http.StatusInternalServerError)
 	}
-
 	resp := model.ToggleLikeResponse{Liked: liked}
 
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 }

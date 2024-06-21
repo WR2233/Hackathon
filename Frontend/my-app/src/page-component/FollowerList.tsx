@@ -60,12 +60,14 @@ const FollowersList = () => {
           <ul className="list-group">
             {followerList && followerList.length > 0 ? (
               followerList.map((follower) => (
-                <li key={follower.UserID} className="list-group-item d-flex justify-content-between align-items-center">
+                <li key={follower.UserID} className="mb-6 border-b pb-4">
+                  {follower.DeletedUser ? <p>deleted User</p> :  
+                  <>
                   <div className="d-flex align-items-center">
                     <img
                       src={follower.Img}
                       alt="User profile"
-                      className="rounded-circle me-3"
+                      className="w-20 h-20 rounded-full object-cover mx-auto"
                       width="40"
                       height="40"
                     />
@@ -79,7 +81,8 @@ const FollowersList = () => {
                   >
                     View Profile
                   </Link>
-                </li>
+                  </>}
+              </li>
               ))
             ) : (
               <p>No followers found.</p>
