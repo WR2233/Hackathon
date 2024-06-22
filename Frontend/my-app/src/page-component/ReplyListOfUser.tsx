@@ -75,9 +75,7 @@ const ReplyListOfUser: React.FC<ReplyListForUserProps> = ({ uid }) => {
       <ul>
         {replies.length > 0 ? (
           replies.map(reply =>
-            reply.Deleted ? (
-             <></>
-            ) : (
+            !reply.Deleted &&  (
               <li key={reply.ReplyID} className="mb-6 border-b pb-4">
                 <div className="flex items-center mb-2">
                   <img src={reply.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />

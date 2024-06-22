@@ -74,9 +74,8 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
       <ul>
         {posts.length > 0 ? (
           posts.map(post =>
-            post.Deleted ? (
-              <></>
-            ) : (
+            (!post.Deleted &&
+             (
               <li key={post.PostID} className="mb-6 border-b pb-4">
                 <div className="flex items-center mb-2">
                   <img src={post.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />
@@ -108,7 +107,7 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
               </li>
             )
           )
-        ) : (
+        ) ): (
           <p>No posts available.</p>
         )}
       </ul>
