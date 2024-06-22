@@ -20,7 +20,6 @@ const DeletePostReply = async (postreplyID: number, IsPost: boolean) => {
       }
   
       const data = await response.json();
-      console.log(data.message);
       return data.message;
     } catch (error) {
       console.error('Error:', error);

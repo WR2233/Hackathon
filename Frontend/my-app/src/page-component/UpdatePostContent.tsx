@@ -13,6 +13,7 @@ const UpdatePostContent: React.FC = () => {
   const [content, setContent] = useState("");
   const [post, setPost] = useState<Post | null>(null);
   const { postId } = useParams<{ postId: string }>();
+  const [isloading, setIsLoading]= useState<boolean>(false);
   const linkifyOptions = {
     className: "text-blue-400",
   };
@@ -47,13 +48,19 @@ const UpdatePostContent: React.FC = () => {
     if (!uid) {
       return;
     }
-
+    if (isloading){
+        return;
+    }
+    
     try {
+      setIsLoading(true)
       await updatePost(content, parseInt(postId, 10));
       navigate(`/post/${postId}`);
     } catch (error) {
       console.error("Error updating post:", error);
       // Handle error: redirect to error page or show error message
+    } finally{
+        setIsLoading(false)
     }
   };
 

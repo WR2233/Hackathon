@@ -12,7 +12,6 @@ func CreatePost(postData model.PostPre) (int64, error) {
 	if err != nil {
 		return -1, err
 	}
-	log.Print(postData)
 	if postData.VideoURL == "" && postData.ImgURL == "" {
 		// SQLクエリを準備
 		query := "INSERT INTO posts (content, user_id) VALUES (?, ?)"

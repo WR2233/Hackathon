@@ -13,6 +13,9 @@ const CreatePost: React.FC = () => {
   const [media, setMedia] = useState<File | null>(null);
   const [mediaType, setMediaType] = useState<"image" | "video" | null>(null);
   const [isUploaded, setIsUploaded] = useState<boolean>(false);
+  const [isloading, setIsloading] = useState<boolean>(false);
+  const [disableButton, setDisableButton] = useState<boolean>(false); 
+ 
 
   useEffect(() => {
     if (!user) {
@@ -26,16 +29,37 @@ const CreatePost: React.FC = () => {
     if (uid === undefined) {
       return;
     }
-    
+    if (isloading || disableButton) {
+      return;
+    }
     if (media !== null) {
-      handleMediaUpload(uid);
+      try{
+        handleMediaUpload(uid);
+        setIsloading(true)
+      } catch (error) {
+        console.log("Failed to create post")
+      } finally {
+        setIsloading(false);
+        setDisableButton(true); // ボタンを無効化する
+        setTimeout(() => {
+          setDisableButton(false); // 2秒後にボタンを再度有効化する
+        }, 5000);
+      }
+      
     } else {
       try {
+        setIsloading(true)
         const postID = await createPost(content, uid);
         setContent("");
         navigate("/post/" + postID);
       } catch (error) {
         console.error("Failed to create post:", error);
+      } finally{
+        setIsloading(false);
+        setDisableButton(true); // ボタンを無効化する
+        setTimeout(() => {
+          setDisableButton(false); // 2秒後にボタンを再度有効化する
+        }, 5000);
       }
     }
   };
