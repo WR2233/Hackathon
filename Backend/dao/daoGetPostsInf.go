@@ -5,20 +5,19 @@ import (
 	"github.com/WR2233/Hackathon/Backend/model"
 )
 
-func GetPostsFollowing(userID string) ([]model.Post, error) {
+func GetPostsInf(page int) ([]model.Post, error) {
 	var posts []model.Post
+	limit := 10
+	offset := (page - 1) * limit
+
 	db, err := GetDB()
 	if err != nil {
-		return posts, err
+		return nil, err
 	}
-	query := "SELECT posts.post_id, posts.content,  users.username ,users.deleted, posts.postedAt, posts.edited, posts.deleted, posts.user_id, users.img, posts.video, posts.img  FROM posts INNER JOIN followers_following ON posts.user_id = followers_following.following_id INNER JOIN users ON posts.user_id = users.user_id WHERE followers_following.follower_id = ? ORDER BY posts.postedAt DESC;"
-	rows, err := db.Query(query, userID)
+	query := "SELECT p.post_id, p.content, u.username, u.deleted AS deleted_users, p.postedAt, p.edited AS editedAt, p.deleted AS deleted_posts, u.user_id, u.img, p.video, p.img FROM posts p JOIN users u ON p.user_id = u.user_id ORDER BY p.postedAt DESC LIMIT 10 OFFSET ?;"
+	rows, err := db.Query(query, offset)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return posts, nil
-		} else {
-			return nil, err
-		}
+		return nil, err
 	}
 
 	for rows.Next() {
