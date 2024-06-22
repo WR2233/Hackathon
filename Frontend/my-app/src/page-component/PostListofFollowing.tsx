@@ -26,12 +26,17 @@ const PostListofFollowing: React.FC = () => {
           throw new Error('Network response was not ok');
         }
         const data: Post[] = await response.json();
-        const updatedPosts = await Promise.all(data.map(async (post) => {
-          const likeNum = await fetchLikeNum(post.PostID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
-          return { ...post, LikeNum: likeNum };
-        }));
-        setPosts(updatedPosts);
+        if (data && Array.isArray(data) && data.length > 0) {
+          const updatedPosts = await Promise.all(data.map(async (post: Post) => {
+            const likeNum = await fetchLikeNum(post.PostID, true); // IsPostをtrueに設定して投稿のLikeNumを取得
+            return { ...post, LikeNum: likeNum };
+          }));
+          setPosts(updatedPosts);
+        } else {
+          setPosts([]); // データが空の場合、postsを空配列に設定
+        }
       } catch (error) {
+        console.error("Error fetching posts:", error);
         setError(error.message);
       }
     };
@@ -52,38 +57,40 @@ const PostListofFollowing: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Following Posts</h1>
       {error && <p className="text-red-500">{error}</p>}
       <ul>
-        {posts.map(post => (
-          post.DeletedUser ? (
-            <p key={post.PostID}>deleted User</p>
-          ) : (post.Deleted ? (
-            <p key={post.PostID}>deleted Post</p>
-          ) : (
-            <li key={post.PostID} className="mb-6 border-b pb-4">
-              <div className="flex items-center mb-2">
-                <img src={post.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />
-                <div>
-                  <p className="text-lg font-semibold">{post.UserName}</p>
-                  <p className="text-xs text-gray-500">Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
+        {posts.length > 0 ? (
+          posts.map(post => (
+            post.DeletedUser ? (
+              <p key={post.PostID}>deleted User</p>
+            ) : (post.Deleted ? (
+              <p key={post.PostID}>deleted Post</p>
+            ) : (
+              <li key={post.PostID} className="mb-6 border-b pb-4">
+                <div className="flex items-center mb-2">
+                  <img src={post.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />
+                  <div>
+                    <p className="text-lg font-semibold">{post.UserName}</p>
+                    <p className="text-xs text-gray-500">Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
+                  </div>
                 </div>
-              </div>
-              <Linkify as="p" options={linkifyOptions}>
-                {post.Content}
-              </Linkify>
-              {post.Video ? <ReactPlayer url={post.Video} controls={true} width="100%" height="100%" /> : <></>}
-              {post.ImgPost && (
-                <div className="my-2">
-                  <img src={post.ImgPost} alt="Post content" className="w-full h-auto" />
-                </div>
-              )}
-              <p>Likes: {post.LikeNum}</p>
-              <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
-              <Link to={`profiles/?uid=${post.UserID}`} className="text-blue-500 hover:underline mx-4"> User Profile</Link>
-            </li>
+                <Linkify as="p" options={linkifyOptions}>
+                  {post.Content}
+                </Linkify>
+                {post.Video ? <ReactPlayer url={post.Video} controls={true} width="100%" height="100%" /> : null}
+                {post.ImgPost && (
+                  <div className="my-2">
+                    <img src={post.ImgPost} alt="Post content" className="w-full h-auto" />
+                  </div>
+                )}
+                <p>Likes: {post.LikeNum}</p>
+                <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
+                <Link to={`profiles/?uid=${post.UserID}`} className="text-blue-500 hover:underline mx-4"> User Profile</Link>
+              </li>
+            ))
           ))
-        ))}
+        ) : <p>No posts found</p>}
       </ul>
     </div>
   );
 };
 
-export default PostListofFollowing; 
+export default PostListofFollowing;
