@@ -10,7 +10,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 
 interface PostListForUserProps {
-  uid: string;
+  uid: string| null;
 }
 
 const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
@@ -26,6 +26,9 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
     const fetchPostsByUser = async () => {
       setLoading(true);
       try {
+        if (!uid) {
+          return
+        }
         const posts = await getPostsByUserID(uid);
         if (posts) {
           const likeNumPromises = posts.map(post => fetchLikeNum(post.PostID, true));

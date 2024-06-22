@@ -11,6 +11,7 @@ import ReplyDetail from "./pages/ReplyDetail.tsx";
 import ShowTalk from "./pages/ShowTalk.tsx";
 import Header from "./page-component/Header.tsx"
 import Search from "./pages/Searh.tsx";
+import PostListofFollowing from "./page-component/PostListofFollowing.tsx";
 
 const App = () => {
   return (

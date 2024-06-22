@@ -5,6 +5,7 @@ import { fireAuth } from "../services/firebase.ts";
 import FollowButton from "../page-component/FollowButton.tsx";
 import { Profile } from "../model/models.ts";
 import PostListOfUser from "../page-component/PostListOfUser.tsx";
+import ReplyListOfUser from "../page-component/ReplyListOfUser.tsx";
 
 const getQueryParams = (query: string) => {
   return new URLSearchParams(query);
@@ -18,6 +19,8 @@ const UserProfile: React.FC = () => {
   const [user, loading, error] = useAuthState(fireAuth);
   const queryParams = getQueryParams(location.search);
   const userID = queryParams.get("uid");
+  const [activeTab, setActiveTab] =useState<string>("post")
+  const [isFollow, setIsFollow] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -79,9 +82,27 @@ const UserProfile: React.FC = () => {
       >
         Go Back
       </button>
-      <PostListOfUser uid={userID}/>
-    </div>
-  );
+     <div className="flex">
+        <button
+          className={`flex-1 py-2 px-4 ${
+            activeTab === "post" ? "bg-blue-500" : "bg-gray-300"
+          }`}
+          onClick={() => setActiveTab("post")}
+        >
+          Posts
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 ${
+            activeTab === "reply" ? "bg-blue-500" : "bg-gray-300"
+          }`}
+          onClick={() => setActiveTab("reply")}
+        >
+          Replies
+        </button>
+      </div>
+     {activeTab === "post" && <PostListOfUser uid={userID}/>}
+     {activeTab === "reply" && <ReplyListOfUser uid={userID} />}
+    </div>)
 };
 
 export default UserProfile;

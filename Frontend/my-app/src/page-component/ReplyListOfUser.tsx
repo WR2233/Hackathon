@@ -10,7 +10,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 
 interface ReplyListForUserProps {
-  uid: string;
+  uid: string | null;
 }
 
 const ReplyListOfUser: React.FC<ReplyListForUserProps> = ({ uid }) => {
@@ -25,6 +25,9 @@ const ReplyListOfUser: React.FC<ReplyListForUserProps> = ({ uid }) => {
   useEffect(() => {
     const fetchRepliesByUser = async () => {
       setLoading(true);
+      if (!uid) {
+        return 
+      }
       try {
         const replies = await getRepliesByUserID(uid);
         if (replies) {
