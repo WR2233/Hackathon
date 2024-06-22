@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import LoginForm from "./pages/LoginForm.tsx";
+import LoginForm from "../pages/LoginForm.tsx";
 import Home from "./pages/Home.tsx";
 import PostDetail from "./pages/PostDetail.tsx";
 import CreatePost from "./pages/CreatePost.tsx";

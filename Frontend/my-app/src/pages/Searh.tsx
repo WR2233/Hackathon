@@ -147,7 +147,7 @@ const Search: React.FC = () => {
       </button>
 
       {isSearched && (
-        <div>
+        <div className="mb-4 pb-4">
           <ul>
             {filteredPosts && filteredPosts.length > 0 ? (
               filteredPosts.map(post => (
