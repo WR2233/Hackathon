@@ -92,12 +92,16 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
                 <p>Likes: {post.LikeNum}</p>
                 <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
                 {user && user.uid === post.UserID && (
-                  <button
-                    onClick={() => handleDelete(post.PostID)}
-                    className="text-red-500 hover:underline ml-4"
-                  >
-                    Delete
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => handleDelete(post.PostID)}
+                      className="text-red-500 hover:underline "
+                    >
+                      Delete
+                    </button>
+
+                    <Link to={`/updatepost/${post.PostID}`} className="text-blue-500 hover:underline mx-4">update post</Link>
+                  </div>
                 )}
               </li>
             )

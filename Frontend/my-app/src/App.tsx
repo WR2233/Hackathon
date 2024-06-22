@@ -11,6 +11,7 @@ import ReplyDetail from "./pages/ReplyDetail.tsx";
 import ShowTalk from "./pages/ShowTalk.tsx";
 import Header from "./page-component/Header.tsx"
 import Search from "./pages/Searh.tsx";
+import UpdatePostContent from "./page-component/UpdatePostContent.tsx";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/reply/:replyId" element={<ReplyDetail />} />
           <Route path="/showtalk/:replyId" element={< ShowTalk/>} />
           <Route path="/search" element={< Search/>} />
+          <Route path="/updatepost/:postId" element={<UpdatePostContent/>} />
         </Routes>
       </Router>
     </div>
