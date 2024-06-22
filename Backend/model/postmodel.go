@@ -21,7 +21,7 @@ type Reply struct {
 	PostedByID   string `json:"PostedByID"`
 	PostedToID   int    `json:"PostedToID"`
 	Edited       int    `json:"Edited"`
-	DeletedReply int    `json:"DeletedReply"`
+	DeletedReply int    `json:"Deleted"`
 	UserName     string `json:"UserName"`
 	DeletedUser  bool   `json:"DeletedUser"`
 	IsToPost     bool   `json:"IsToPost"`

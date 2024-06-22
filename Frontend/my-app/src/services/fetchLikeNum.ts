@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const fetchLikeNum = async (postreplyID: string, IsPost: boolean) => {
+const fetchLikeNum = async (postreplyID: number, IsPost: boolean) => {
   if (IsPost){
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/getlikenum?pid=${postreplyID}`);
