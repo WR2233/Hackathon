@@ -45,3 +45,8 @@ type ReplyPre struct {
 	VideoURL    string `json:"VideoURL"`
 	ImgURL      string `json:"ImgURL"`
 }
+
+type UpdatePost struct {
+	PostID  int    `json:"PostID"`
+	Content string `json:"Content"`
+}

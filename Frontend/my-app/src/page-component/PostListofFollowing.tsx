@@ -86,4 +86,4 @@ const PostListofFollowing: React.FC = () => {
   );
 };
 
-export default PostListofFollowing;
+export default PostListofFollowing; 

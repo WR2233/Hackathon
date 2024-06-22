@@ -9,7 +9,7 @@ func Handler() {
 	http.HandleFunc("/getposts", enableCors(getPostsHandler))
 	http.HandleFunc("/getpost", enableCors(getAPostHandler))
 	http.HandleFunc("/createpost", enableCors(createPostHandler))
-	http.HandleFunc("/updatepost/{id}", enableCors(updatePostHandler)) //未実装
+	http.HandleFunc("/updatepost", enableCors(UpdatePostHandler)) //未実装
 	http.HandleFunc("/deletepostreply", enableCors(deletePostReplyHandler))
 	http.HandleFunc("/getpostsbyuserid", enableCors(getPostsByUserIDHandler))
 	http.HandleFunc("/getpostsfollowing", enableCors(getPostsFollowingHandler))
