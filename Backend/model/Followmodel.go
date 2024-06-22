@@ -1,7 +1,10 @@
 package model
 
-type FollowRequest struct {
+type ToggleFollowRequest struct {
 	FollowedByID string `json:"FollowedByID"`
 	FollowedToID string `json:"FollowedToID"`
-	NumFollows   int    `json:"NumFollows"`
+}
+
+type ToggleFollowResponse struct {
+	Followed bool `json:"followed"`
 }

@@ -8,13 +8,39 @@ interface FollowButtonProps {
     followedToID: string;
 }
 
-const FollowButton: React.FC <FollowButtonProps> = ({ followedToID }) => {
+const FollowButton: React.FC<FollowButtonProps> = ({ followedToID }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
-    const [user, loading] = useAuthState(fireAuth);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [user] = useAuthState(fireAuth);
 
     useEffect(() => {
-        // 初期フォロー状態を取得する処理を追加することもできます。
-        // APIからフォロー状態を取得してsetIsFollowingを更新する
+        const getFollowStatus = async (followedByID: string, followedToID: string) => {
+            const url = `${process.env.REACT_APP_API_URL}/followstatus`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ followedByID, followedToID }),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to get follow status");
+            }
+            const data = await response.json();
+            return data.followed;
+        };
+
+        if (user) {
+            getFollowStatus(user.uid, followedToID)
+                .then(status => {
+                    setIsFollowing(status);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error("Error fetching follow status:", error);
+                    setLoading(false);
+                });
+        }
     }, [followedToID, user]);
 
     const handleFollowToggle = async () => {
@@ -27,6 +53,10 @@ const FollowButton: React.FC <FollowButtonProps> = ({ followedToID }) => {
             console.error("Error toggling follow:", error);
         }
     };
+
+    if (loading) {
+        return <button className="block bg-gray-500 text-white font-bold py-2 px-4 rounded" disabled>Loading...</button>;
+    }
 
     return (
         <button

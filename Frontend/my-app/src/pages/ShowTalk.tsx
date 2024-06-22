@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Post, Reply } from "../model/models.ts";
+import { Post, Reply } from "../model/models";
 import Linkify from "linkify-react";
 import ReactPlayer from 'react-player';
 
@@ -78,11 +78,14 @@ const ShowTalk: React.FC = () => {
                 <h2 className="text-xl font-bold mb-4">Parent Posts</h2>
                 <div className="space-y-4">
                     {posts.map((post, index) => (
-                        !post.deleted && !post.DeletedUser && (
+                        !post.Deleted && !post.DeletedUser && (
                             <div key={index} className="p-4 border rounded-lg shadow-md">
-                                <h3 className="text-lg font-semibold">{post.UserName}</h3>
-                                <div>
-                                    <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                                <div className="flex">
+                                    <div>
+                                        <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold">{post.UserName}</h3>
+                                    <p>posted At {post.PostedAt}</p>
                                 </div>
                                 <Linkify as="p" options={linkifyOptions}>
                                     {post.Content}
@@ -93,9 +96,7 @@ const ShowTalk: React.FC = () => {
                                 {post.Edited && <p>Edited</p>}
                                 {post.PostID && <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>}
                                 {post.ReplyID && <Link to={`/reply/${post.ReplyID}`} className="text-blue-500">To Reply detail</Link>}
-                            </div>
-                        )
-                    ))}
+                            </div>)))}
                 </div>
             </div>
             {mainReply && (
@@ -121,7 +122,7 @@ const ShowTalk: React.FC = () => {
                 <h2 className="text-xl font-bold mb-4">Replies</h2>
                 <div className="space-y-4">
                     {replies.map((reply) => (
-                        !reply.deleted && !reply.DeletedUser && (
+                        !reply.Deleted && !reply.DeletedUser && (
                             <div key={reply.ReplyID} className="p-4 border rounded-lg shadow-md">
                                 <span className="text-sm text-gray-600">{reply.UserName}</span>
                                 <div>

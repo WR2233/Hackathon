@@ -39,7 +39,7 @@ const Home: React.FC = () => {
       <div className="flex">
         <button
           className={`flex-1 py-2 px-4 ${
-            activeTab === "post" ? "bg-blue-500" : "bg-gray-300"
+            activeTab === "allpost" ? "bg-blue-500" : "bg-gray-300"
           }`}
           onClick={() => setActiveTab("allpost")}
         >
@@ -47,7 +47,7 @@ const Home: React.FC = () => {
         </button>
         <button
           className={`flex-1 py-2 px-4 ${
-            activeTab === "reply" ? "bg-blue-500" : "bg-gray-300"
+            activeTab === "followpost" ? "bg-blue-500" : "bg-gray-300"
           }`}
           onClick={() => setActiveTab("followpost")}
         >
