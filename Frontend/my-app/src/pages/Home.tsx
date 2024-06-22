@@ -3,10 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
 import  PostList from "../page-component/PostList.tsx";
+import PostListofFollowing from "../page-component/PostListofFollowing.tsx";
+import { useState } from "react";
 
 const Home: React.FC = () => {
   const [user] = useAuthState(fireAuth);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<string>("allpost")
 
   useEffect(() => {
     if (!user) {
@@ -33,7 +36,27 @@ const Home: React.FC = () => {
       <button onClick={handleSignOut} className="block w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
         Sign Out
       </button>
-      <PostList />
+      <div className="flex">
+        <button
+          className={`flex-1 py-2 px-4 ${
+            activeTab === "post" ? "bg-blue-500" : "bg-gray-300"
+          }`}
+          onClick={() => setActiveTab("allpost")}
+        >
+          All Posts
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 ${
+            activeTab === "reply" ? "bg-blue-500" : "bg-gray-300"
+          }`}
+          onClick={() => setActiveTab("followpost")}
+        >
+          Following
+        </button>
+      </div>
+
+      {activeTab === "allpost" && <PostList />}
+      {activeTab === "followpost" && <PostListofFollowing />}
     </div>
   );
 };

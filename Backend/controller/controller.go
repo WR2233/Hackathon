@@ -12,6 +12,7 @@ func Handler() {
 	http.HandleFunc("/updatepost/{id}", enableCors(updatePostHandler)) //未実装
 	http.HandleFunc("/deletepostreply", enableCors(deletePostReplyHandler))
 	http.HandleFunc("/getpostsbyuserid", enableCors(getPostsByUserIDHandler))
+	http.HandleFunc("/getpostsfollowing", enableCors(getPostsFollowingHandler))
 
 	//user関連
 	http.HandleFunc("/createuser", enableCors(createUserHandler))

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fireAuth } from "../services/firebase.ts";
-import { Post } from "../model/models.ts";
+import { Post } from "../model/models";
 import { useNavigate } from "react-router-dom";
 import DateTime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 import Linkify from "linkify-react";
 import ReactPlayer from "react-player";
+import moment from 'moment';
 
 const Search: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchContent, setSearchContent] = useState<string>("");
   const [searchName, setSearchName] = useState<string>("");
-  const [startTime, setStartTime] = useState<Date | null>(null);
-  const [endTime, setEndTime] = useState<Date | null>(null);
+  const [startTime, setStartTime] = useState<Date| null>(null);
+  const [endTime, setEndTime] = useState<Date| null>(null);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [user, loading] = useAuthState(fireAuth);
   const [isSearched, setIsSearched] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const Search: React.FC = () => {
       const isContentMatch = !searchContent || post.Content.toLowerCase().includes(searchContent.toLowerCase());
       const isNameMatch = !searchName || post.UserName.toLowerCase().includes(searchName.toLowerCase());
       const isTimeMatch = (!startTime || startTime <= postTime) && (!endTime || postTime <= endTime);
-      const isNotDeleted = !post.DeletedUser && !post.Deleted; // フィルタ条件に追加
+      const isNotDeleted = !post.DeletedUser && !post.Deleted;
       return isContentMatch && isNameMatch && isTimeMatch && isNotDeleted;
     });
 
@@ -111,7 +112,13 @@ const Search: React.FC = () => {
             <label className="block text-gray-700">Search by Start Time:</label>
             <DateTime
               value={startTime}
-              onChange={(date: Date) => setStartTime(date)}
+              onChange={(date: moment.Moment | string | null) => {
+                if (date === null || typeof date === 'string') {
+                  setStartTime(null);
+                } else {
+                  setStartTime(date.toDate());
+                }
+              }}
               input={false}
               className="date-picker"
             />
@@ -120,7 +127,13 @@ const Search: React.FC = () => {
             <label className="block text-gray-700">Search by End Time:</label>
             <DateTime
               value={endTime}
-              onChange={(date: Date) => setEndTime(date)}
+              onChange={(date: moment.Moment | string | null) => {
+                if (date === null || typeof date === 'string') {
+                  setEndTime(null);
+                } else {
+                  setEndTime(date.toDate());
+                }
+              }}
               input={false}
               className="date-picker"
             />
@@ -138,6 +151,9 @@ const Search: React.FC = () => {
             {filteredPosts && filteredPosts.length > 0 ? (
               filteredPosts.map(post => (
                 <li key={post.PostID} className="border-b py-4">
+                  <div className="mb-4">
+                    <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                  </div>
                   <p className="text-lg font-semibold">{post.UserName}</p>
                   <p className="text-gray-600">{new Date(post.PostedAt).toLocaleString()}</p>
                   <Linkify as="p" options={linkifyOptions}>
