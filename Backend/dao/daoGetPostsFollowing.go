@@ -11,7 +11,7 @@ func GetPostsFollowing(userID string) ([]model.Post, error) {
 	if err != nil {
 		return posts, err
 	}
-	query := "SELECT posts.post_id, posts.content,  users.username ,users.deleted, posts.postedAt, posts.edited, posts.deleted, posts.user_id, users.img, posts.video, posts.img  FROM posts INNER JOIN followers_following ON posts.user_id = followers_following.following_id INNER JOIN users ON posts.user_id = users.user_id WHERE followers_following.follower_id = ?;"
+	query := "SELECT posts.post_id, posts.content,  users.username ,users.deleted, posts.postedAt, posts.edited, posts.deleted, posts.user_id, users.img, posts.video, posts.img  FROM posts INNER JOIN followers_following ON posts.user_id = followers_following.following_id INNER JOIN users ON posts.user_id = users.user_id WHERE followers_following.follower_id = ? ORDER BY posts.postedAt DESC;"
 	rows, err := db.Query(query, userID)
 	if err != nil {
 		return nil, err

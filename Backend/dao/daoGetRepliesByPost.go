@@ -12,7 +12,7 @@ func GetRepliesByPostID(postID int) ([]model.Reply, error) {
 		return nil, err
 	}
 
-	query := "SELECT r.reply_id, r.content, r.postedAt , r.postedBy_id, r.postedTo_id, r.edited AS editedAt, r.deleted AS deleted_reply, u.username, u.deleted, r.IsToPost, u.img, r.video, r.img FROM replies r JOIN users u ON r.postedBy_id = u.user_id WHERE r.postedTo_id = ? AND r.IsToPost = true"
+	query := "SELECT r.reply_id, r.content, r.postedAt , r.postedBy_id, r.postedTo_id, r.edited AS editedAt, r.deleted AS deleted_reply, u.username, u.deleted, r.IsToPost, u.img, r.video, r.img FROM replies r JOIN users u ON r.postedBy_id = u.user_id WHERE r.postedTo_id = ? AND r.IsToPost = true ORDER BY r.postedAt DESC"
 	rows, err := db.Query(query, postID)
 	if err != nil {
 		return nil, err
