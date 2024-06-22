@@ -22,6 +22,7 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate();
   const [replies, setReplies] = useState<Reply[]>([]);
   const url = process.env.REACT_APP_API_URL;
+  const [isloading, setIsloading] = useState<boolean>(false)
   const linkifyOptions = {
     className: "text-blue-400",
   };
@@ -107,8 +108,12 @@ const PostDetail: React.FC = () => {
 
   const handleReplySubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isloading) {
+      return;
+    }
     try {
       const pidNum = parseInt(postId);
+      setIsloading(true)
       if (isNaN(pidNum)) {
         console.error("Post ID is not a number");
         return;
@@ -119,6 +124,8 @@ const PostDetail: React.FC = () => {
       navigate(`/showtalk/${replyID}`);
     } catch (error) {
       console.error("Error creating reply:", error);
+      setTimeout(() => {
+        setIsloading(false)}, 2000)
     }
   };
 

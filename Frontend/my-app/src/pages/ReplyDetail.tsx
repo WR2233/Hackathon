@@ -19,6 +19,7 @@ const ReplyDetail: React.FC = () => {
   const [user] = useAuthState(fireAuth);
   const [replyFormVisible, setReplyFormVisible] = useState<boolean>(false);
   const [replyContent, setReplyContent] = useState<string>("");
+  const [isloading, setIsloading] = useState<boolean>(false)
   const navigate = useNavigate();
   const linkifyOptions = {
     className: "text-blue-400",
@@ -104,13 +105,21 @@ const ReplyDetail: React.FC = () => {
 
   const handleReplySubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isloading) {
+      return;
+    }
     try {
+      setIsloading(true)
       const newReplyId = await CreateReply(parseInt(replyId), user.uid, replyContent, false);
       setReplyContent("");
       setReplyFormVisible(false);
       navigate(`/showtalk/${newReplyId}`);
     } catch (error) {
       console.error("Error creating reply:", error);
+    } finally {
+      setTimeout(() => {
+        setIsloading(false); // 2秒後にボタンを再度有効化する
+      }, 2000);
     }
   };
 

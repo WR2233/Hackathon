@@ -25,6 +25,9 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
   useEffect(() => {
     const fetchPostsByUser = async () => {
       setLoading(true);
+      if (loading) {
+        return;
+      }
       try {
         if (!uid) {
           return
@@ -52,7 +55,6 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
     if (!window.confirm("Are you sure you want to delete this post?")) {
       return;
     }
-
     try {
       setLoading(true);
       await DeletePostReply(postID, true);
@@ -72,9 +74,8 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
       <ul>
         {posts.length > 0 ? (
           posts.map(post =>
-            post.Deleted ? (
-              <p key={`deleted-${post.PostID}`}>deleted post</p>
-            ) : (
+            (!post.Deleted &&
+             (
               <li key={post.PostID} className="mb-6 border-b pb-4">
                 <div className="flex items-center mb-2">
                   <img src={post.Img} alt="User profile" className="w-12 h-12 rounded-full object-cover mr-4" />
@@ -106,7 +107,7 @@ const PostListOfUser: React.FC<PostListForUserProps> = ({ uid }) => {
               </li>
             )
           )
-        ) : (
+        ) ): (
           <p>No posts available.</p>
         )}
       </ul>

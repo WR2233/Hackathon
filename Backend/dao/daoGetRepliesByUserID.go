@@ -7,7 +7,7 @@ import (
 
 func GetRepliesByUserID(userID string) ([]model.Reply, error) {
 	var replies []model.Reply
-	query := "SELECT r.reply_id, r.content, r.postedAt , r.postedBy_id, r.postedTo_id, r.edited AS editedAt, r.deleted AS deleted_reply, u.username, u.deleted, r.IsToPost, u.img, r.video, r.img FROM replies r JOIN users u ON r.postedBy_id = u.user_id WHERE  u.user_id = ?"
+	query := "SELECT r.reply_id, r.content, r.postedAt , r.postedBy_id, r.postedTo_id, r.edited AS editedAt, r.deleted AS deleted_reply, u.username, u.deleted, r.IsToPost, u.img, r.video, r.img FROM replies r JOIN users u ON r.postedBy_id = u.user_id WHERE  u.user_id = ? ORDER BY r.postedAt DESC"
 	rows, err := db.Query(query, userID)
 	if err != nil {
 		return nil, err

@@ -12,7 +12,7 @@ const LoginForm: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [userData, setUserData] = useState<Profile | null> (null)
+  const [isloading, setIsloading] = useState<boolean>(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(fireAuth, (currentUser) => {
@@ -57,7 +57,11 @@ const LoginForm: React.FC = () => {
       setError("Password should be at least 6 characters long.");
       return;
     }
+    if (isloading) {
+      return
+    }
     try {
+      setIsloading(true)
       const userCredential = await createUserWithEmailAndPassword(fireAuth, email, password);
       const user = userCredential.user;
       await createUser(username, user.uid);
@@ -65,6 +69,8 @@ const LoginForm: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.error("Failed to sign up:", error);
+    } finally {
+      setIsloading(false)
     }
   };
 
