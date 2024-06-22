@@ -32,7 +32,7 @@ const PostList: React.FC = () => {
     };
     fetchPosts();
   }, [url]);
-  console.log(posts)
+  
   return (
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Posts</h1>
