@@ -25,7 +25,6 @@ func CreateReply(replyData model.ReplyPre) (int64, error) {
 			log.Println("Failed to get the last inserted replyID: ", err)
 			return -1, err
 		}
-		log.Println("Successfully inserted replyID: ", ReplyID)
 		return ReplyID, nil
 	} else if replyData.VideoURL != "" {
 		query := "INSERT INTO replies (postedTo_id, postedBy_id, content, isToPost, Video) VALUES (?, ?, ?, ?, ?)"
@@ -40,7 +39,6 @@ func CreateReply(replyData model.ReplyPre) (int64, error) {
 			log.Println("Failed to get the last inserted replyID: ", err)
 			return -1, err
 		}
-		log.Println("Successfully inserted replyID: ", ReplyID)
 		return ReplyID, nil
 	} else if replyData.ImgURL != "" {
 		query := "INSERT INTO replies (postedTo_id, postedBy_id, content, isToPost, img) VALUES (?, ?, ?, ?, ?)"
@@ -55,7 +53,6 @@ func CreateReply(replyData model.ReplyPre) (int64, error) {
 			log.Println("Failed to get the last inserted replyID: ", err)
 			return -1, err
 		}
-		log.Println("Successfully inserted replyID: ", ReplyID)
 		return ReplyID, nil
 	} else {
 		return 0, errors.New("Invalid reply data")

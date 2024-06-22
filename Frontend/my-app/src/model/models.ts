@@ -13,6 +13,7 @@ export interface Reply {
     Img: string
     Video: string
     ImgPost: string
+    LikeNum?: number
 }
 
 export interface Post {
@@ -27,6 +28,7 @@ export interface Post {
     Img: string
     Video : string
     ImgPost : string
+    LikeNum?: number
 }
 
 export interface Profile {

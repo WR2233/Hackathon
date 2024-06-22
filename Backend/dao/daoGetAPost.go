@@ -3,7 +3,6 @@ package dao
 import (
 	"database/sql"
 	"github.com/WR2233/Hackathon/Backend/model"
-	"log"
 )
 
 // 投稿の詳細情報を取得するハンドラー
@@ -34,12 +33,10 @@ func GetAPost(post_id int) (*model.Post, error) {
 	} else {
 		post.Video = ""
 	}
-	log.Print(post)
 	if img.Valid {
 		post.ImgPost = img.String
 	} else {
 		post.ImgPost = ""
 	}
-	log.Print(post)
 	return &post, nil
 }

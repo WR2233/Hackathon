@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Settings from "../page-component/settings.tsx";
 import { Profile } from "../model/models.ts";
 import PostListOfUser from "../page-component/PostListOfUser.tsx";
+import ReplyListOfUser from "../page-component/ReplyListOfUser.tsx";
 
 const MyProfile: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const MyProfile: React.FC = () => {
   const url = process.env.REACT_APP_API_URL;
   const [profile, setProfile] = useState<Profile | null>(null); // ステート変数の名前をprofileに変更
   const location = useLocation();
+  const [activeTab, setActiveTab] = useState<string>("post")
 
   useEffect(() => {
     const fetchMyProfile = async () => {
@@ -72,7 +74,27 @@ const MyProfile: React.FC = () => {
       </button>
 
       <Settings />
-      <PostListOfUser uid={profile?.UserID}/>
+      <div className="flex">
+        <button
+          className={`flex-1 py-2 px-4 ${
+            activeTab === "post" ? "bg-blue-500" : "bg-gray-300"
+          }`}
+          onClick={() => setActiveTab("post")}
+        >
+          Posts
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 ${
+            activeTab === "reply" ? "bg-blue-500" : "bg-gray-300"
+          }`}
+          onClick={() => setActiveTab("reply")}
+        >
+          Replies
+        </button>
+      </div>
+
+      {activeTab === "post" && <PostListOfUser uid={profile?.UserID}/>}
+      {activeTab === "reply" && <ReplyListOfUser uid={profile?.UserID} />}
     </div>
   );
 };
