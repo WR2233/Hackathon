@@ -13,8 +13,8 @@ const Search: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [searchContent, setSearchContent] = useState<string>("");
   const [searchName, setSearchName] = useState<string>("");
-  const [startTime, setStartTime] = useState<Date| null>(null);
-  const [endTime, setEndTime] = useState<Date| null>(null);
+  const [startTime, setStartTime] = useState<moment.Moment | Date | null>(null);
+  const [endTime, setEndTime] = useState<moment.Moment | Date | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [user, loading] = useAuthState(fireAuth);
   const [isSearched, setIsSearched] = useState<boolean>(false);
@@ -111,27 +111,29 @@ const Search: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700">Search by Start Time:</label>
             <DateTime
-              value={startTime}
+              value={startTime instanceof Date ? startTime : undefined}
               onChange={(date: moment.Moment | string | null) => {
                 if (date === null || typeof date === 'string') {
                   setStartTime(null);
                 } else {
-                  setStartTime(date.toDate());
+                  setStartTime(date instanceof Date ? moment(date) : date);
                 }
               }}
               input={false}
               className="date-picker"
             />
+
+
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Search by End Time:</label>
             <DateTime
-              value={endTime}
+              value={endTime instanceof Date ? endTime : undefined}
               onChange={(date: moment.Moment | string | null) => {
                 if (date === null || typeof date === 'string') {
                   setEndTime(null);
                 } else {
-                  setEndTime(date.toDate());
+                  setEndTime(date instanceof Date ? moment(date) : date);
                 }
               }}
               input={false}
