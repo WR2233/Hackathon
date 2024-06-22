@@ -34,7 +34,6 @@ const PostDetail: React.FC = () => {
           throw new Error("Failed to fetch post");
         }
         const data: Post = await response.json();
-        console.log(data);
         setPost(data);
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -43,7 +42,7 @@ const PostDetail: React.FC = () => {
 
     const fetchLikeCount = async () => {
       if (postId) {
-        const likeData = await fetchLikeNum(postId, true);
+        const likeData = await fetchLikeNum(parseInt(postId), true);
         if (likeData !== null) {
           setLikeCount(likeData);
         } else {
@@ -95,7 +94,7 @@ const PostDetail: React.FC = () => {
     try {
       const newLikedStatus = await toggleLike(postId!, user.uid, true);
       setLiked(newLikedStatus);
-      const likeCount = await fetchLikeNum(postId!, true);
+      const likeCount = await fetchLikeNum(parseInt(postId), true);
       setLikeCount(likeCount);
     } catch (error) {
       console.error("Error toggling like:", error);

@@ -91,6 +91,7 @@ const ReplyListOfUser: React.FC<ReplyListForUserProps> = ({ uid }) => {
                 <p className="text-xs text-gray-500">{reply.Edited ? "Edited" : "Not Edited"}</p>
                 <p>Likes: {reply.LikeNum}</p>
                 <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500 hover:underline">Details</Link>
+                <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700 ml-4">Watch Talk</Link>
                 {user && user.uid === reply.PostedByID && (
                   <button
                     onClick={() => handleDelete(reply.ReplyID)}

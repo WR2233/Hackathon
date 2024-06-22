@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, on
 import { fireAuth } from "../services/firebase.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../services/createUser.ts";
+import { Profile } from "../model/models.ts";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,12 +12,13 @@ const LoginForm: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [userData, setUserData] = useState<Profile | null> (null)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(fireAuth, (currentUser) => {
       setUser(currentUser);
     });
-    return () => unsubscribe();
+    return () => unsubscribe();  
   }, []);
 
   const isValidAsEmail = (email: string) => {
@@ -81,6 +83,7 @@ const LoginForm: React.FC = () => {
       {user ? (
         <div className="text-center">
           <p className="mb-4">Welcome back, {user.email}!</p>
+
           <button onClick={handleSignOut} className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
             Sign Out
           </button>
@@ -136,7 +139,7 @@ const LoginForm: React.FC = () => {
         </div>
       )}
       <Link to="/" className="block mt-4 text-blue-500 hover:text-blue-600 text-center">
-        Back to Home
+        Go to TimeLine
       </Link>
     </div>
   );

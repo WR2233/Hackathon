@@ -8,6 +8,7 @@ import "react-datetime/css/react-datetime.css";
 import Linkify from "linkify-react";
 import ReactPlayer from "react-player";
 import moment from 'moment';
+import { Link } from "react-router-dom";
 
 const Search: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -122,8 +123,6 @@ const Search: React.FC = () => {
               input={false}
               className="date-picker"
             />
-
-
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Search by End Time:</label>
@@ -152,12 +151,14 @@ const Search: React.FC = () => {
           <ul>
             {filteredPosts && filteredPosts.length > 0 ? (
               filteredPosts.map(post => (
-                <li key={post.PostID} className="border-b py-4">
-                  <div className="mb-4">
-                    <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                <li key={post.PostID} className="mb-6 border-b pb-4">
+                  <div className="flex items-start mb-2">
+                    <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mr-4" />
+                    <div>
+                      <p className="text-lg font-semibold">{post.UserName}</p>
+                      <p className="text-xs text-gray-500">Posted At: {new Date(post.PostedAt).toLocaleString()}</p>
+                    </div>
                   </div>
-                  <p className="text-lg font-semibold">{post.UserName}</p>
-                  <p className="text-gray-600">{new Date(post.PostedAt).toLocaleString()}</p>
                   <Linkify as="p" options={linkifyOptions}>
                     {post.Content}
                   </Linkify>
@@ -167,6 +168,7 @@ const Search: React.FC = () => {
                   {post.ImgPost && (
                     <img src={post.ImgPost} alt="Img of Post" />
                   )}
+                   <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
                 </li>
               ))
             ) : (
