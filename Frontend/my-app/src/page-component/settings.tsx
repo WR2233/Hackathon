@@ -16,6 +16,10 @@ const Settings: React.FC = () => {
 
   const handleUpdateUserName = async () => {
     if (!user) return;
+    if (!newUserName) {
+      alert("名前を入力してください");
+      return;
+    }
     try {
       await updateUserName(user.uid, newUserName);
       setIsUpdated(true);
@@ -34,7 +38,15 @@ const Settings: React.FC = () => {
   };
 
   const handleImageUpload = async () => {
-    if (!image || !user) return;
+    if (!image || !user) {
+      alert("画像ファイルを添付してください")
+      return;
+    }
+    const acceptedImageTypes = ["image/jpeg", "image/png"];
+    if (!acceptedImageTypes.includes(image.type)) {
+      alert("画像ファイルを添付してください");
+      return;
+    }
     try {
       const storageRef = ref(storage, `images/${image.name}`);
       const uploadTask = await uploadBytes(storageRef, image);
@@ -88,10 +100,11 @@ const Settings: React.FC = () => {
       </div>
       <div className="mb-4">
         <input type="file" onChange={handleImageChange} />
-        {imagePreview && 
+        {image && 
         <div>
           <p>preview</p>
-          <img src={imagePreview} alt="Selected" className="w-20 h-20 rounded-full" />
+          {imagePreview &&
+          <img src={imagePreview} alt="Selected" className="w-20 h-20 rounded-full" />}
         </div>}
         <button onClick={handleImageUpload} className="px-4 py-2 bg-blue-500 text-white rounded-md mt-2">
           Upload Image

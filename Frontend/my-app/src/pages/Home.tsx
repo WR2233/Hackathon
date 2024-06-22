@@ -33,12 +33,12 @@ const Home: React.FC = () => {
       <Link to="/create-post" className="block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4">
         Create Post
       </Link>
-      <button onClick={handleSignOut} className="block w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+      <button onClick={handleSignOut} className="block w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded mb-4">
         Sign Out
       </button>
       <div className="flex">
         <button
-          className={`flex-1 py-2 px-4 ${
+          className={`flex-1 py-2 px-4 hover:bg-blue-300 rounded ${
             activeTab === "allpost" ? "bg-blue-500" : "bg-gray-300"
           }`}
           onClick={() => setActiveTab("allpost")}
@@ -46,7 +46,7 @@ const Home: React.FC = () => {
           All Posts
         </button>
         <button
-          className={`flex-1 py-2 px-4 ${
+          className={`flex-1 py-2 px-4 hover:bg-blue-300 rounded  ${
             activeTab === "followpost" ? "bg-blue-500" : "bg-gray-300"
           }`}
           onClick={() => setActiveTab("followpost")}

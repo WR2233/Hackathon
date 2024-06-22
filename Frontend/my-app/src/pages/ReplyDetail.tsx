@@ -108,7 +108,7 @@ const ReplyDetail: React.FC = () => {
       const newReplyId = await CreateReply(parseInt(replyId), user.uid, replyContent, false);
       setReplyContent("");
       setReplyFormVisible(false);
-      navigate(`/reply/${newReplyId}`);
+      navigate(`/showtalk/${newReplyId}`);
     } catch (error) {
       console.error("Error creating reply:", error);
     }
@@ -187,6 +187,7 @@ const ReplyDetail: React.FC = () => {
             <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700 ml-4">
               Watch Talk
             </Link>
+
           </div>
         </>
       )}

@@ -116,7 +116,7 @@ const PostDetail: React.FC = () => {
       const replyID = await CreateReply(pidNum, user.uid, replyContent, true);
       setReplyContent("");
       setReplyFormVisible(false);
-      navigate(`/reply/${replyID}`);
+      navigate(`/showtalk/${replyID}`);
     } catch (error) {
       console.error("Error creating reply:", error);
     }
@@ -205,6 +205,9 @@ const PostDetail: React.FC = () => {
                             <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">View Reply Detail</Link>
                             <p>
                               <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">See Talk</Link>
+                            </p>
+                            <p>
+                              <Link to={`/profiles?uid=${reply.PostedByID}`} className="text-blue-500 hover:text-blue-700">profiles</Link>
                             </p>
                           </>
                         )}

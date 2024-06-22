@@ -77,6 +77,7 @@ const PostListofFollowing: React.FC = () => {
               )}
               <p>Likes: {post.LikeNum}</p>
               <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
+              <Link to={`profiles/?uid=${post.UserID}`} className="text-blue-500 hover:underline mx-4"> User Profile</Link>
             </li>
           ))
         ))}

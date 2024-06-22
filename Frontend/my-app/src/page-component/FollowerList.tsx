@@ -77,7 +77,7 @@ const FollowersList = () => {
                   </div>
                   <Link
                     to={`/profiles?uid=${follower.UserID}`}
-                    className="btn btn-primary btn-sm"
+                    className="text-blue-500 hover:underline mx-4"
                   >
                     View Profile
                   </Link>

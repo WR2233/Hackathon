@@ -51,12 +51,6 @@ const FollowingList = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-8 offset-md-2">
-          <button
-            onClick={() => navigate(-1)}
-            className="btn btn-primary mb-10"
-          >
-            Go Back
-          </button>
           <ul className="list-group">
             {followingList && followingList.length > 0 ? (
               followingList.map((following) => (
@@ -78,7 +72,7 @@ const FollowingList = () => {
                   </div>
                   <Link
                     to={`/profiles?uid=${following.UserID}`}
-                    className="btn btn-primary btn-sm"
+                    className="text-blue-500 hover:underline mx-4"
                   >
                     View Profile
                   </Link>

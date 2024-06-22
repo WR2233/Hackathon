@@ -13,6 +13,7 @@ func GetFollowStatus(FollowedByID string, FollowedToID string) (bool, error) {
 	var followed bool
 
 	query := "SELECT EXISTS(SELECT 1 FROM followers_following WHERE follower_id = ? AND following_id = ?)"
+
 	err = db.QueryRow(query, FollowedByID, FollowedToID).Scan(&followed)
 	if err != nil {
 		log.Println("Error checking follow existence:", err)

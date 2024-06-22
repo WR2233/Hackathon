@@ -76,16 +76,18 @@ const UserProfile: React.FC = () => {
       <Link to={`/followlist?uid=${userID}`} className="block bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2">
         View Following and Followers
       </Link>
+
       <button
         onClick={() => navigate(-1)}
-        className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+        className="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mb-4"
       >
         Go Back
       </button>
+
      <div className="flex">
         <button
-          className={`flex-1 py-2 px-4 ${
-            activeTab === "post" ? "bg-blue-500" : "bg-gray-300"
+          className={`flex-1 py-2 px-4  ${
+            activeTab === "post" ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-300 hover:bg-gray-200"
           }`}
           onClick={() => setActiveTab("post")}
         >
@@ -93,7 +95,7 @@ const UserProfile: React.FC = () => {
         </button>
         <button
           className={`flex-1 py-2 px-4 ${
-            activeTab === "reply" ? "bg-blue-500" : "bg-gray-300"
+            activeTab === "reply" ? "bg-blue-500 hover:bg-blue-700" : "bg-gray-300 hover:bg-gray-200"
           }`}
           onClick={() => setActiveTab("reply")}
         >
