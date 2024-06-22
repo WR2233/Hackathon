@@ -206,6 +206,9 @@ const PostDetail: React.FC = () => {
                             <p>
                               <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 hover:text-blue-700">See Talk</Link>
                             </p>
+                            <p>
+                              <Link to={`/profiles?uid=${reply.PostedByID}`} className="text-blue-500 hover:text-blue-700">profiles</Link>
+                            </p>
                           </>
                         )}
                       </>

@@ -16,6 +16,10 @@ const Settings: React.FC = () => {
 
   const handleUpdateUserName = async () => {
     if (!user) return;
+    if (!newUserName) {
+      alert("名前を入力してください");
+      return;
+    }
     try {
       await updateUserName(user.uid, newUserName);
       setIsUpdated(true);
@@ -34,7 +38,15 @@ const Settings: React.FC = () => {
   };
 
   const handleImageUpload = async () => {
-    if (!image || !user) return;
+    if (!image || !user) {
+      alert("画像ファイルを添付してください")
+      return;
+    }
+    const acceptedImageTypes = ["image/jpeg", "image/png"];
+    if (!acceptedImageTypes.includes(image.type)) {
+      alert("画像ファイルを添付してください");
+      return;
+    }
     try {
       const storageRef = ref(storage, `images/${image.name}`);
       const uploadTask = await uploadBytes(storageRef, image);
@@ -81,26 +93,27 @@ const Settings: React.FC = () => {
         />
         <button
           onClick={handleUpdateUserName}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-300"
+          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
         >
           Update User Name
         </button>
       </div>
       <div className="mb-4">
         <input type="file" onChange={handleImageChange} />
-        {imagePreview && 
+        {image && 
         <div>
           <p>preview</p>
-          <img src={imagePreview} alt="Selected" className="w-20 h-20 rounded-full" />
+          {imagePreview &&
+          <img src={imagePreview} alt="Selected" className="w-20 h-20 rounded-full" />}
         </div>}
-        <button onClick={handleImageUpload} className="px-4 py-2 bg-blue-500 text-white rounded-md mt-2 hover:bg-blue-300">
+        <button onClick={handleImageUpload} className="px-4 py-2 bg-blue-500 text-white rounded-md mt-2">
           Upload Image
         </button>
       </div>
       <div>
         <button
           onClick={handleDeleteUser}
-          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-300"
+          className="px-4 py-2 bg-red-500 text-white rounded-md"
         >
           Delete User
         </button>

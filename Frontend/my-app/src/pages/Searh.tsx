@@ -169,6 +169,7 @@ const Search: React.FC = () => {
                     <img src={post.ImgPost} alt="Img of Post" />
                   )}
                    <Link to={`/post/${post.PostID}`} className="text-blue-500 hover:underline">Details</Link>
+                   <Link to={`/profiles?uid=${post.UserID}`} className="text-blue-500 hover:underline mx-4">To Profiles</Link>
                 </li>
               ))
             ) : (

@@ -94,7 +94,10 @@ const ShowTalk: React.FC = () => {
                                 <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
                                 {post.Edited && <p>Edited</p>}
                                 {post.PostID && <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>}
+                                {post.PostID &&<Link to={`/profiles?uid=${post.UserID}`} className="text-blue-500 mx-4"> To Profile</Link>}
+
                                 {post.ReplyID && <Link to={`/reply/${post.ReplyID}`} className="text-blue-500">To Reply detail</Link>}
+                                {post.ReplyID && <Link to={`/profiles?uid=${post.PostedByID}`} className="text-blue-500 mx-4"> To Profile</Link>}
                             </div>): <p key={index}>deleted post</p>)))}
                 </div>
             </div>
@@ -116,6 +119,7 @@ const ShowTalk: React.FC = () => {
                         <p>Replied At: {new Date(mainReply.PostedAt).toLocaleString()}</p>
                         {mainReply.Edited==true && <p>Edited</p>}
                         <Link to={`/reply/${mainReply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
+                        <Link to={`/profiles?uid=${mainReply.PostedByID}`} className="text-blue-500 mx-4"> To Profile</Link>
                     </div>
                 </div>
             )}
@@ -139,6 +143,8 @@ const ShowTalk: React.FC = () => {
                                 <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
                                 {reply.Edited==true && <p>Edited</p>}
                                 <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
+                                <Link to={`/profiles?uid=${reply.PostedByID}`} className="text-blue-500 mx-4"> To Profile</Link>
+                                <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 mx-4"> See Talk</Link>
                             </div>
                         )
                     )}
