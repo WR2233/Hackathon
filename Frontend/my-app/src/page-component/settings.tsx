@@ -81,7 +81,7 @@ const Settings: React.FC = () => {
         />
         <button
           onClick={handleUpdateUserName}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-300"
         >
           Update User Name
         </button>
@@ -93,14 +93,14 @@ const Settings: React.FC = () => {
           <p>preview</p>
           <img src={imagePreview} alt="Selected" className="w-20 h-20 rounded-full" />
         </div>}
-        <button onClick={handleImageUpload} className="px-4 py-2 bg-blue-500 text-white rounded-md mt-2">
+        <button onClick={handleImageUpload} className="px-4 py-2 bg-blue-500 text-white rounded-md mt-2 hover:bg-blue-300">
           Upload Image
         </button>
       </div>
       <div>
         <button
           onClick={handleDeleteUser}
-          className="px-4 py-2 bg-red-500 text-white rounded-md"
+          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-300"
         >
           Delete User
         </button>

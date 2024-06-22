@@ -101,12 +101,12 @@ const Search: React.FC = () => {
         />
       </div>
 
-      <button onClick={handleSeeTime} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+      <button onClick={handleSeeTime} className="px-4 py-2 bg-blue-500 text-white rounded-md mx-4">
         {seeTime ? "Close Calendar" : "Search by time"}
       </button>
       {seeTime && (
         <div>
-          <button onClick={handleClearTime} className="px-4 py-2 bg-blue-500 text-white rounded-md">
+          <button onClick={handleClearTime} className="px-4 py-2 bg-blue-500 text-white rounded-md my-4">
             Clear time
           </button>
           <div className="mb-4">
@@ -147,7 +147,7 @@ const Search: React.FC = () => {
       </button>
 
       {isSearched && (
-        <div className="mb-4 pb-4">
+        <div className="mb-4 pb-4 mt-4">
           <ul>
             {filteredPosts && filteredPosts.length > 0 ? (
               filteredPosts.map(post => (

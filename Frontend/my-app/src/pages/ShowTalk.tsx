@@ -78,16 +78,15 @@ const ShowTalk: React.FC = () => {
                 <h2 className="text-xl font-bold mb-4">Parent Posts</h2>
                 <div className="space-y-4">
                     {posts.map((post, index) => (
-                        !post.Deleted && !post.DeletedUser && (
+                        (!post.Deleted && !post.DeletedUser ? (
                             <div key={index} className="p-4 border rounded-lg shadow-md">
                                 <div className="flex">
                                     <div>
-                                        <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                                        <img src={post.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto flex-1" />
                                     </div>
-                                    <h3 className="text-lg font-semibold">{post.UserName}</h3>
-                                    <p>posted At {post.PostedAt}</p>
+                                    <h3 className="text-lg font-semibold flex-2 mx-10">{post.UserName}</h3>
                                 </div>
-                                <Linkify as="p" options={linkifyOptions}>
+                                <Linkify as="p" className="" options={linkifyOptions}>
                                     {post.Content}
                                 </Linkify>
                                 {post.Video && <ReactPlayer url={post.Video} controls={true} width="100%" height="100%" />}
@@ -96,24 +95,26 @@ const ShowTalk: React.FC = () => {
                                 {post.Edited && <p>Edited</p>}
                                 {post.PostID && <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>}
                                 {post.ReplyID && <Link to={`/reply/${post.ReplyID}`} className="text-blue-500">To Reply detail</Link>}
-                            </div>)))}
+                            </div>): <p key={index}>deleted post</p>)))}
                 </div>
             </div>
             {mainReply && (
                 <div className="mb-8">
                     <h2 className="text-xl font-bold mb-4">Main Reply</h2>
                     <div className="p-4 border rounded-lg shadow-md">
-                        <div>
-                            <img src={mainReply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                        <div className="flex">
+                            <div>
+                                <img src={mainReply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                            </div>
+                            <h3 className="text-lg font-semibold mx-10">{mainReply.UserName}</h3>
                         </div>
-                        <h3 className="text-lg font-semibold">{mainReply.UserName}</h3>
                         <Linkify as="p" options={linkifyOptions}>
                             {mainReply.Content}
                         </Linkify>
                         {mainReply.Video && <ReactPlayer url={mainReply.Video} controls={true} width="100%" height="100%" />}
                         {mainReply.ImgPost && <img src={mainReply.ImgPost} alt="Img of Post" />}
                         <p>Replied At: {new Date(mainReply.PostedAt).toLocaleString()}</p>
-                        {mainReply.Edited && <p>Edited</p>}
+                        {mainReply.Edited==true && <p>Edited</p>}
                         <Link to={`/reply/${mainReply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                     </div>
                 </div>
@@ -122,11 +123,13 @@ const ShowTalk: React.FC = () => {
                 <h2 className="text-xl font-bold mb-4">Replies</h2>
                 <div className="space-y-4">
                     {replies.map((reply) => (
-                        !reply.Deleted && !reply.DeletedUser && (
+                        !reply.Deleted && !reply.DeletedUser &&
                             <div key={reply.ReplyID} className="p-4 border rounded-lg shadow-md">
-                                <span className="text-sm text-gray-600">{reply.UserName}</span>
-                                <div>
-                                    <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                                <div className="flex">
+                                    <div>
+                                        <img src={reply.Img} alt="User profile" className="w-32 h-32 rounded-full object-cover mx-auto" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold mx-10">{reply.UserName}</h3>
                                 </div>
                                 <Linkify as="p" options={linkifyOptions}>
                                     {reply.Content}
@@ -134,11 +137,11 @@ const ShowTalk: React.FC = () => {
                                 {reply.Video && <ReactPlayer url={reply.Video} controls={true} width="100%" height="100%" />}
                                 {reply.ImgPost && <img src={reply.ImgPost} alt="Img of Post" />}
                                 <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
-                                {reply.Edited && <p>Edited</p>}
+                                {reply.Edited==true && <p>Edited</p>}
                                 <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                             </div>
                         )
-                    ))}
+                    )}
                 </div>
             </div>
         </div>

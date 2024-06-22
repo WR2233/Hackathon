@@ -68,7 +68,7 @@ const MyProfile: React.FC = () => {
       
       <button
         onClick={handleBack}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded-md m-4 hover:bg-blue-300"
       >
         Back
       </button>
@@ -76,16 +76,16 @@ const MyProfile: React.FC = () => {
       <Settings />
       <div className="flex">
         <button
-          className={`flex-1 py-2 px-4 ${
-            activeTab === "post" ? "bg-blue-500" : "bg-gray-300"
+          className={`flex-1 py-2 px-4 mt-4 ${
+            activeTab === "post" ? "bg-blue-500 hover:bg-blue-300" : "bg-gray-300 hover:bg-gray-200"
           }`}
           onClick={() => setActiveTab("post")}
         >
           Posts
         </button>
         <button
-          className={`flex-1 py-2 px-4 ${
-            activeTab === "reply" ? "bg-blue-500" : "bg-gray-300"
+          className={`flex-1 py-2 px-4 mt-4 ${
+            activeTab === "reply" ? "bg-blue-500 hover:bg-blue-300" : "bg-gray-300 hover:bg-gray-200"
           }`}
           onClick={() => setActiveTab("reply")}
         >

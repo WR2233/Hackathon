@@ -116,7 +116,7 @@ const PostDetail: React.FC = () => {
       const replyID = await CreateReply(pidNum, user.uid, replyContent, true);
       setReplyContent("");
       setReplyFormVisible(false);
-      navigate(`/reply/${replyID}`);
+      navigate(`/showtalk/${replyID}`);
     } catch (error) {
       console.error("Error creating reply:", error);
     }
