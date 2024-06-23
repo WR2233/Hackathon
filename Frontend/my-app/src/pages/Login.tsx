@@ -39,11 +39,10 @@ const LoginForm: React.FC = () => {
     signInWithEmailAndPassword(fireAuth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("User signed in:", user);
         navigate("/");
       })
       .catch((error) => {
-        console.error("Error signing in:", error);
+        alert("パスワードもしくはメールアドレスが間違っています")
       });
   };
 
@@ -65,7 +64,6 @@ const LoginForm: React.FC = () => {
       const userCredential = await createUserWithEmailAndPassword(fireAuth, email, password);
       const user = userCredential.user;
       await createUser(username, user.uid);
-      console.log("User signed up:", user);
       navigate("/");
     } catch (error) {
       console.error("Failed to sign up:", error);
@@ -77,7 +75,7 @@ const LoginForm: React.FC = () => {
   const handleSignOut = () => {
     signOut(fireAuth)
       .then(() => {
-        console.log("User signed out");
+        return
       })
       .catch((error) => {
         console.error("Error signing out:", error);
