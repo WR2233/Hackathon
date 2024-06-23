@@ -92,7 +92,7 @@ const ShowTalk: React.FC = () => {
                                 {post.Video && <ReactPlayer url={post.Video} controls={true} width="100%" height="100%" />}
                                 {post.ImgPost && <img src={post.ImgPost} alt="Img of Post" />}
                                 <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
-                                {post.Edited && <p>Edited</p>}
+                                {post.Edited==true ? <p>Edited</p>: <></>}
                                 {post.PostID && <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>}
                                 {post.PostID &&<Link to={`/profiles?uid=${post.UserID}`} className="text-blue-500 mx-4"> To Profile</Link>}
 
@@ -117,7 +117,6 @@ const ShowTalk: React.FC = () => {
                         {mainReply.Video && <ReactPlayer url={mainReply.Video} controls={true} width="100%" height="100%" />}
                         {mainReply.ImgPost && <img src={mainReply.ImgPost} alt="Img of Post" />}
                         <p>Replied At: {new Date(mainReply.PostedAt).toLocaleString()}</p>
-                        {mainReply.Edited==true && <p>Edited</p>}
                         <Link to={`/reply/${mainReply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                         <Link to={`/profiles?uid=${mainReply.PostedByID}`} className="text-blue-500 mx-4"> To Profile</Link>
                     </div>
