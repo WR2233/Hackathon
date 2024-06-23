@@ -8,7 +8,6 @@ export const createUser = async (username: string, userId: string) => {
         UserName: username,
         UserID: userId,
       };
-    console.log(userData)
     var url = process.env.REACT_APP_API_URL as string
     const response = await fetch(url + '/createuser ', {
       method: 'POST',
