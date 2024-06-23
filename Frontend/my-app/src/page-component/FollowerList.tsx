@@ -9,7 +9,7 @@ const getQueryParams = (query) => {
 };
 
 const FollowersList = () => {
-  const [followerList, setFollowerList] = useState([]);
+  const [followerList, setFollowerList] = useState<Profile[]>([]);
   const location = useLocation();
   const url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
@@ -51,12 +51,6 @@ const FollowersList = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-8 offset-md-2">
-          <button
-            onClick={() => navigate(-1)}
-            className="btn btn-primary mb-3"
-          >
-            Go Back
-          </button>
           <ul className="list-group">
             {followerList && followerList.length > 0 ? (
               followerList.map((follower) => (
