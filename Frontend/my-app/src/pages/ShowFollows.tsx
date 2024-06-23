@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import FollowerList from "../page-component/FollowerList.tsx"; // フォロワーリストコンポーネントのインポート
 import FollowingList from "../page-component/FollowingList.tsx"; // フォローイングリストコンポーネントのインポート
+
 
 const ShowFollows = () => {
   const [activeTab, setActiveTab] = useState("followers"); // 初期値としてフォロワータブを選択
@@ -11,6 +12,12 @@ const ShowFollows = () => {
 
   return (
     <div className="max-w-sm mx-auto mt-8 bg-gray-100 p-6 rounded-md shadow-md">
+      <Link
+        to={`/profiles?uid=${userID}`}
+        className="block bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded  my-4"
+      >
+        Go Back
+      </Link>
       <h1 className="text-2xl font-bold mb-4">User Follows</h1>
       <div className="flex">
         <button
