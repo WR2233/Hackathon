@@ -23,7 +23,6 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(userData)
 		return
 	}
-	log.Println(userData)
 	err := dao.CreateUser(userData)
 	if err != nil {
 		// エラーが発生した場合、エラーレスポンスを返す
