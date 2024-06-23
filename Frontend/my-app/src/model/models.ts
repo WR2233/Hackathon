@@ -14,6 +14,7 @@ export interface Reply {
     Video: string
     ImgPost: string
     LikeNum?: number
+    PostID: null
 }
 
 export interface Post {
@@ -29,6 +30,7 @@ export interface Post {
     Video : string
     ImgPost : string
     LikeNum?: number
+    ReplyID?: null 
 }
 
 export interface Profile {
