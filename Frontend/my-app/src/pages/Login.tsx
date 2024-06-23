@@ -3,7 +3,6 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, on
 import { fireAuth } from "../services/firebase.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../services/createUser.ts";
-import { Profile } from "../model/models.ts";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -37,8 +36,7 @@ const LoginForm: React.FC = () => {
       return;
     }
     signInWithEmailAndPassword(fireAuth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then(() => {
         navigate("/");
       })
       .catch((error) => {

@@ -92,7 +92,7 @@ const ShowTalk: React.FC = () => {
                                 {post.Video && <ReactPlayer url={post.Video} controls={true} width="100%" height="100%" />}
                                 {post.ImgPost && <img src={post.ImgPost} alt="Img of Post" />}
                                 <p>Replied At: {new Date(post.PostedAt).toLocaleString()}</p>
-                                {post.Edited==true ? <p>Edited</p>: <></>}
+                                {post.Edited===true ? <p>Edited</p>: <></>}
                                 {post.PostID && <Link to={`/post/${post.PostID}`} className="text-blue-500">To Post detail</Link>}
                                 {post.PostID &&<Link to={`/profiles?uid=${post.UserID}`} className="text-blue-500 mx-4"> To Profile</Link>}
 
@@ -140,7 +140,7 @@ const ShowTalk: React.FC = () => {
                                 {reply.Video && <ReactPlayer url={reply.Video} controls={true} width="100%" height="100%" />}
                                 {reply.ImgPost && <img src={reply.ImgPost} alt="Img of Post" />}
                                 <p>Replied At: {new Date(reply.PostedAt).toLocaleString()}</p>
-                                {reply.Edited==true && <p>Edited</p>}
+                                {reply.Edited===true && <p>Edited</p>}
                                 <Link to={`/reply/${reply.ReplyID}`} className="text-blue-500">To Reply detail</Link>
                                 <Link to={`/profiles?uid=${reply.PostedByID}`} className="text-blue-500 mx-4"> To Profile</Link>
                                 <Link to={`/showtalk/${reply.ReplyID}`} className="text-blue-500 mx-4"> See Talk</Link>

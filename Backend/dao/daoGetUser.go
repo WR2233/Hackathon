@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"database/sql"
 	"github.com/WR2233/Hackathon/Backend/model"
 )
 
@@ -20,7 +21,11 @@ func GetUser(user_id string) (*model.User, error) {
 	// 結果セットから投稿をスキャンして取得する
 	err = row.Scan(&user.UserID, &user.UserName, &user.Deleted, &user.CreatedAt, &user.Img)
 	if err != nil {
-		return nil, err
+		if err == sql.ErrNoRows {
+			return nil, nil
+		} else {
+			return nil, err
+		}
 	}
 
 	return &user, nil
